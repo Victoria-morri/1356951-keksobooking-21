@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Honey badger](https://up.htmlacademy.ru/javascript/21/user/1356951).
-* Наставник: `Неизвестно`.
+* Наставник: Марина Титова.
 
 ---
 
