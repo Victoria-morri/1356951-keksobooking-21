@@ -7,6 +7,7 @@ const FOTOS_LIST = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http:
 const PIN_WIDTH_HALF = 25;
 const PIN_HEIGHT = 70;
 const SKY_HEIGHT = 120;
+const QUANTITY_ADVERTAISMENTS = 8;
 
 const MAP_PIN = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 // const MAP_CARD = document.querySelector(`#card`).content.querySelector(`.map__card`);
@@ -27,10 +28,28 @@ const getRndArray = function (options) {
   return uniqFeatures;
 };
 
+const shuffle = function (array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
+const getAvatarArray = function () {
+  const avatarArray = [];
+  for (let i = 1; i <= QUANTITY_ADVERTAISMENTS; i++) {
+    avatarArray.push(i);
+  }
+  return avatarArray;
+};
+
+const avatarImgArray = shuffle(getAvatarArray());
+
 const getAdvertaisment = function () {
   const advertaisment = {
     author: {
-      avatar: `img/avatars/user0${getRandomInteger(1, 8)}.png`
+      avatar: `img/avatars/user0${avatarImgArray.pop()}.png`
     },
     offer: {
       title: `Отличный вид из окна`,
@@ -41,7 +60,7 @@ const getAdvertaisment = function () {
       guests: getRandomInteger(1, 5),
       checkin: CHECKIN_TIMES[getRandomInteger(0, CHECKIN_TIMES.length)],
       checkout: CHECKOUT_TIMES[getRandomInteger(0, CHECKOUT_TIMES.length)],
-      features: getRndArray(FEATURES_LIST),
+      features: getRndArray(shuffle(FEATURES_LIST)),
       description: `Немного воняет носками, но в целом нормально`,
       photos: getRndArray(FOTOS_LIST)
     },
@@ -70,7 +89,7 @@ const getAdvertaisment = function () {
 */
 const createMapCardList = function () {
   const mapCardList = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < QUANTITY_ADVERTAISMENTS; i++) {
     mapCardList.push(getAdvertaisment());
   }
   return mapCardList;
@@ -88,7 +107,7 @@ const getPinMap = function (card) {
 
 const renderMapPinsList = function () {
   const fragment = document.createDocumentFragment();
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < QUANTITY_ADVERTAISMENTS; i++) {
     fragment.appendChild(getPinMap(cardList[i]));
   // fragment.appendChild(getMapcard(cardList[i]));
   }
