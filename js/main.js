@@ -58,6 +58,10 @@ const getAvatarArray = function () {
 };
 
 const avatarImgArray = shuffle(getAvatarArray());
+const getRndI = function (array) {
+  const result = array[getRandomInteger(0, array.length)];
+  return result;
+};
 
 const getAdvertaisement = function () {
   const locationX = getRandomInteger(PIN_WIDTH_HALF, MAX_WIDTH) - PIN_WIDTH_HALF;
@@ -68,16 +72,16 @@ const getAdvertaisement = function () {
       avatar: `img/avatars/user0${avatarImgArray.pop()}.png`
     },
     offer: {
-      title: TITLES[getRandomInteger(0, TITLES.length)],
+      title: getRndI(TITLES),
       address: `${locationX}, ${locationY}`,
-      price: PRICES[getRandomInteger(0, PRICES.length)],
-      type: TYPES[getRandomInteger(0, TYPES.length)],
+      price: getRndI(PRICES),
+      type: getRndI(TYPES),
       rooms: getRandomInteger(MIN_ROOM, MAX_ROOM),
       guests: getRandomInteger(MIN_GUEST, MAX_GUEST),
-      checkin: CHECKIN_TIMES[getRandomInteger(0, CHECKIN_TIMES.length)],
-      checkout: CHECKOUT_TIMES[getRandomInteger(0, CHECKOUT_TIMES.length)],
+      checkin: getRndI(CHECKIN_TIMES),
+      checkout: getRndI(CHECKOUT_TIMES),
       features: getRndArray(shuffle(FEATURES_LIST)),
-      description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length)],
+      description: getRndI(DESCRIPTIONS),
       photos: getRndArray(FOTOS_LIST)
     },
     location: {
