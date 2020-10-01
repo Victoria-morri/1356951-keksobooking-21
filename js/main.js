@@ -21,12 +21,6 @@ const MAX_ROOM = 4;
 const MAX_WIDTH = 1200;
 const MAX_HEIGHT = 630;
 
-const mapPin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-// const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
-
-const mapElement = document.querySelector(`.map`);
-mapElement.classList.remove(`map--faded`);
-const mapPinsElement = mapElement.querySelector(`.map__pins`);
 
 const getRandomInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -92,7 +86,33 @@ const getAdvertaisement = function () {
   return advertaisement;
 };
 
+// второе задание
 
+const fillAdressInput = function (width, height) {
+  adressInput.value = `left: ${parseInt(mapPinMain.style.left, Number) + width}px; top: ${parseInt(mapPinMain.style.top, Number) + height}px`;
+};
+
+const checkDisable = function () {
+  for (let i = 0; i < fieldsetArray.length; i++) {
+    fieldsetArray[i].setAttribute(`disabled`, `disabled`);
+  }
+};
+
+const uncheckDisabled = function () {
+  for (let i = 0; i < fieldsetArray.length; i++) {
+    fieldsetArray[i].removeAttribute(`disabled`);
+  }
+};
+
+const removeMapFaded = function () {
+  mapElement.classList.remove(`map--faded`);
+};
+
+const activateMap = function () {
+  removeMapFaded();
+  uncheckDisabled();
+  fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT);
+};
 /* const getMapcard = function (option) {
   const mapCard = mapCardTemplate.cloneNode(true);
   mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
@@ -124,6 +144,18 @@ const createMapCardList = function () {
   return mapCardList;
 };
 
+const mapPin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+// const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+const mapElement = document.querySelector(`.map`);
+const mapPinsElement = mapElement.querySelector(`.map__pins`);
+const blockInput = document.getElementsByTagName(`fieldset`);
+const notice = document.querySelector(`.notice`);
+const adressInput = notice.querySelector((`input[id=address]`));
+const mapPinMain = document.querySelector(`.map__pin--main`);
+const roomNumber = notice.querySelector(`#room_number`);
+const capacity = notice.querySelector(`#capacity`);
+const fieldsetArray = Array.from(blockInput);
+
 const cardList = createMapCardList();
 
 const renderMapPinsList = function () {
@@ -135,3 +167,26 @@ const renderMapPinsList = function () {
   return fragment;
 };
 mapPinsElement.appendChild(renderMapPinsList());
+
+mapPinMain.addEventListener(`mousedown`, function (evt) {
+  if (evt.which === 1) {
+    activateMap();
+  }
+});
+
+mapPinMain.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    activateMap();
+  }
+});
+capacity.addEventListener(`input`, function () {
+  const actualRoomNumber = parseInt(roomNumber.value, Number);
+  const actualCapacity = parseInt(capacity.value, Number);
+  if (actualRoomNumber < actualCapacity || actualRoomNumber > actualCapacity) {
+    capacity.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат.`);
+  } else {
+    capacity.setCustomValidity(``);
+  }
+});
+checkDisable();
+fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT / 2);
