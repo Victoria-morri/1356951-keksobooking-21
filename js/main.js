@@ -22,7 +22,7 @@ const MAX_WIDTH = 1200;
 const MAX_HEIGHT = 630;
 
 const mapPin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-// const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
 const mapElement = document.querySelector(`.map`);
 mapElement.classList.remove(`map--faded`);
@@ -93,21 +93,45 @@ const getAdvertaisement = function () {
 };
 
 
-/* const getMapcard = function (option) {
+const getMapcard = function (option) {
   const mapCard = mapCardTemplate.cloneNode(true);
   mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
   mapCard.querySelector(`.popup__title`).textContent = option.offer.title;
   mapCard.querySelector(`.popup__text--address`).textContent = option.offer.address;
   mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
-  mapCard.querySelector(`.popup__type`).textContent = option.offer.type;
+
+  if (option.offer.type === `palace`) {
+    mapCard.querySelector(`.popup__type`).textContent = `Дворец`;
+  } else if (option.offer.type === `flat`) {
+    mapCard.querySelector(`.popup__type`).textContent = `Квартира`;
+  } else if (option.offer.type === `house`) {
+    mapCard.querySelector(`.popup__type`).textContent = `Дом`;
+  } else if (option.offer.type === `bungalow`) {
+    mapCard.querySelector(`.popup__type`).textContent = `Бунгало`;
+  }
+
+  /* почему то так не работает, eslint ругается
+   mapCard.querySelector(`.popup__type`).textContent =
+  (option.offer.type === `palace`) ? `Дворец`:
+  (option.offer.type === `flat`) ? `Квартира`:
+  (option.offer.type === `house`) ? `Дом`:
+  (option.offer.type === `bungalow`) ? `Бунгало`:
+  `Другое`;
+*/
   mapCard.querySelector(`.popup__text--capacity`).textContent = `${option.offer.rooms} комнаты для ${option.offer.guests} гостей`;
   mapCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}`;
   mapCard.querySelector(`.popup__features`).textContent = option.offer.features;
   mapCard.querySelector(`.popup__description`).textContent = option.offer.description;
-  mapCard.querySelector(`.popup__photos`).querySelector(`img`).src = option.offer.photos[0];
+  /* так тоже не робит
+    for (let i = option.offer.photos.length - 1; i > 0; i--) {
+    const newImg = document.createElement(`img`).src = option.offer.photos[i];
+    mapCard.querySelector(`.popup__photos`).appendChild(newImg);
+  }
+  */
+  mapCard.querySelector(`.popup__photos`).querySelector(`img`).src = option.offer.photos;
   return mapCard;
 };
-*/
+
 const getPinMap = function (card) {
   const pinMap = mapPin.cloneNode(true);
   pinMap.style = `left: ${card.location.x}px; top: ${card.location.y}px`;
@@ -130,8 +154,16 @@ const renderMapPinsList = function () {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < QUANTITY_ADVERTAISEMENTS; i++) {
     fragment.appendChild(getPinMap(cardList[i]));
-  // fragment.appendChild(getMapcard(cardList[i]));
   }
   return fragment;
 };
+// Функции похожи, но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
+const renderMapElementList = function () {
+  const fragment = document.createDocumentFragment();
+  // for (let i = 0; i < QUANTITY_ADVERTAISEMENTS; i++) {
+  fragment.appendChild(getMapcard(cardList[0]));
+  // }
+  return fragment;
+};
 mapPinsElement.appendChild(renderMapPinsList());
+mapElement.appendChild(renderMapElementList());
