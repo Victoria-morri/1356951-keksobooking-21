@@ -89,7 +89,7 @@ const getAdvertaisement = function () {
 // второе задание
 
 const fillAdressInput = function (width, height) {
-  adressInput.value = `left: ${parseInt(mapPinMain.style.left, Number) + width}px; top: ${parseInt(mapPinMain.style.top, Number) + height}px`;
+  adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
 };
 
 const checkDisable = function () {
@@ -129,7 +129,7 @@ const activateMap = function () {
 };
 */
 const getPinMap = function (card) {
-  const pinMap = mapPin.cloneNode(true);
+  const pinMap = mapPinElement.cloneNode(true);
   pinMap.style = `left: ${card.location.x}px; top: ${card.location.y}px`;
   pinMap.querySelector(`img`).src = card.author.avatar;
   pinMap.querySelector(`img`).alt = card.offer.title;
@@ -144,17 +144,19 @@ const createMapCardList = function () {
   return mapCardList;
 };
 
-const mapPin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+const mapPinElement = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 // const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapElement = document.querySelector(`.map`);
 const mapPinsElement = mapElement.querySelector(`.map__pins`);
-const blockInput = document.getElementsByTagName(`fieldset`);
-const notice = document.querySelector(`.notice`);
-const adressInput = notice.querySelector((`input[id=address]`));
-const mapPinMain = document.querySelector(`.map__pin--main`);
-const roomNumber = notice.querySelector(`#room_number`);
-const capacity = notice.querySelector(`#capacity`);
-const fieldsetArray = Array.from(blockInput);
+const blockInputElement = document.getElementsByTagName(`fieldset`);
+const noticeElement = document.querySelector(`.notice`);
+const adressInputElement = noticeElement.querySelector((`input[id=address]`));
+const mapPinMainElement = document.querySelector(`.map__pin--main`);
+const roomNumberElement = noticeElement.querySelector(`#room_number`);
+const capacityElement = noticeElement.querySelector(`#capacity`);
+const fieldsetArray = Array.from(blockInputElement);
+const titleElement = noticeElement.querySelector(`#title`);
+const priceElement = noticeElement.querySelector(`#price`);
 
 const cardList = createMapCardList();
 
@@ -168,25 +170,46 @@ const renderMapPinsList = function () {
 };
 mapPinsElement.appendChild(renderMapPinsList());
 
-mapPinMain.addEventListener(`mousedown`, function (evt) {
+mapPinMainElement.addEventListener(`mousedown`, function (evt) {
   if (evt.which === 1) {
     activateMap();
   }
 });
 
-mapPinMain.addEventListener(`keydown`, function (evt) {
+mapPinMainElement.addEventListener(`keydown`, function (evt) {
   if (evt.key === `Enter`) {
     activateMap();
   }
 });
-capacity.addEventListener(`input`, function () {
-  const actualRoomNumber = parseInt(roomNumber.value, Number);
-  const actualCapacity = parseInt(capacity.value, Number);
-  if (actualRoomNumber < actualCapacity || actualRoomNumber > actualCapacity) {
-    capacity.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат.`);
+capacityElement.addEventListener(`input`, function () {
+  const actualRoomNumber = parseInt(roomNumberElement.value, Number);
+  const actualCapacity = parseInt(capacityElement.value, Number);
+  if (actualRoomNumber < actualCapacity) {
+    capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
   } else {
-    capacity.setCustomValidity(``);
+    capacityElement.setCustomValidity(``);
   }
 });
+
+titleElement.addEventListener(`input`, function () {
+  const titleValueLength = titleElement.value.length;
+  if (titleValueLength < 30) {
+    titleElement.setCustomValidity(`Минамальное количество символов 30. Дополните заголовок.`);
+  } else if (titleValueLength > 100) {
+    titleElement.setCustomValidity(`Максимальное количество символов 100. Сократите заголовок.`);
+  } else {
+    titleElement.setCustomValidity(``);
+  }
+});
+
+priceElement.addEventListener(`input`, function () {
+  const priceValue = priceElement.value;
+  if (priceValue > 1000000 || priceValue < 1000) {
+    priceElement.setCustomValidity(`Цена может варьироваться от 1000 до 1000000руб. Скорректируйте цену.`);
+  } else {
+    priceElement.setCustomValidity(``);
+  }
+});
+
 checkDisable();
 fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT / 2);
