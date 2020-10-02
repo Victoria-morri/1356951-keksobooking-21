@@ -86,8 +86,6 @@ const getAdvertaisement = function () {
   return advertaisement;
 };
 
-// второе задание
-
 const fillAdressInput = function (width, height) {
   adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
 };
@@ -97,9 +95,9 @@ const checkDisable = function () {
   for (let i = 0; i < fieldsetArray.length; i++) {
     fieldsetArray[i].setAttribute(`disabled`, `disabled`);
   }
-  mapFilters.setAttribute(`disabled`, `disabled`);
-  // также пыталась добавить в разметке прям, но не работает,
-  // также пыталась добавить класс map__filters--disabled, но тоже бесполезно
+  for (let i = 0; i < mapFiltersArray.length; i++) {
+    mapFiltersArray[i].setAttribute(`disabled`, `disabled`);
+  }
 };
 
 const uncheckDisabled = function () {
@@ -108,6 +106,9 @@ const uncheckDisabled = function () {
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
     mapPinsElement.appendChild(renderMapPinsList());
+  }
+  for (let i = 0; i < mapFiltersArray.length; i++) {
+    mapFiltersArray[i].removeAttribute(`disabled`);
   }
 };
 
@@ -151,6 +152,21 @@ const createMapCardList = function () {
   return mapCardList;
 };
 
+
+const renderMapPinsList = function () {
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < QUANTITY_ADVERTAISEMENTS; i++) {
+    fragment.appendChild(getPinMap(cardList[i]));
+  // fragment.appendChild(getMapcard(cardList[i]));
+  }
+  return fragment;
+};
+
+const removeListeners = function () {
+  mapPinMainElement.removeEventListener(`keydown`, keyEnter);
+  mapPinMainElement.removeEventListener(`mousedown`, mouseLeft);
+};
+
 const mapPinElement = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 // const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapElement = document.querySelector(`.map`);
@@ -165,43 +181,38 @@ const fieldsetArray = Array.from(blockInputElements);
 const titleElement = noticeElement.querySelector(`#title`);
 const priceElement = noticeElement.querySelector(`#price`);
 const adFormElement = noticeElement.querySelector(`.ad-form`);
-const mapFilters = document.querySelector(`.map__filters`);
+const mapFilters = document.querySelectorAll(`select`);
+const mapFiltersArray = Array.from(mapFilters);
 
 const cardList = createMapCardList();
 
-const renderMapPinsList = function () {
-  const fragment = document.createDocumentFragment();
-  for (let i = 0; i < QUANTITY_ADVERTAISEMENTS; i++) {
-    fragment.appendChild(getPinMap(cardList[i]));
-  // fragment.appendChild(getMapcard(cardList[i]));
-  }
-  return fragment;
-};
-const onActiveSite = function (evt) {
-  if (evt.key === `Enter` || evt.button === 0) {
-    removeListeners();
-  }
-};
-
-const removeListeners = function () {
-  document.removeEventListener(`keydown`, onActiveSite);
-  document.removeEventListener(`mousedown`, onActiveSite);
-};
-
-mapPinMainElement.addEventListener(`mousedown`, function (evt) {
+const mouseLeft = function (evt) {
   if (evt.button === 0) {
     activateMap();
     removeListeners();
   }
-});
+};
 
-mapPinMainElement.addEventListener(`keydown`, function (evt) {
+const keyEnter = function (evt) {
   if (evt.key === `Enter`) {
     activateMap();
     removeListeners();
   }
-});
+};
+mapPinMainElement.addEventListener(`keydown`, keyEnter);
+mapPinMainElement.addEventListener(`mousedown`, mouseLeft);
+
 capacityElement.addEventListener(`input`, function () {
+  const actualRoomNumber = parseInt(roomNumberElement.value, Number);
+  const actualCapacity = parseInt(capacityElement.value, Number);
+  if (actualRoomNumber < actualCapacity || actualRoomNumber !== actualCapacity) {
+    capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
+  } else {
+    capacityElement.setCustomValidity(``);
+  }
+});
+
+roomNumberElement.addEventListener(`input`, function () {
   const actualRoomNumber = parseInt(roomNumberElement.value, Number);
   const actualCapacity = parseInt(capacityElement.value, Number);
   if (actualRoomNumber < actualCapacity || actualRoomNumber !== actualCapacity) {
