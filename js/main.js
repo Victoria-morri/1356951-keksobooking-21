@@ -93,23 +93,30 @@ const fillAdressInput = function (width, height) {
 };
 
 const checkDisable = function () {
+
   for (let i = 0; i < fieldsetArray.length; i++) {
     fieldsetArray[i].setAttribute(`disabled`, `disabled`);
   }
+  mapFilters.setAttribute(`disabled`, `disabled`);
+  // также пыталась добавить в разметке прям, но не работает,
+  // также пыталась добавить класс map__filters--disabled, но тоже бесполезно
 };
 
 const uncheckDisabled = function () {
   for (let i = 0; i < fieldsetArray.length; i++) {
     fieldsetArray[i].removeAttribute(`disabled`);
+    mapElement.classList.remove(`map--faded`);
+    adFormElement.classList.remove(`ad-form--disabled`);
+    mapPinsElement.appendChild(renderMapPinsList());
   }
 };
 
-const removeMapFaded = function () {
+/* const removeMapFaded = function () {
   mapElement.classList.remove(`map--faded`);
 };
-
+*/
 const activateMap = function () {
-  removeMapFaded();
+  // removeMapFaded();
   uncheckDisabled();
   fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT);
 };
@@ -148,15 +155,17 @@ const mapPinElement = document.querySelector(`#pin`).content.querySelector(`.map
 // const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapElement = document.querySelector(`.map`);
 const mapPinsElement = mapElement.querySelector(`.map__pins`);
-const blockInputElement = document.getElementsByTagName(`fieldset`);
+const blockInputElements = document.querySelectorAll(`fieldset`);
 const noticeElement = document.querySelector(`.notice`);
 const adressInputElement = noticeElement.querySelector((`input[id=address]`));
 const mapPinMainElement = document.querySelector(`.map__pin--main`);
 const roomNumberElement = noticeElement.querySelector(`#room_number`);
 const capacityElement = noticeElement.querySelector(`#capacity`);
-const fieldsetArray = Array.from(blockInputElement);
+const fieldsetArray = Array.from(blockInputElements);
 const titleElement = noticeElement.querySelector(`#title`);
 const priceElement = noticeElement.querySelector(`#price`);
+const adFormElement = noticeElement.querySelector(`.ad-form`);
+const mapFilters = document.querySelector(`.map__filters`);
 
 const cardList = createMapCardList();
 
@@ -168,23 +177,34 @@ const renderMapPinsList = function () {
   }
   return fragment;
 };
-mapPinsElement.appendChild(renderMapPinsList());
+const onActiveSite = function (evt) {
+  if (evt.key === `Enter` || evt.button === 0) {
+    removeListeners();
+  }
+};
+
+const removeListeners = function () {
+  document.removeEventListener(`keydown`, onActiveSite);
+  document.removeEventListener(`mousedown`, onActiveSite);
+};
 
 mapPinMainElement.addEventListener(`mousedown`, function (evt) {
-  if (evt.which === 1) {
+  if (evt.button === 0) {
     activateMap();
+    removeListeners();
   }
 });
 
 mapPinMainElement.addEventListener(`keydown`, function (evt) {
   if (evt.key === `Enter`) {
     activateMap();
+    removeListeners();
   }
 });
 capacityElement.addEventListener(`input`, function () {
   const actualRoomNumber = parseInt(roomNumberElement.value, Number);
   const actualCapacity = parseInt(capacityElement.value, Number);
-  if (actualRoomNumber < actualCapacity) {
+  if (actualRoomNumber < actualCapacity || actualRoomNumber !== actualCapacity) {
     capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
   } else {
     capacityElement.setCustomValidity(``);
