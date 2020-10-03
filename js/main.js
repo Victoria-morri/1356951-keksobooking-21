@@ -90,7 +90,7 @@ const fillAdressInput = function (width, height) {
   adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
 };
 
-const checkDisable = function () {
+const setDisable = function () {
 
   for (let i = 0; i < fieldsetArray.length; i++) {
     fieldsetArray[i].setAttribute(`disabled`, `disabled`);
@@ -100,27 +100,23 @@ const checkDisable = function () {
   }
 };
 
-const uncheckDisabled = function () {
+const unsetDisabled = function () {
   for (let i = 0; i < fieldsetArray.length; i++) {
     fieldsetArray[i].removeAttribute(`disabled`);
-    mapElement.classList.remove(`map--faded`);
-    adFormElement.classList.remove(`ad-form--disabled`);
-    mapPinsElement.appendChild(renderMapPinsList());
   }
   for (let i = 0; i < mapFiltersArray.length; i++) {
     mapFiltersArray[i].removeAttribute(`disabled`);
   }
+  mapElement.classList.remove(`map--faded`);
+  adFormElement.classList.remove(`ad-form--disabled`);
+  mapPinsElement.appendChild(renderMapPinsList());
 };
 
-/* const removeMapFaded = function () {
-  mapElement.classList.remove(`map--faded`);
-};
-*/
 const activateMap = function () {
-  // removeMapFaded();
-  uncheckDisabled();
+  unsetDisabled();
   fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT);
 };
+
 /* const getMapcard = function (option) {
   const mapCard = mapCardTemplate.cloneNode(true);
   mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
@@ -162,9 +158,33 @@ const renderMapPinsList = function () {
   return fragment;
 };
 
+const dependenceOfInputs = function () {
+  const actualRoomNumber = parseInt(roomNumberElement.value, 10);
+  const actualCapacity = parseInt(capacityElement.value, 10);
+  if (actualRoomNumber < actualCapacity) {
+    capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
+  } else {
+    capacityElement.setCustomValidity(``);
+  }
+};
+
+const onMouseLeftButtonDown = function (evt) {
+  if (evt.button === 0) {
+    activateMap();
+    removeListeners();
+  }
+};
+
+const onKeyEnterDown = function (evt) {
+  if (evt.key === `Enter`) {
+    activateMap();
+    removeListeners();
+  }
+};
+
 const removeListeners = function () {
-  mapPinMainElement.removeEventListener(`keydown`, keyEnter);
-  mapPinMainElement.removeEventListener(`mousedown`, mouseLeft);
+  mapPinMainElement.removeEventListener(`keydown`, onKeyEnterDown);
+  mapPinMainElement.removeEventListener(`mousedown`, onMouseLeftButtonDown);
 };
 
 const mapPinElement = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
@@ -173,7 +193,7 @@ const mapElement = document.querySelector(`.map`);
 const mapPinsElement = mapElement.querySelector(`.map__pins`);
 const blockInputElements = document.querySelectorAll(`fieldset`);
 const noticeElement = document.querySelector(`.notice`);
-const adressInputElement = noticeElement.querySelector((`input[id=address]`));
+const adressInputElement = noticeElement.querySelector((`#address`));
 const mapPinMainElement = document.querySelector(`.map__pin--main`);
 const roomNumberElement = noticeElement.querySelector(`#room_number`);
 const capacityElement = noticeElement.querySelector(`#capacity`);
@@ -181,45 +201,20 @@ const fieldsetArray = Array.from(blockInputElements);
 const titleElement = noticeElement.querySelector(`#title`);
 const priceElement = noticeElement.querySelector(`#price`);
 const adFormElement = noticeElement.querySelector(`.ad-form`);
-const mapFilters = document.querySelectorAll(`select`);
-const mapFiltersArray = Array.from(mapFilters);
+const mapFilterElements = document.querySelectorAll(`select`);
+const mapFiltersArray = Array.from(mapFilterElements);
 
 const cardList = createMapCardList();
 
-const mouseLeft = function (evt) {
-  if (evt.button === 0) {
-    activateMap();
-    removeListeners();
-  }
-};
 
-const keyEnter = function (evt) {
-  if (evt.key === `Enter`) {
-    activateMap();
-    removeListeners();
-  }
-};
-mapPinMainElement.addEventListener(`keydown`, keyEnter);
-mapPinMainElement.addEventListener(`mousedown`, mouseLeft);
+mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
+mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
 
 capacityElement.addEventListener(`input`, function () {
-  const actualRoomNumber = parseInt(roomNumberElement.value, Number);
-  const actualCapacity = parseInt(capacityElement.value, Number);
-  if (actualRoomNumber < actualCapacity || actualRoomNumber !== actualCapacity) {
-    capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
-  } else {
-    capacityElement.setCustomValidity(``);
-  }
+  dependenceOfInputs();
 });
-
 roomNumberElement.addEventListener(`input`, function () {
-  const actualRoomNumber = parseInt(roomNumberElement.value, Number);
-  const actualCapacity = parseInt(capacityElement.value, Number);
-  if (actualRoomNumber < actualCapacity || actualRoomNumber !== actualCapacity) {
-    capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
-  } else {
-    capacityElement.setCustomValidity(``);
-  }
+  dependenceOfInputs();
 });
 
 titleElement.addEventListener(`input`, function () {
@@ -242,5 +237,5 @@ priceElement.addEventListener(`input`, function () {
   }
 });
 
-checkDisable();
+setDisable();
 fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT / 2);
