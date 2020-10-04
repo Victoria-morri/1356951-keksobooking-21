@@ -3,9 +3,11 @@ const TYPES = [`palace`, `flat`, `house`, `bungalow`];
 const CHECKIN_TIMES = [`12:00`, `13:00`, `14:00`];
 const CHECKOUT_TIMES = [`12:00`, `13:00`, `14:00`];
 const FEATURES_LIST = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-const FOTOS_LIST = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
+const FOTOS_LIST = [
+  `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
   `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
-  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
+];
 const TITLES = [`Отличный вид из окна`, `Метро в 5 минутах ходьбы`, `В доме есть вкусная пекарня`, `Соседи драчуны`, `Есть подземный паркинг`];
 const PRICES = [`5000`, `8500`, `6200`, `3400`, `1500`, `1750`, `2100`];
 const DESCRIPTIONS = [`Немного воняет носками, но в целом нормально`, `Можно выспаться`, `Есть аквариум - без рыб, почистите как раз`, `Можно лежать на печи, она теплая`];
@@ -29,7 +31,7 @@ mapElement.classList.remove(`map--faded`);
 const mapPinsElement = mapElement.querySelector(`.map__pins`);
 
 const getRandomInteger = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
 const getRndArray = function (options) {
@@ -43,7 +45,7 @@ const getRndArray = function (options) {
 
 const shuffle = function (array) {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = getRandomInteger(0, i + 1);
+    let j = getRandomInteger(0, i);
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
@@ -59,9 +61,10 @@ const getAvatarArray = function () {
 
 const avatarImgArray = shuffle(getAvatarArray());
 const getRndI = function (array) {
-  const result = array[getRandomInteger(0, array.length)];
+  const result = array[getRandomInteger(0, array.length - 1)];
   return result;
 };
+
 
 const getAdvertaisement = function () {
   const locationX = getRandomInteger(PIN_WIDTH_HALF, MAX_WIDTH) - PIN_WIDTH_HALF;
@@ -82,7 +85,7 @@ const getAdvertaisement = function () {
       checkout: getRndI(CHECKOUT_TIMES),
       features: getRndArray(shuffle(FEATURES_LIST)),
       description: getRndI(DESCRIPTIONS),
-      photos: getRndArray(FOTOS_LIST)
+      photos: getRndArray(shuffle(FOTOS_LIST))
     },
     location: {
       x: locationX,
@@ -94,22 +97,22 @@ const getAdvertaisement = function () {
 
 
 const getMapcard = function (option) {
+  const getDependence = function (offerX, valueX) {
+    if (option.offer.type === offerX) {
+      mapCard.querySelector(`.popup__type`).textContent = valueX;
+    }
+  };
+
   const mapCard = mapCardTemplate.cloneNode(true);
   mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
   mapCard.querySelector(`.popup__title`).textContent = option.offer.title;
   mapCard.querySelector(`.popup__text--address`).textContent = option.offer.address;
   mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
 
-  if (option.offer.type === `palace`) {
-    mapCard.querySelector(`.popup__type`).textContent = `Дворец`;
-  } else if (option.offer.type === `flat`) {
-    mapCard.querySelector(`.popup__type`).textContent = `Квартира`;
-  } else if (option.offer.type === `house`) {
-    mapCard.querySelector(`.popup__type`).textContent = `Дом`;
-  } else if (option.offer.type === `bungalow`) {
-    mapCard.querySelector(`.popup__type`).textContent = `Бунгало`;
-  }
-
+  getDependence(`palace`, `Дворец`);
+  getDependence(`flat`, `Квартира`);
+  getDependence(`house`, `Дом`);
+  getDependence(`bungalow`, `Бунгало`);
   /* почему то так не работает, eslint ругается
    mapCard.querySelector(`.popup__type`).textContent =
   (option.offer.type === `palace`) ? `Дворец`:
@@ -120,15 +123,58 @@ const getMapcard = function (option) {
 */
   mapCard.querySelector(`.popup__text--capacity`).textContent = `${option.offer.rooms} комнаты для ${option.offer.guests} гостей`;
   mapCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}`;
-  mapCard.querySelector(`.popup__features`).textContent = option.offer.features;
-  mapCard.querySelector(`.popup__description`).textContent = option.offer.description;
-  /* так тоже не робит
-    for (let i = option.offer.photos.length - 1; i > 0; i--) {
-    const newImg = document.createElement(`img`).src = option.offer.photos[i];
-    mapCard.querySelector(`.popup__photos`).appendChild(newImg);
+
+  /* не работает такой вариант
+  const featuresElements = mapCard.querySelector(`.popup__features`);
+  option.offer.features.forEach(function (feature) {
+    if (feature !== `wifi`) {
+      featuresElements.querySelector(`.popup__feature--wifi`).remove();
+    } else if (feature === `dishwasher`) {
+      featuresElements.querySelector(`.popup__feature--dishwasher`).textContent = `dishwasher`;
+    } else if (feature === `parking`) {
+      featuresElements.querySelector(`.popup__feature--parking`).textContent = `parking`;
+    } else if (feature === `washer`) {
+      featuresElements.querySelector(`.popup__feature--washer`).textContent = `washer`;
+    } else if (feature === `elevator`) {
+      featuresElements.querySelector(`.popup__feature--elevator`).textContent = `elevator`;
+    } else if (feature === `conditioner`) {
+      featuresElements.querySelector(`.popup__feature--conditioner`).textContent = `conditioner`;
+    } else {}
+
+  });
+*/
+
+  /* еще один отличный не рабочий код)
+   if (option.offer.features === 1) {
+    mapCard.querySelector(`.popup__features`).textContent = option.offer.features;
+  } else if (option.offer.features > 1) {
+    for (let i = 0; i < option.offer.features.length; i++) {
+      mapCard.querySelector(`.popup__features`).textContent = +`${option.offer.features[i]} <br \/>`;
+    }
+  } else {
+    mapCard.querySelector(`.popup__features`).textContent = ``;
   }
-  */
-  mapCard.querySelector(`.popup__photos`).querySelector(`img`).src = option.offer.photos;
+*/
+  // mapCard.querySelector(`.popup__features`).textContent = option.offer.features;
+  mapCard.querySelector(`.popup__description`).textContent = option.offer.description;
+
+  if (option.offer.photos.length === 0) {
+    mapCard.querySelector(`.popup__photos`).remove();
+  } else if (option.offer.photos.length === 1) {
+    mapCard.querySelector(`.popup__photos`).querySelector(`img`).src = option.offer.photos;
+  } else if (option.offer.photos.length > 1) {
+    mapCard.querySelector(`.popup__photos`).querySelector(`img`).src = option.offer.photos[0];
+    for (let i = 1; i < option.offer.photos.length; i++) {
+      const newImg = document.createElement(`img`);
+      newImg.classList.add(`popup__photo`);
+      newImg.style.width = `45px`;
+      newImg.style.height = `40px`;
+      newImg.alt = `Фотография жилья`;
+      newImg.src = option.offer.photos[i];
+      mapCard.querySelector(`.popup__photos`).appendChild(newImg);
+    }
+  }
+
   return mapCard;
 };
 
