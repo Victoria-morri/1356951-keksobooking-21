@@ -142,7 +142,7 @@ const getMapcard = function (option) {
   const featureAr = option.offer.features;
   FEATURES_LIST.forEach(function (optionFeature) {
     if (!featureAr.includes(optionFeature)) {
-      festurePopup.querySelector(`.popup__feature--${optionFeature}`).hidden = true;
+      festurePopup.querySelector(`.popup__feature--${optionFeature}`).classList.add(`hidden`);
     }
   });
 
