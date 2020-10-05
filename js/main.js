@@ -1,11 +1,18 @@
 'use strict';
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
+const HOUSING_TYPE = {
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalow: `Бунгало`};
 const CHECKIN_TIMES = [`12:00`, `13:00`, `14:00`];
 const CHECKOUT_TIMES = [`12:00`, `13:00`, `14:00`];
 const FEATURES_LIST = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-const FOTOS_LIST = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
+const FOTOS_LIST = [
+  `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
   `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
-  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
+];
 const TITLES = [`Отличный вид из окна`, `Метро в 5 минутах ходьбы`, `В доме есть вкусная пекарня`, `Соседи драчуны`, `Есть подземный паркинг`];
 const PRICES = [`5000`, `8500`, `6200`, `3400`, `1500`, `1750`, `2100`];
 const DESCRIPTIONS = [`Немного воняет носками, но в целом нормально`, `Можно выспаться`, `Есть аквариум - без рыб, почистите как раз`, `Можно лежать на печи, она теплая`];
@@ -21,9 +28,8 @@ const MAX_ROOM = 4;
 const MAX_WIDTH = 1200;
 const MAX_HEIGHT = 630;
 
-
 const getRandomInteger = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
 const getRndArray = function (options) {
@@ -37,7 +43,7 @@ const getRndArray = function (options) {
 
 const shuffle = function (array) {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = getRandomInteger(0, i + 1);
+    let j = getRandomInteger(0, i);
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
@@ -53,9 +59,10 @@ const getAvatarArray = function () {
 
 const avatarImgArray = shuffle(getAvatarArray());
 const getRndI = function (array) {
-  const result = array[getRandomInteger(0, array.length)];
+  const result = array[getRandomInteger(0, array.length - 1)];
   return result;
 };
+
 
 const getAdvertaisement = function () {
   const locationX = getRandomInteger(PIN_WIDTH_HALF, MAX_WIDTH) - PIN_WIDTH_HALF;
@@ -76,7 +83,7 @@ const getAdvertaisement = function () {
       checkout: getRndI(CHECKOUT_TIMES),
       features: getRndArray(shuffle(FEATURES_LIST)),
       description: getRndI(DESCRIPTIONS),
-      photos: getRndArray(FOTOS_LIST)
+      photos: getRndArray(shuffle(FOTOS_LIST))
     },
     location: {
       x: locationX,
@@ -110,6 +117,7 @@ const unsetDisabled = function () {
   mapElement.classList.remove(`map--faded`);
   adFormElement.classList.remove(`ad-form--disabled`);
   mapPinsElement.appendChild(renderMapPinsList());
+  mapElement.appendChild(renderMapElementList());
 };
 
 const activateMap = function () {
@@ -117,21 +125,45 @@ const activateMap = function () {
   fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT);
 };
 
-/* const getMapcard = function (option) {
+const getMapcard = function (option) {
+
   const mapCard = mapCardTemplate.cloneNode(true);
   mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
   mapCard.querySelector(`.popup__title`).textContent = option.offer.title;
   mapCard.querySelector(`.popup__text--address`).textContent = option.offer.address;
   mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
-  mapCard.querySelector(`.popup__type`).textContent = option.offer.type;
+
+  const chousenHousing = option.offer.type;
+  mapCard.querySelector(`.popup__type`).textContent = HOUSING_TYPE[chousenHousing];
   mapCard.querySelector(`.popup__text--capacity`).textContent = `${option.offer.rooms} комнаты для ${option.offer.guests} гостей`;
   mapCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}`;
-  mapCard.querySelector(`.popup__features`).textContent = option.offer.features;
+
+  const festurePopup = mapCard.querySelector(`.popup__features`);
+  const featureAr = option.offer.features;
+  FEATURES_LIST.forEach(function (optionFeature) {
+    if (!featureAr.includes(optionFeature)) {
+      festurePopup.querySelector(`.popup__feature--${optionFeature}`).hidden = true;
+    }
+  });
+
   mapCard.querySelector(`.popup__description`).textContent = option.offer.description;
-  mapCard.querySelector(`.popup__photos`).querySelector(`img`).src = option.offer.photos[0];
+  const imgCardMap = mapCard.querySelector(`.popup__photos`);
+  if (option.offer.photos.length === 0) {
+    imgCardMap.remove();
+  } else if (option.offer.photos.length === 1) {
+    imgCardMap.querySelector(`img`).src = option.offer.photos;
+  } else if (option.offer.photos.length > 1) {
+    imgCardMap.querySelector(`img`).src = option.offer.photos[0];
+    for (let i = 1; i < option.offer.photos.length; i++) {
+      const newImg = imgCardMap.querySelector(`img`).cloneNode(true);
+      newImg.src = option.offer.photos[i];
+      imgCardMap.appendChild(newImg);
+    }
+  }
+
   return mapCard;
 };
-*/
+
 const getPinMap = function (card) {
   const pinMap = mapPinElement.cloneNode(true);
   pinMap.style = `left: ${card.location.x}px; top: ${card.location.y}px`;
@@ -153,8 +185,16 @@ const renderMapPinsList = function () {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < QUANTITY_ADVERTAISEMENTS; i++) {
     fragment.appendChild(getPinMap(cardList[i]));
-  // fragment.appendChild(getMapcard(cardList[i]));
   }
+  return fragment;
+};
+
+// Функции похожи, но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
+const renderMapElementList = function () {
+  const fragment = document.createDocumentFragment();
+  // for (let i = 0; i < QUANTITY_ADVERTAISEMENTS; i++) {
+  fragment.appendChild(getMapcard(cardList[0]));
+  // }
   return fragment;
 };
 
@@ -187,8 +227,8 @@ const removeListeners = function () {
   mapPinMainElement.removeEventListener(`mousedown`, onMouseLeftButtonDown);
 };
 
+const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapPinElement = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-// const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapElement = document.querySelector(`.map`);
 const mapPinsElement = mapElement.querySelector(`.map__pins`);
 const blockInputElements = document.querySelectorAll(`fieldset`);
@@ -239,3 +279,4 @@ priceElement.addEventListener(`input`, function () {
 
 setDisable();
 fillAdressInput(PIN_WIDTH_HALF, PIN_HEIGHT / 2);
+
