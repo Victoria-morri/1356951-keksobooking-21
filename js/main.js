@@ -1,5 +1,10 @@
 'use strict';
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
+const HOUSING_TYPE = {
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalow: `Бунгало`};
 const CHECKIN_TIMES = [`12:00`, `13:00`, `14:00`];
 const CHECKOUT_TIMES = [`12:00`, `13:00`, `14:00`];
 const FEATURES_LIST = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
@@ -121,11 +126,6 @@ const activateMap = function () {
 };
 
 const getMapcard = function (option) {
-  const getDependence = function (offerX, valueX) {
-    if (option.offer.type === offerX) {
-      mapCard.querySelector(`.popup__type`).textContent = valueX;
-    }
-  };
 
   const mapCard = mapCardTemplate.cloneNode(true);
   mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
@@ -133,11 +133,8 @@ const getMapcard = function (option) {
   mapCard.querySelector(`.popup__text--address`).textContent = option.offer.address;
   mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
 
-  getDependence(`palace`, `Дворец`);
-  getDependence(`flat`, `Квартира`);
-  getDependence(`house`, `Дом`);
-  getDependence(`bungalow`, `Бунгало`);
-
+  const chousenHousing = option.offer.type;
+  mapCard.querySelector(`.popup__type`).textContent = HOUSING_TYPE[chousenHousing];
   mapCard.querySelector(`.popup__text--capacity`).textContent = `${option.offer.rooms} комнаты для ${option.offer.guests} гостей`;
   mapCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}`;
 
