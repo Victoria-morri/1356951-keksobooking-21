@@ -6,22 +6,14 @@
     adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
   };
 
-  const unsetDisabled = function () {
-    for (let i = 0; i < window.disable.fieldsetArray.length; i++) {
-      window.disable.fieldsetArray[i].removeAttribute(`disabled`);
-    }
-    for (let i = 0; i < window.disable.mapFiltersArray.length; i++) {
-      window.disable.mapFiltersArray[i].removeAttribute(`disabled`);
-    }
+  const activateMap = function () {
+    window.disable.unsetDisabled(fieldsetArray);
+    window.disable.unsetDisabled(mapFiltersArray);
+    fillAdressInput(window.advertaisementCreate.PIN_WIDTH_HALF, window.advertaisementCreate.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
     mapPinsElement.appendChild(window.mapPinsCreate.renderMapPinsList());
     mapElement.appendChild(window.mapCardCreate.renderMapElementList());
-  };
-
-  const activateMap = function () {
-    unsetDisabled();
-    fillAdressInput(window.advertaisementCreate.PIN_WIDTH_HALF, window.advertaisementCreate.PIN_HEIGHT);
   };
 
   const removeListeners = function () {
@@ -53,13 +45,17 @@
     }
   };
 
+  const blockInputElements = document.querySelectorAll(`fieldset`);
+  const mapFilterElements = document.querySelectorAll(`select`);
+  const fieldsetArray = Array.from(blockInputElements);
+  const mapFiltersArray = Array.from(mapFilterElements);
   const noticeElement = document.querySelector(`.notice`);
-  const roomNumberElement = noticeElement.querySelector(`#room_number`);
-  const capacityElement = noticeElement.querySelector(`#capacity`);
+  const adFormElement = noticeElement.querySelector(`.ad-form`);
   const mapElement = document.querySelector(`.map`);
   const mapPinsElement = mapElement.querySelector(`.map__pins`);
+  const roomNumberElement = noticeElement.querySelector(`#room_number`);
+  const capacityElement = noticeElement.querySelector(`#capacity`);
   const adressInputElement = noticeElement.querySelector((`#address`));
-  const adFormElement = noticeElement.querySelector(`.ad-form`);
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
 
   window.form = {
@@ -67,9 +63,11 @@
     onMouseLeftButtonDown,
     onKeyEnterDown,
     fillAdressInput,
-    noticeElement,
     mapPinMainElement,
     capacityElement,
-    roomNumberElement
+    roomNumberElement,
+    noticeElement,
+    fieldsetArray,
+    mapFiltersArray
   };
 }());

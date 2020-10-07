@@ -1,27 +1,21 @@
 'use strict';
 (function () {
-
-  const setDisable = function () {
-
-    for (let i = 0; i < fieldsetArray.length; i++) {
-      fieldsetArray[i].setAttribute(`disabled`, `disabled`);
+// fieldsetArray  mapFiltersArray
+  const setDisable = function (arrayName) {
+    for (let i = 0; i < arrayName.length; i++) {
+      arrayName[i].setAttribute(`disabled`, `disabled`);
     }
-    for (let i = 0; i < mapFiltersArray.length; i++) {
-      mapFiltersArray[i].setAttribute(`disabled`, `disabled`);
+  };
+  // fieldsetArray window.disable.mapFiltersArray
+  const unsetDisabled = function (arrayName) {
+    for (let i = 0; i < arrayName.length; i++) {
+      arrayName[i].removeAttribute(`disabled`);
     }
   };
 
-  const blockInputElements = document.querySelectorAll(`fieldset`);
-  const mapFilterElements = document.querySelectorAll(`select`);
-  const fieldsetArray = Array.from(blockInputElements);
-  const mapFiltersArray = Array.from(mapFilterElements);
-
   window.disable = {
     setDisable,
-    blockInputElements,
-    mapFilterElements,
-    mapFiltersArray,
-    fieldsetArray
+    unsetDisabled
   };
 
 })();
