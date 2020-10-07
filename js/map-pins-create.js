@@ -3,7 +3,7 @@
 (function () {
   const createMapCardList = function () {
     const mapCardList = [];
-    for (let i = 0; i < window.rndFunction.QUANTITY_ADVERTAISEMENTS; i++) {
+    for (let i = 0; i < window.advertaisementCreate.QUANTITY_ADVERTAISEMENTS; i++) {
       mapCardList.push(window.advertaisementCreate.getAdvertaisement());
     }
     return mapCardList;
@@ -19,18 +19,9 @@
 
   const renderMapPinsList = function () {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < window.rndFunction.QUANTITY_ADVERTAISEMENTS; i++) {
+    for (let i = 0; i < window.advertaisementCreate.QUANTITY_ADVERTAISEMENTS; i++) {
       fragment.appendChild(getPinMap(cardList[i]));
     }
-    return fragment;
-  };
-
-  // Функции похожи, но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
-  const renderMapElementList = function () {
-    const fragment = document.createDocumentFragment();
-    // for (let i = 0; i < QUANTITY_ADVERTAISEMENTS; i++) {
-    fragment.appendChild(window.mapCardCreate.getMapcard(window.mapPinsCreate.cardList[0]));
-    // }
     return fragment;
   };
 
@@ -39,8 +30,6 @@
 
   window.mapPinsCreate = {
     renderMapPinsList,
-    getPinMap,
-    renderMapElementList,
     cardList
   };
 

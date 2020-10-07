@@ -10,17 +10,18 @@
       mapFiltersArray[i].setAttribute(`disabled`, `disabled`);
     }
   };
+
   const blockInputElements = document.querySelectorAll(`fieldset`);
   const mapFilterElements = document.querySelectorAll(`select`);
   const fieldsetArray = Array.from(blockInputElements);
   const mapFiltersArray = Array.from(mapFilterElements);
 
   window.disable = {
+    setDisable,
     blockInputElements,
     mapFilterElements,
     mapFiltersArray,
     fieldsetArray
   };
 
-  setDisable();
 })();

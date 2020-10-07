@@ -6,7 +6,6 @@
     flat: `Квартира`,
     house: `Дом`,
     bungalow: `Бунгало`};
-  const FEATURES_LIST = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 
   const getMapcard = function (option) {
 
@@ -23,7 +22,7 @@
 
     const festurePopup = mapCard.querySelector(`.popup__features`);
     const featureAr = option.offer.features;
-    FEATURES_LIST.forEach(function (optionFeature) {
+    window.advertaisementCreate.FEATURES_LIST.forEach(function (optionFeature) {
       if (!featureAr.includes(optionFeature)) {
         festurePopup.querySelector(`.popup__feature--${optionFeature}`).classList.add(`hidden`);
       }
@@ -47,11 +46,20 @@
     return mapCard;
   };
 
+  // Функции похожи, но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
+  const renderMapElementList = function () {
+    const fragment = document.createDocumentFragment();
+    // for (let i = 0; i < window.advertaisementCreate.QUANTITY_ADVERTAISEMENTS; i++) {
+    fragment.appendChild(window.mapCardCreate.getMapcard(window.mapPinsCreate.cardList[0]));
+    // }
+    return fragment;
+  };
+
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
   window.mapCardCreate = {
-    getMapcard
-
+    getMapcard,
+    renderMapElementList
   };
 
 }());

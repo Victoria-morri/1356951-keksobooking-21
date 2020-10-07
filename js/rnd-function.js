@@ -28,23 +28,19 @@
     return array;
   };
 
-  const getAvatarArray = function () {
+  const getAvatarArray = function (quantity) {
     const avatarArray = [];
-    for (let i = 1; i <= QUANTITY_ADVERTAISEMENTS; i++) {
+    for (let i = 1; i <= quantity; i++) {
       avatarArray.push(i);
     }
     return avatarArray;
   };
-
-  const QUANTITY_ADVERTAISEMENTS = 8;
 
   window.rndFunction = {
     getRandomInteger,
     getRndI,
     getRndArray,
     shuffle,
-    getAvatarArray,
-    QUANTITY_ADVERTAISEMENTS
-
+    getAvatarArray
   };
 }());

@@ -1,54 +1,39 @@
 'use strict';
 
-const fillAdressInput = function (width, height) {
-  adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
-};
+const titleElement = window.form.noticeElement.querySelector(`#title`);
+const priceElement = window.form.noticeElement.querySelector(`#price`);
 
-const unsetDisabled = function () {
-  for (let i = 0; i < window.disable.fieldsetArray.length; i++) {
-    window.disable.fieldsetArray[i].removeAttribute(`disabled`);
+window.disable.setDisable();
+
+window.form.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
+window.form.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
+
+window.form.capacityElement.addEventListener(`input`, function () {
+  window.form.dependenceOfInputs();
+});
+window.form.roomNumberElement.addEventListener(`input`, function () {
+  window.form.dependenceOfInputs();
+});
+
+titleElement.addEventListener(`input`, function () {
+  const titleValueLength = titleElement.value.length;
+  if (titleValueLength < 30) {
+    titleElement.setCustomValidity(`Минамальное количество символов 30. Дополните заголовок.`);
+  } else if (titleValueLength > 100) {
+    titleElement.setCustomValidity(`Максимальное количество символов 100. Сократите заголовок.`);
+  } else {
+    titleElement.setCustomValidity(``);
   }
-  for (let i = 0; i < window.disable.mapFiltersArray.length; i++) {
-    window.disable.mapFiltersArray[i].removeAttribute(`disabled`);
+});
+
+priceElement.addEventListener(`input`, function () {
+  const priceValue = priceElement.value;
+  if (priceValue > 1000000 || priceValue < 1000) {
+    priceElement.setCustomValidity(`Цена может варьироваться от 1000 до 1000000руб. Скорректируйте цену.`);
+  } else {
+    priceElement.setCustomValidity(``);
   }
-  mapElement.classList.remove(`map--faded`);
-  adFormElement.classList.remove(`ad-form--disabled`);
-  mapPinsElement.appendChild(window.mapPinsCreate.renderMapPinsList());
-  mapElement.appendChild(window.mapPinsCreate.renderMapElementList());
-};
+});
 
-const activateMap = function () {
-  unsetDisabled();
-  fillAdressInput(window.advertaisementCreate.PIN_WIDTH_HALF, window.advertaisementCreate.PIN_HEIGHT);
-};
-
-const onMouseLeftButtonDown = function (evt) {
-  if (evt.button === 0) {
-    activateMap();
-    removeListeners();
-  }
-};
-
-const onKeyEnterDown = function (evt) {
-  if (evt.key === `Enter`) {
-    activateMap();
-    removeListeners();
-  }
-};
-
-const removeListeners = function () {
-  mapPinMainElement.removeEventListener(`keydown`, onKeyEnterDown);
-  mapPinMainElement.removeEventListener(`mousedown`, onMouseLeftButtonDown);
-};
-
-const mapElement = document.querySelector(`.map`);
-const mapPinsElement = mapElement.querySelector(`.map__pins`);
-const adressInputElement = window.form.noticeElement.querySelector((`#address`));
-const mapPinMainElement = document.querySelector(`.map__pin--main`);
-const adFormElement = window.form.noticeElement.querySelector(`.ad-form`);
-
-mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
-mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
-
-fillAdressInput(window.advertaisementCreate.PIN_WIDTH_HALF, window.advertaisementCreate.PIN_HEIGHT / 2);
+window.form.fillAdressInput(window.advertaisementCreate.PIN_WIDTH_HALF, window.advertaisementCreate.PIN_HEIGHT / 2);
 

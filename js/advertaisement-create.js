@@ -22,8 +22,9 @@
     `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
     `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
   ];
+  const QUANTITY_ADVERTAISEMENTS = 8;
 
-  const avatarImgArray = window.rndFunction.shuffle(window.rndFunction.getAvatarArray());
+  const avatarImgArray = window.rndFunction.shuffle(window.rndFunction.getAvatarArray(QUANTITY_ADVERTAISEMENTS));
 
   const getAdvertaisement = function () {
     const locationX = window.rndFunction.getRandomInteger(PIN_WIDTH_HALF, MAX_WIDTH) - PIN_WIDTH_HALF;
@@ -57,6 +58,7 @@
     getAdvertaisement,
     PIN_WIDTH_HALF,
     PIN_HEIGHT,
-    FEATURES_LIST
+    FEATURES_LIST,
+    QUANTITY_ADVERTAISEMENTS
   };
 }());
