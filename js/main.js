@@ -3,8 +3,8 @@
 const titleElement = window.form.noticeElement.querySelector(`#title`);
 const priceElement = window.form.noticeElement.querySelector(`#price`);
 
-window.disable.setDisable(window.form.fieldsetArray);
-window.disable.setDisable(window.form.mapFiltersArray);
+window.disable.set(window.form.fieldsetArray);
+window.disable.set(window.form.mapFiltersArray);
 
 window.form.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
 window.form.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);

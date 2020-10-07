@@ -22,11 +22,11 @@
 
   const avatarImgArray = window.rndFunction.shuffle(window.rndFunction.getAvatarArray(QUANTITY_ADVERTAISEMENTS));
 
-  const getAdvertaisement = function () {
+  const get = function () {
     const locationX = window.rndFunction.getRandomInteger(window.position.PIN_WIDTH_HALF, window.position.MAX_WIDTH) - window.position.PIN_WIDTH_HALF;
     const locationY = window.rndFunction.getRandomInteger(window.position.PIN_HEIGHT + SKY_HEIGHT, window.position.MAX_HEIGHT) - window.position.PIN_HEIGHT;
 
-    const advertaisement = {
+    const card = {
       author: {
         avatar: `img/avatars/user0${avatarImgArray.pop()}.png`
       },
@@ -48,10 +48,10 @@
         y: locationY
       }
     };
-    return advertaisement;
+    return card;
   };
   window.advertaisement = {
-    getAdvertaisement,
+    get,
     FEATURES_LIST,
     QUANTITY_ADVERTAISEMENTS
   };

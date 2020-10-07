@@ -7,8 +7,8 @@
   };
 
   const activateMap = function () {
-    window.disable.unsetDisabled(fieldsetArray);
-    window.disable.unsetDisabled(mapFiltersArray);
+    window.disable.unset(fieldsetArray);
+    window.disable.unset(mapFiltersArray);
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);

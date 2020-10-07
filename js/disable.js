@@ -1,21 +1,21 @@
 'use strict';
 (function () {
 // fieldsetArray  mapFiltersArray
-  const setDisable = function (arrayName) {
+  const set = function (arrayName) {
     for (let i = 0; i < arrayName.length; i++) {
       arrayName[i].setAttribute(`disabled`, `disabled`);
     }
   };
   // fieldsetArray window.disable.mapFiltersArray
-  const unsetDisabled = function (arrayName) {
+  const unset = function (arrayName) {
     for (let i = 0; i < arrayName.length; i++) {
       arrayName[i].removeAttribute(`disabled`);
     }
   };
 
   window.disable = {
-    setDisable,
-    unsetDisabled
+    set,
+    unset
   };
 
 })();

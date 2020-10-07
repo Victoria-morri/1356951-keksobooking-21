@@ -4,7 +4,7 @@
   const createMapCardList = function () {
     const mapCardList = [];
     for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
-      mapCardList.push(window.advertaisement.getAdvertaisement());
+      mapCardList.push(window.advertaisement.get());
     }
     return mapCardList;
   };
