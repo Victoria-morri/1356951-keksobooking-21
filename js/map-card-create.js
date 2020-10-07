@@ -22,7 +22,7 @@
 
     const festurePopup = mapCard.querySelector(`.popup__features`);
     const featureAr = option.offer.features;
-    window.advertaisementCreate.FEATURES_LIST.forEach(function (optionFeature) {
+    window.advertaisement.FEATURES_LIST.forEach(function (optionFeature) {
       if (!featureAr.includes(optionFeature)) {
         festurePopup.querySelector(`.popup__feature--${optionFeature}`).classList.add(`hidden`);
       }
@@ -49,7 +49,7 @@
   // Функции похожи, но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
   const renderMapElementList = function () {
     const fragment = document.createDocumentFragment();
-    // for (let i = 0; i < window.advertaisementCreate.QUANTITY_ADVERTAISEMENTS; i++) {
+    // for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
     fragment.appendChild(window.mapCardCreate.getMapcard(window.mapPinsCreate.cardList[0]));
     // }
     return fragment;

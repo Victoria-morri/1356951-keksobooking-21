@@ -3,8 +3,8 @@
 (function () {
   const createMapCardList = function () {
     const mapCardList = [];
-    for (let i = 0; i < window.advertaisementCreate.QUANTITY_ADVERTAISEMENTS; i++) {
-      mapCardList.push(window.advertaisementCreate.getAdvertaisement());
+    for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
+      mapCardList.push(window.advertaisement.getAdvertaisement());
     }
     return mapCardList;
   };
@@ -19,7 +19,7 @@
 
   const renderMapPinsList = function () {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < window.advertaisementCreate.QUANTITY_ADVERTAISEMENTS; i++) {
+    for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
       fragment.appendChild(getPinMap(cardList[i]));
     }
     return fragment;

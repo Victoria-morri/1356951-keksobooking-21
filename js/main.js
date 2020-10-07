@@ -36,5 +36,5 @@ priceElement.addEventListener(`input`, function () {
   }
 });
 
-window.form.fillAdressInput(window.advertaisementCreate.PIN_WIDTH_HALF, window.advertaisementCreate.PIN_HEIGHT / 2);
+window.form.fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT / 2);
 

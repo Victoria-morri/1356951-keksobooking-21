@@ -1,15 +1,11 @@
 'use strict';
 
 (function () {
-  const PIN_WIDTH_HALF = 25;
-  const PIN_HEIGHT = 70;
   const SKY_HEIGHT = 120;
   const MIN_GUEST = 1;
   const MAX_GUEST = 5;
   const MIN_ROOM = 1;
   const MAX_ROOM = 4;
-  const MAX_WIDTH = 1200;
-  const MAX_HEIGHT = 630;
   const TYPES = [`palace`, `flat`, `house`, `bungalow`];
   const TITLES = [`Отличный вид из окна`, `Метро в 5 минутах ходьбы`, `В доме есть вкусная пекарня`, `Соседи драчуны`, `Есть подземный паркинг`];
   const PRICES = [`5000`, `8500`, `6200`, `3400`, `1500`, `1750`, `2100`];
@@ -27,8 +23,8 @@
   const avatarImgArray = window.rndFunction.shuffle(window.rndFunction.getAvatarArray(QUANTITY_ADVERTAISEMENTS));
 
   const getAdvertaisement = function () {
-    const locationX = window.rndFunction.getRandomInteger(PIN_WIDTH_HALF, MAX_WIDTH) - PIN_WIDTH_HALF;
-    const locationY = window.rndFunction.getRandomInteger(PIN_HEIGHT + SKY_HEIGHT, MAX_HEIGHT) - PIN_HEIGHT;
+    const locationX = window.rndFunction.getRandomInteger(window.position.PIN_WIDTH_HALF, window.position.MAX_WIDTH) - window.position.PIN_WIDTH_HALF;
+    const locationY = window.rndFunction.getRandomInteger(window.position.PIN_HEIGHT + SKY_HEIGHT, window.position.MAX_HEIGHT) - window.position.PIN_HEIGHT;
 
     const advertaisement = {
       author: {
@@ -54,10 +50,8 @@
     };
     return advertaisement;
   };
-  window.advertaisementCreate = {
+  window.advertaisement = {
     getAdvertaisement,
-    PIN_WIDTH_HALF,
-    PIN_HEIGHT,
     FEATURES_LIST,
     QUANTITY_ADVERTAISEMENTS
   };

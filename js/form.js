@@ -9,7 +9,7 @@
   const activateMap = function () {
     window.disable.unsetDisabled(fieldsetArray);
     window.disable.unsetDisabled(mapFiltersArray);
-    fillAdressInput(window.advertaisementCreate.PIN_WIDTH_HALF, window.advertaisementCreate.PIN_HEIGHT);
+    fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
     mapPinsElement.appendChild(window.mapPinsCreate.renderMapPinsList());
