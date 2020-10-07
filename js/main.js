@@ -9,12 +9,8 @@ window.disable.set(window.form.mapFiltersArray);
 window.form.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
 window.form.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
 
-window.form.capacityElement.addEventListener(`input`, function () {
-  window.form.dependenceOfInputs();
-});
-window.form.roomNumberElement.addEventListener(`input`, function () {
-  window.form.dependenceOfInputs();
-});
+window.form.capacityElement.addEventListener(`input`, window.form.dependenceOfInputs);
+window.form.roomNumberElement.addEventListener(`input`, window.form.dependenceOfInputs);
 
 titleElement.addEventListener(`input`, function () {
   const titleValueLength = titleElement.value.length;

@@ -12,8 +12,8 @@
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
-    mapPinsElement.appendChild(window.mapPinsCreate.renderMapPinsList());
-    mapElement.appendChild(window.mapCardCreate.renderMapElementList());
+    mapPinsElement.appendChild(window.pin.renderMapPinsList());
+    mapElement.appendChild(window.card.renderMapElementList());
   };
 
   const removeListeners = function () {

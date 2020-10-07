@@ -7,7 +7,7 @@
     house: `Дом`,
     bungalow: `Бунгало`};
 
-  const getMapcard = function (option) {
+  const create = function (option) {
 
     const mapCard = mapCardTemplate.cloneNode(true);
     mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
@@ -50,15 +50,14 @@
   const renderMapElementList = function () {
     const fragment = document.createDocumentFragment();
     // for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
-    fragment.appendChild(window.mapCardCreate.getMapcard(window.mapPinsCreate.cardList[0]));
+    fragment.appendChild(create(window.pin.cardList[0]));
     // }
     return fragment;
   };
 
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
-  window.mapCardCreate = {
-    getMapcard,
+  window.card = {
     renderMapElementList
   };
 
