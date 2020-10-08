@@ -17,10 +17,10 @@
     return pinMap;
   };
 
-  const renderMapPinsList = function () {
+  const renderMapPinsList = function (array) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
-      fragment.appendChild(create(cardList[i]));
+      fragment.appendChild(create(array[i]));
     }
     return fragment;
   };
@@ -30,6 +30,7 @@
 
   window.pin = {
     renderMapPinsList,
+    create,
     cardList
   };
 

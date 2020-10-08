@@ -12,10 +12,24 @@
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
-    mapPinsElement.appendChild(window.pin.renderMapPinsList());
+    //  mapPinsElement.appendChild(window.pin.renderMapPinsList(window.pin.cardList));
     mapElement.appendChild(window.card.renderMapElementList());
-  };
+    window.load(function (array) {
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
+        fragment.appendChild(window.pin.create(array[i]));
+      }
+      mapPinsElement.appendChild(fragment);
+    });
 
+  };
+  /* console.log(window.load(function (array) {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
+      fragment.appendChild(array[i]);
+    }
+    return fragment;
+  })); */
   const removeListeners = function () {
     mapPinMainElement.removeEventListener(`keydown`, window.form.onKeyEnterDown);
     mapPinMainElement.removeEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
