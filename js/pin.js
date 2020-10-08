@@ -17,12 +17,12 @@
     return pinMap;
   };
 
-  const renderMapPinsList = function (array) {
+  const renderMapPinsList = function (array, parent) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
-      fragment.appendChild(create(array[i]));
+      fragment.appendChild(window.pin.create(array[i]));
     }
-    return fragment;
+    parent.appendChild(fragment);
   };
 
   const cardList = createMapCardList();
