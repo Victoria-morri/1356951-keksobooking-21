@@ -6,14 +6,47 @@
     adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
   };
 
-  const activateMap = function () {
+  const onError = function (message) {
+    const error = document.createElement(`h2`);
+    error.classList.add(`error-message`);
+    error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+    error.style.position = `absolute`;
+    error.style.left = 0;
+    error.style.right = 0;
+    error.style.color = `white`;
+    error.style.fontSize = `50px`;
+    error.textContent = message;
+    document.body.insertAdjacentElement(`afterbegin`, error);
+  };
+
+  const create = function (card) {
+    const pinMap = window.pin.mapPinElement.cloneNode(true);
+    pinMap.style = `left: ${card.location.x}px; top: ${card.location.y}px`;
+    pinMap.querySelector(`img`).src = card.author.avatar;
+    pinMap.querySelector(`img`).alt = card.offer.title;
+    return pinMap;
+  };
+
+  const onSuccess = function (array) {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < array.length; i++) {
+      fragment.appendChild(create(array[i]));
+    }
+    mapPinsElement.appendChild(fragment);
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
-    mapPinsElement.appendChild(window.pin.renderMapPinsList());
     mapElement.appendChild(window.card.renderMapElementList());
+    const errorMessage = document.querySelector(`.error-message`);
+    if (errorMessage) {
+      errorMessage.classList.add(`hidden`);
+    }
+  };
+
+  const activateMap = function () {
+    window.load(onSuccess, onError);
   };
 
   const removeListeners = function () {
