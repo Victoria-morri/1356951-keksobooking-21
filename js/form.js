@@ -8,16 +8,15 @@
 
   const onError = function (message) {
     const error = document.createElement(`h2`);
+    error.classList.add(`error-message`);
     error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
     error.style.position = `absolute`;
-    error.style.left = 300;
-    error.style.right = 200;
+    error.style.left = 0;
+    error.style.right = 0;
     error.style.color = `white`;
     error.style.fontSize = `50px`;
     error.textContent = message;
     document.body.insertAdjacentElement(`afterbegin`, error);
-
-
   };
 
   const create = function (card) {
@@ -28,22 +27,26 @@
     return pinMap;
   };
 
-  const onSuccess = function (array, parent) {
+  const onSuccess = function (array) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < array.length; i++) {
       fragment.appendChild(create(array[i]));
     }
-    parent.appendChild(fragment);
-  };
-
-  const activateMap = function () {
+    mapPinsElement.appendChild(fragment);
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
     mapElement.appendChild(window.card.renderMapElementList());
-    window.load(onSuccess, mapPinsElement, onError);
+    const errorMessage = document.querySelector(`.error-message`);
+    if (errorMessage) {
+      errorMessage.classList.add(`hidden`);
+    }
+  };
+
+  const activateMap = function () {
+    window.load(onSuccess, onError);
   };
 
   const removeListeners = function () {

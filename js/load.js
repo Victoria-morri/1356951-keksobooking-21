@@ -3,7 +3,7 @@
 (function () {
 
 
-  window.load = function (onSuccess, parent, onError) {
+  window.load = function (onSuccess, onError) {
     const URL = `https://21.javascript.pages.academy/keksobooking/data`;
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
@@ -13,7 +13,7 @@
 
       switch (xhr.status) {
         case 200:
-          onSuccess(xhr.response, parent);
+          onSuccess(xhr.response);
           break;
         case 400:
           error = `Неверный запрос`;
@@ -31,6 +31,10 @@
       if (error) {
         onError(error);
       }
+    });
+
+    xhr.addEventListener(`error`, function () {
+      onError(`Произошла ошибка соединения`);
     });
     xhr.open(`GET`, URL);
     xhr.send();
