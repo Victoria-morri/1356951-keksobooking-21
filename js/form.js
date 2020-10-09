@@ -6,6 +6,36 @@
     adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
   };
 
+  const onError = function (message) {
+    const error = document.createElement(`h2`);
+    error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+    error.style.position = `absolute`;
+    error.style.left = 300;
+    error.style.right = 200;
+    error.style.color = `white`;
+    error.style.fontSize = `50px`;
+    error.textContent = message;
+    document.body.insertAdjacentElement(`afterbegin`, error);
+
+
+  };
+
+  const create = function (card) {
+    const pinMap = window.pin.mapPinElement.cloneNode(true);
+    pinMap.style = `left: ${card.location.x}px; top: ${card.location.y}px`;
+    pinMap.querySelector(`img`).src = card.author.avatar;
+    pinMap.querySelector(`img`).alt = card.offer.title;
+    return pinMap;
+  };
+
+  const onSuccess = function (array, parent) {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < array.length; i++) {
+      fragment.appendChild(create(array[i]));
+    }
+    parent.appendChild(fragment);
+  };
+
   const activateMap = function () {
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
@@ -13,7 +43,7 @@
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
     mapElement.appendChild(window.card.renderMapElementList());
-    window.load(window.pin.renderMapPinsList, mapPinsElement);
+    window.load(onSuccess, mapPinsElement, onError);
   };
 
   const removeListeners = function () {

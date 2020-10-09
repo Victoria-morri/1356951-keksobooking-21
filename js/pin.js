@@ -30,7 +30,8 @@
 
   window.pin = {
     renderMapPinsList,
-    cardList
+    cardList,
+    mapPinElement
   };
 
 
