@@ -46,25 +46,35 @@
     const mapsPins = document.querySelectorAll(`.map__pin`);
     const popupElements = document.querySelectorAll(`.map__card`);
 
+
     for (let i = 1; i < mapsPins.length; i++) {
       let currentPin = mapsPins[i];
+      let currentCard = popupElements[i - 1];
       currentPin.addEventListener(`click`, function () {
-        popupElements.forEach(function (popupElement) {
-          if (!popupElement.hidden) {
-            popupElement.hidden = true;
-          }
-        });
-        let currentCard = popupElements[i - 1];
-        currentCard.hidden = false;
-        document.addEventListener(`keydown`, function (evt) {
+        const closePopupCard = function (elementClose) {
+          elementClose.hidden = true;
+          document.removeEventListener(`keydown`, onPopupEscPress);
+        };
+        const openPopupCard = function (elementOpen) {
+          elementOpen.hidden = false;
+          document.addEventListener(`keydown`, onPopupEscPress);
+        };
+
+        const onPopupEscPress = function (evt) {
           if (evt.key === `Escape`) {
             evt.preventDefault();
-            currentCard.hidden = true;
+            closePopupCard(currentCard);
+          }
+        };
+        popupElements.forEach(function (popupElement) {
+          if (!popupElement.hidden) {
+            closePopupCard(popupElement);
           }
         });
+        openPopupCard(currentCard);
         const closeCardButton = currentCard.querySelector(`.popup__close`);
         closeCardButton.addEventListener(`click`, function () {
-          currentCard.hidden = true;
+          closePopupCard(currentCard);
         });
 
       });
