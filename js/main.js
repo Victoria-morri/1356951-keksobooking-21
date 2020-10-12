@@ -12,14 +12,6 @@ window.disable.set(window.form.mapFiltersArray);
 window.form.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
 window.form.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
 
-/* popupClose.addEventListener(`click`, function () {
-  window.card.mapCardTemplate.classList.add(`hidden`);
-
-});*/
-
-// const popupElements = document.querySelectorAll(`.map__card`);
-// popupElements[2].classList.remove(`hidden`);
-
 window.form.capacityElement.addEventListener(`input`, window.form.dependenceOfInputs);
 window.form.roomNumberElement.addEventListener(`input`, window.form.dependenceOfInputs);
 
@@ -33,6 +25,34 @@ titleElement.addEventListener(`input`, function () {
     titleElement.setCustomValidity(``);
   }
 });
+/*
+const livesType = window.form.noticeElement.querySelector(`#type`);
+
+const livesTypesMinPrise = {
+  bungalow: `0`,
+  flat: `1000`,
+  house: `5000`,
+  palace: `10000`
+
+};
+
+livesType.addEventListener(`change`, function (evt) {
+  const typeValue = evt.target.value;
+  const minPrice = livesTypesMinPrise[typeValue];
+  let priceValue = priceElement.value;
+  if (priceValue < minPrice) {
+    priceValue = minPrice;
+  }
+  priceElement.addEventListener(`input`, function () {
+
+    if (priceValue > 1000000 || priceValue < minPrice) {
+      priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до 1000000руб. Скорректируйте цену.`);
+    } else {
+      priceElement.setCustomValidity(``);
+    }
+  });
+}
+);*/
 
 priceElement.addEventListener(`input`, function () {
   const priceValue = priceElement.value;

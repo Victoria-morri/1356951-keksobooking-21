@@ -52,7 +52,7 @@
     let card;
     for (let i = 0; i < array.length; i++) {
       card = create(array[i]);
-      card.classList.add(`hidden`);
+      card.hidden = true;
       fragment.appendChild(card);
     }
     return fragment;

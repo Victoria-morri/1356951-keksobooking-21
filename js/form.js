@@ -27,10 +27,6 @@
     return pinMap;
   };
 
-  /* const closePopup = function (element) {
-    element.classList.add(`hidden`);
-  };*/
-
   const onSuccess = function (array) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < array.length; i++) {
@@ -51,9 +47,26 @@
     const popupElements = document.querySelectorAll(`.map__card`);
 
     for (let i = 1; i < mapsPins.length; i++) {
-      mapsPins[i].addEventListener(`click`, function () {
-        // popupElements.forEach(window.popupCard.openPopupCard(popupElements));
-        popupElements[i - 1].classList.remove(`hidden`);
+      let currentPin = mapsPins[i];
+      currentPin.addEventListener(`click`, function () {
+        popupElements.forEach(function (popupElement) {
+          if (!popupElement.hidden) {
+            popupElement.hidden = true;
+          }
+        });
+        let currentCard = popupElements[i - 1];
+        currentCard.hidden = false;
+        document.addEventListener(`keydown`, function (evt) {
+          if (evt.key === `Escape`) {
+            evt.preventDefault();
+            currentCard.hidden = true;
+          }
+        });
+        const closeCardButton = currentCard.querySelector(`.popup__close`);
+        closeCardButton.addEventListener(`click`, function () {
+          currentCard.hidden = true;
+        });
+
       });
     }
 
