@@ -40,45 +40,10 @@
     adFormElement.classList.remove(`ad-form--disabled`);
     mapElement.appendChild(window.card.renderMapElementList(array));
     const errorMessage = document.querySelector(`.error-message`);
-    if (errorMessage) {
-      errorMessage.classList.add(`hidden`);
-    }
-    const mapsPins = document.querySelectorAll(`.map__pin`);
+    window.popupCard.error(errorMessage);
+    const mapsPinsElements = document.querySelectorAll(`.map__pin`);
     const popupElements = document.querySelectorAll(`.map__card`);
-
-
-    for (let i = 1; i < mapsPins.length; i++) {
-      let currentPin = mapsPins[i];
-      let currentCard = popupElements[i - 1];
-      currentPin.addEventListener(`click`, function () {
-        const closePopupCard = function (elementClose) {
-          elementClose.hidden = true;
-          document.removeEventListener(`keydown`, onPopupEscPress);
-        };
-        const openPopupCard = function (elementOpen) {
-          elementOpen.hidden = false;
-          document.addEventListener(`keydown`, onPopupEscPress);
-        };
-
-        const onPopupEscPress = function (evt) {
-          if (evt.key === `Escape`) {
-            evt.preventDefault();
-            closePopupCard(currentCard);
-          }
-        };
-        popupElements.forEach(function (popupElement) {
-          if (!popupElement.hidden) {
-            closePopupCard(popupElement);
-          }
-        });
-        openPopupCard(currentCard);
-        const closeCardButton = currentCard.querySelector(`.popup__close`);
-        closeCardButton.addEventListener(`click`, function () {
-          closePopupCard(currentCard);
-        });
-
-      });
-    }
+    window.popupCard.interactive(mapsPinsElements, popupElements);
 
   };
 

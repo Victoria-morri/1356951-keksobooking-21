@@ -1,30 +1,49 @@
 'use strict';
 
 (function () {
-// const popupClose = window.card.mapCardTemplate.querySelector(`.popup__close`);
+  const interactive = function (pins, cards) {
+    for (let i = 1; i < pins.length; i++) {
+      let currentPin = pins[i];
+      let currentCard = cards[i - 1];
+      currentPin.addEventListener(`click`, function () {
+        const closePopupCard = function (elementClose) {
+          elementClose.hidden = true;
+          document.removeEventListener(`keydown`, onPopupEscPress);
+        };
+        const openPopupCard = function (elementOpen) {
+          elementOpen.hidden = false;
+          document.addEventListener(`keydown`, onPopupEscPress);
+        };
 
-  const openPopupCard = function (popupElement) {
-    if (popupElement.includes(popupElement.className !== `hidden` && popupElement.className !== `map__pin--main`)) {
-      popupElement.classList.add(`hidden`);
+        const onPopupEscPress = function (evt) {
+          if (evt.key === `Escape`) {
+            evt.preventDefault();
+            closePopupCard(currentCard);
+          }
+        };
+        cards.forEach(function (popupElement) {
+          if (!popupElement.hidden) {
+            closePopupCard(popupElement);
+          }
+        });
+        openPopupCard(currentCard);
+        const closeCardButton = currentCard.querySelector(`.popup__close`);
+        closeCardButton.addEventListener(`click`, function () {
+          closePopupCard(currentCard);
+        });
+
+      });
     }
-
   };
 
-  /*
-
-    const popupCloseElements = document.querySelectorAll(`.popup__close`);
-    for (let i = 0; i < popupCloseElements.length; i++) {
-      popupCloseElements[i].addEventListener(`click`, function () {
-        closePopup(popupElements[i]);
-      });
-      document.addEventListener(`keydown`, function (evt) {
-        if (evt.key === `Escape`) {
-          closePopup(popupElements[i]);
-        }
-      });
-    }*/
+  const error = function (errorMessage) {
+    if (errorMessage) {
+      errorMessage.classList.add(`hidden`);
+    }
+  };
   window.popupCard = {
-    openPopupCard
+    interactive,
+    error
   };
 
 })();
