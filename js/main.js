@@ -1,5 +1,8 @@
 'use strict';
 
+// const popupClose = window.card.mapCardTemplate.querySelector(`.popup__close`);
+
+
 const titleElement = window.form.noticeElement.querySelector(`#title`);
 const priceElement = window.form.noticeElement.querySelector(`#price`);
 
@@ -8,6 +11,14 @@ window.disable.set(window.form.mapFiltersArray);
 
 window.form.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
 window.form.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
+
+/* popupClose.addEventListener(`click`, function () {
+  window.card.mapCardTemplate.classList.add(`hidden`);
+
+});*/
+
+// const popupElements = document.querySelectorAll(`.map__card`);
+// popupElements[2].classList.remove(`hidden`);
 
 window.form.capacityElement.addEventListener(`input`, window.form.dependenceOfInputs);
 window.form.roomNumberElement.addEventListener(`input`, window.form.dependenceOfInputs);
