@@ -3,7 +3,7 @@
 (function () {
 
   const fillAdressInput = function (width, height) {
-    adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
+    adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, 10) + width}px; top: ${parseInt(mapPinMainElement.style.top, 10) + height}px`;
   };
 
   const onError = function (message) {

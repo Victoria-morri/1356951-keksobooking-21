@@ -8,12 +8,21 @@ const LIVES_TYPES_MIN_PRICE = {
 
 };
 
+const priceSet = function () {
+  if (priceElement.value > 1000000 || priceElement.value < minPrice) {
+    priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до 1000000руб. Скорректируйте цену.`);
+  } else {
+    priceElement.setCustomValidity(``);
+  }
+  priceElement.reportValidity();
+};
 
 const titleElement = window.form.noticeElement.querySelector(`#title`);
 const priceElement = window.form.noticeElement.querySelector(`#price`);
 const livesType = window.form.noticeElement.querySelector(`#type`);
 const timein = window.form.noticeElement.querySelector(`#timein`);
 const timeout = window.form.noticeElement.querySelector(`#timeout`);
+let minPrice = 1000;
 
 
 window.disable.set(window.form.fieldsetArray);
@@ -27,7 +36,6 @@ window.form.roomNumberElement.addEventListener(`input`, window.form.dependenceOf
 
 titleElement.addEventListener(`input`, function () {
   const titleValueLength = titleElement.value.length;
-  console.log(titleValueLength);
   if (titleValueLength < 30) {
     titleElement.setCustomValidity(`Минамальное количество символов 30. Дополните заголовок.`);
   } else if (titleValueLength > 100) {
@@ -37,39 +45,17 @@ titleElement.addEventListener(`input`, function () {
   }
 });
 
-priceElement.addEventListener(`input`, function () {
-  const priceValue = priceElement.value;
-  if (priceValue > 1000000 || priceValue < 1000) {
-    priceElement.setCustomValidity(`Цена может варьироваться от 1000 до 1000000руб. Скорректируйте цену.`);
-  } else {
-    priceElement.setCustomValidity(``);
-  }
-  priceElement.reportValidity();
-});
-
+priceElement.addEventListener(`input`, priceSet);
 
 livesType.addEventListener(`change`, function (evt) {
   const typeValue = evt.target.value;
-  console.log(typeValue);
-  const minPrice = LIVES_TYPES_MIN_PRICE[typeValue];
-  console.log(minPrice);
-  let priceValue = priceElement.value;
-  if (priceValue < minPrice) {
-    priceValue = minPrice;
-    priceElement.value = minPrice;
+  minPrice = parseInt(LIVES_TYPES_MIN_PRICE[typeValue], 10);
+  priceElement.placeholder = minPrice;
+  if (priceElement.value > minPrice && priceElement.value < 1000000) {
+    priceElement.setCustomValidity(``);
   }
-  priceElement.oninput = function () {
-    console.log(priceElement.value);
-    console.log(minPrice);
-    if (priceValue > 1000000 || priceElement.value < minPrice) {
-      priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до 1000000руб. Скорректируйте цену.`);
-    } else {
-      priceElement.setCustomValidity(``);
-    }
-    priceElement.reportValidity();
-  };
+  priceElement.addEventListener(`input`, priceSet);
 });
-
 
 window.form.fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT / 2);
 
