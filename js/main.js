@@ -1,15 +1,15 @@
 'use strict';
 
 const LIVES_TYPES_MIN_PRICE = {
-  bungalow: `0`,
-  flat: `1000`,
-  house: `5000`,
-  palace: `10000`
-
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
 };
 
 const priceSet = function () {
-  if (priceElement.value > 1000000 || priceElement.value < minPrice) {
+  const priceValue = parseInt(priceElement.value, 10);
+  if (priceValue > 1000000 || priceValue < minPrice) {
     priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до 1000000руб. Скорректируйте цену.`);
   } else {
     priceElement.setCustomValidity(``);
@@ -49,12 +49,9 @@ priceElement.addEventListener(`input`, priceSet);
 
 livesType.addEventListener(`change`, function (evt) {
   const typeValue = evt.target.value;
-  minPrice = parseInt(LIVES_TYPES_MIN_PRICE[typeValue], 10);
+  minPrice = LIVES_TYPES_MIN_PRICE[typeValue];
   priceElement.placeholder = minPrice;
-  if (priceElement.value > minPrice && priceElement.value < 1000000) {
-    priceElement.setCustomValidity(``);
-  }
-  priceElement.addEventListener(`input`, priceSet);
+  priceSet();
 });
 
 window.form.fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT / 2);

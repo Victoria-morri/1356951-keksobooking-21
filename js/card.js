@@ -49,8 +49,8 @@
   // Функции похожи, (renderMapPinsList) но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
   const renderMapElementList = function (array) {
     const fragment = document.createDocumentFragment();
-    let card;
     for (let i = 0; i < array.length; i++) {
+      let card;
       card = create(array[i]);
       card.hidden = true;
       fragment.appendChild(card);

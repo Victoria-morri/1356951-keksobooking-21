@@ -6,32 +6,30 @@
       let currentPin = pins[i];
       let currentCard = cards[i - 1];
       currentPin.addEventListener(`click`, function () {
-        const closePopupCard = function (elementClose) {
-          elementClose.hidden = true;
+        const closePopupCard = function () {
+          currentCard.hidden = true;
           document.removeEventListener(`keydown`, onPopupEscPress);
+          closeCardButton.removeEventListener(`click`, closePopupCard);
         };
-        const openPopupCard = function (elementOpen) {
-          elementOpen.hidden = false;
+        const openPopupCard = function () {
+          currentCard.hidden = false;
           document.addEventListener(`keydown`, onPopupEscPress);
         };
 
         const onPopupEscPress = function (evt) {
           if (evt.key === `Escape`) {
             evt.preventDefault();
-            closePopupCard(currentCard);
+            closePopupCard();
           }
         };
         cards.forEach(function (popupElement) {
           if (!popupElement.hidden) {
-            closePopupCard(popupElement);
+            popupElement.hidden = true;
           }
         });
-        openPopupCard(currentCard);
+        openPopupCard();
         const closeCardButton = currentCard.querySelector(`.popup__close`);
-        closeCardButton.addEventListener(`click`, function () {
-          closePopupCard(currentCard);
-        });
-
+        closeCardButton.addEventListener(`click`, closePopupCard);
       });
     }
   };
