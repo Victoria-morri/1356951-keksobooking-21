@@ -58,17 +58,17 @@ livesType.addEventListener(`change`, function (evt) {
     priceValue = minPrice;
     priceElement.value = minPrice;
   }
-  priceElement.addEventListener(`input`, function () {
-
-    if (priceValue > 1000000 || priceValue < minPrice) {
+  priceElement.oninput = function () {
+    console.log(priceElement.value);
+    console.log(minPrice);
+    if (priceValue > 1000000 || priceElement.value < minPrice) {
       priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до 1000000руб. Скорректируйте цену.`);
     } else {
       priceElement.setCustomValidity(``);
     }
-  });
-  priceElement.reportValidity();
-}
-);
+    priceElement.reportValidity();
+  };
+});
 
 
 window.form.fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT / 2);
