@@ -1,5 +1,6 @@
 'use strict';
 
+const MAX_PRICE = 1000000;
 const LIVES_TYPES_MIN_PRICE = {
   bungalow: 0,
   flat: 1000,
@@ -7,10 +8,10 @@ const LIVES_TYPES_MIN_PRICE = {
   palace: 10000
 };
 
-const priceSet = function () {
+const setPrice = function () {
   const priceValue = parseInt(priceElement.value, 10);
-  if (priceValue > 1000000 || priceValue < minPrice) {
-    priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до 1000000руб. Скорректируйте цену.`);
+  if (priceValue > MAX_PRICE || priceValue < minPrice) {
+    priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до ${MAX_PRICE}руб. Скорректируйте цену.`);
   } else {
     priceElement.setCustomValidity(``);
   }
@@ -20,8 +21,7 @@ const priceSet = function () {
 const titleElement = window.form.noticeElement.querySelector(`#title`);
 const priceElement = window.form.noticeElement.querySelector(`#price`);
 const livesType = window.form.noticeElement.querySelector(`#type`);
-const timein = window.form.noticeElement.querySelector(`#timein`);
-const timeout = window.form.noticeElement.querySelector(`#timeout`);
+
 let minPrice = 1000;
 
 
@@ -45,20 +45,16 @@ titleElement.addEventListener(`input`, function () {
   }
 });
 
-priceElement.addEventListener(`input`, priceSet);
+priceElement.addEventListener(`input`, setPrice);
 
 livesType.addEventListener(`change`, function (evt) {
   const typeValue = evt.target.value;
   minPrice = LIVES_TYPES_MIN_PRICE[typeValue];
   priceElement.placeholder = minPrice;
-  priceSet();
+  setPrice();
 });
 
 window.form.fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT / 2);
 
-timein.addEventListener(`change`, function () {
-  timeout.value = timein.value;
-});
-timeout.addEventListener(`change`, function () {
-  timein.value = timeout.value;
-});
+window.form.timein.addEventListener(`change`, window.form.getTimeout);
+window.form.timeout.addEventListener(`change`, window.form.getTimein);

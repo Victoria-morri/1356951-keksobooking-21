@@ -43,7 +43,7 @@
     window.popupCard.error(errorMessage);
     const mapsPinsElements = document.querySelectorAll(`.map__pin`);
     const popupElements = document.querySelectorAll(`.map__card`);
-    window.popupCard.interactive(mapsPinsElements, popupElements);
+    window.popupCard.getInteractive(mapsPinsElements, popupElements);
 
   };
 
@@ -80,6 +80,14 @@
     }
   };
 
+  const getTimeout = function () {
+    timeout.value = timein.value;
+  };
+
+  const getTimein = function () {
+    timein.value = timeout.value;
+  };
+
   const blockInputElements = document.querySelectorAll(`fieldset`);
   const mapFilterElements = document.querySelectorAll(`select`);
   const fieldsetArray = Array.from(blockInputElements);
@@ -92,18 +100,24 @@
   const capacityElement = noticeElement.querySelector(`#capacity`);
   const adressInputElement = noticeElement.querySelector((`#address`));
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
+  const timein = noticeElement.querySelector(`#timein`);
+  const timeout = noticeElement.querySelector(`#timeout`);
 
   window.form = {
     dependenceOfInputs,
     onMouseLeftButtonDown,
     onKeyEnterDown,
     fillAdressInput,
+    getTimeout,
+    getTimein,
     mapPinMainElement,
     capacityElement,
     roomNumberElement,
     noticeElement,
     fieldsetArray,
-    mapFiltersArray
+    mapFiltersArray,
+    timein,
+    timeout
 
   };
 }());

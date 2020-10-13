@@ -1,18 +1,28 @@
 'use strict';
 
 (function () {
-  const interactive = function (pins, cards) {
+  const removeActiveClass = function () {
+    const pinsMapElements = document.querySelector(`.map__pins`);
+    const activePin = pinsMapElements.querySelector(`.map__pin--active`);
+    if (activePin) {
+      activePin.classList.remove(`map__pin--active`);
+    }
+  };
+  const getInteractive = function (pins, cards) {
     for (let i = 1; i < pins.length; i++) {
       let currentPin = pins[i];
       let currentCard = cards[i - 1];
       currentPin.addEventListener(`click`, function () {
+        removeActiveClass();
         const closePopupCard = function () {
           currentCard.hidden = true;
+          removeActiveClass();
           document.removeEventListener(`keydown`, onPopupEscPress);
           closeCardButton.removeEventListener(`click`, closePopupCard);
         };
         const openPopupCard = function () {
           currentCard.hidden = false;
+          currentPin.classList.add(`map__pin--active`);
           document.addEventListener(`keydown`, onPopupEscPress);
         };
 
@@ -40,7 +50,7 @@
     }
   };
   window.popupCard = {
-    interactive,
+    getInteractive,
     error
   };
 
