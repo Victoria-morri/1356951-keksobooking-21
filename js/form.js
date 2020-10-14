@@ -119,7 +119,6 @@
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType = `flat`;
-  let arrayChosenHousingType = [];
   let data = [];
 
   const onSuccess = function (array) {

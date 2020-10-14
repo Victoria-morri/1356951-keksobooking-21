@@ -1,22 +1,29 @@
 'use strict';
 
 (function () {
-  const removeActiveClass = function () {
+  /* const removeActiveClass = function () {
     const pinsMapElements = document.querySelector(`.map__pins`);
     const activePin = pinsMapElements.querySelector(`.map__pin--active`);
     if (activePin) {
       activePin.classList.remove(`map__pin--active`);
     }
-  };
+  };*/
+  let activePin;
+
   const getInteractive = function (pins, cards) {
     for (let i = 1; i < pins.length; i++) {
       let currentPin = pins[i];
       let currentCard = cards[i - 1];
       currentPin.addEventListener(`click`, function () {
-        removeActiveClass();
+        if (activePin) {
+          activePin.classList.remove(`map__pin--active`);
+        }
+        activePin = currentPin;
+        // removeActiveClass();
         const closePopupCard = function () {
           currentCard.hidden = true;
-          removeActiveClass();
+          activePin.classList.remove(`map__pin--active`);
+          // removeActiveClass();
           document.removeEventListener(`keydown`, onPopupEscPress);
           closeCardButton.removeEventListener(`click`, closePopupCard);
         };
