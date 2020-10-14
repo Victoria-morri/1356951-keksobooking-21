@@ -27,25 +27,6 @@
     return pinMap;
   };
 
-  const onSuccess = function (array) {
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < array.length; i++) {
-      fragment.appendChild(create(array[i]));
-    }
-    mapPinsElement.appendChild(fragment);
-    window.disable.unset(fieldsetArray);
-    window.disable.unset(mapFiltersArray);
-    fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
-    mapElement.classList.remove(`map--faded`);
-    adFormElement.classList.remove(`ad-form--disabled`);
-    mapElement.appendChild(window.card.renderMapElementList(array));
-    const errorMessage = document.querySelector(`.error-message`);
-    window.popupCard.error(errorMessage);
-    const mapsPinsElements = document.querySelectorAll(`.map__pin`);
-    const popupElements = document.querySelectorAll(`.map__card`);
-    window.popupCard.getInteractive(mapsPinsElements, popupElements);
-
-  };
 
   const activateMap = function () {
     window.load(onSuccess, onError);
@@ -88,6 +69,37 @@
     timein.value = timeout.value;
   };
 
+  const renderPins = function (arrayX) {
+    const currentPins = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
+    const pinsElements = document.querySelectorAll(`.map__pin`);
+    for (let i = 0; i < pinsElements.length; i++) {
+      if (!pinsElements[i].classList.contains(`map__pin--main`)) {
+        pinsElements[i].remove();
+      }
+    }
+    popupElements = document.querySelectorAll(`.map__card`);
+    for (let i = 0; i < popupElements.length; i++) {
+      popupElements[i].remove();
+    }
+    mapElement.appendChild(window.card.renderMapElementList(currentPins));
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < currentPins.length; i++) {
+      fragment.appendChild(create(currentPins[i]));
+    }
+    mapPinsElement.appendChild(fragment);
+    mapsPinsElements = document.querySelectorAll(`.map__pin`);
+    popupElements = document.querySelectorAll(`.map__card`);
+    window.popupCard.getInteractive(mapsPinsElements, popupElements);
+  };
+
+  const updateHousingType = function () {
+    const sameTypeHousing = data.filter(function (dataOne) {
+      return dataOne.offer.type === chosenHousingType;
+    });
+    console.log(sameTypeHousing);
+    renderPins(sameTypeHousing);
+  };
+
   const blockInputElements = document.querySelectorAll(`fieldset`);
   const mapFilterElements = document.querySelectorAll(`select`);
   const fieldsetArray = Array.from(blockInputElements);
@@ -102,6 +114,34 @@
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
   const timein = noticeElement.querySelector(`#timein`);
   const timeout = noticeElement.querySelector(`#timeout`);
+  const marFilters = document.querySelector(`.map__filters`);
+  const housingType = marFilters.querySelector(`#housing-type`);
+  let mapsPinsElements = document.querySelectorAll(`.map__pin`);
+  let popupElements = document.querySelectorAll(`.map__card`);
+  let chosenHousingType = `flat`;
+  let arrayChosenHousingType = [];
+  let data = [];
+
+  const onSuccess = function (array) {
+    data = array;
+    console.log(data);
+    updateHousingType();
+    window.disable.unset(fieldsetArray);
+    window.disable.unset(mapFiltersArray);
+    fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
+    mapElement.classList.remove(`map--faded`);
+    adFormElement.classList.remove(`ad-form--disabled`);
+    mapElement.appendChild(window.card.renderMapElementList(array));
+    const errorMessage = document.querySelector(`.error-message`);
+    window.popupCard.error(errorMessage);
+    window.popupCard.getInteractive(mapsPinsElements, popupElements);
+    housingType.addEventListener(`change`, function (evt) {
+      const type = evt.target.value;
+      chosenHousingType = type;
+      updateHousingType();
+      console.log(chosenHousingType);
+    });
+  };
 
   window.form = {
     dependenceOfInputs,
