@@ -3,7 +3,7 @@
 (function () {
 
   const fillAdressInput = function (width, height) {
-    adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, Number) + width}px; top: ${parseInt(mapPinMainElement.style.top, Number) + height}px`;
+    adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, 10) + width}px; top: ${parseInt(mapPinMainElement.style.top, 10) + height}px`;
   };
 
   const onError = function (message) {
@@ -38,11 +38,13 @@
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
-    mapElement.appendChild(window.card.renderMapElementList());
+    mapElement.appendChild(window.card.renderMapElementList(array));
     const errorMessage = document.querySelector(`.error-message`);
-    if (errorMessage) {
-      errorMessage.classList.add(`hidden`);
-    }
+    window.popupCard.error(errorMessage);
+    const mapsPinsElements = document.querySelectorAll(`.map__pin`);
+    const popupElements = document.querySelectorAll(`.map__card`);
+    window.popupCard.getInteractive(mapsPinsElements, popupElements);
+
   };
 
   const activateMap = function () {
@@ -78,6 +80,14 @@
     }
   };
 
+  const getTimeout = function () {
+    timeout.value = timein.value;
+  };
+
+  const getTimein = function () {
+    timein.value = timeout.value;
+  };
+
   const blockInputElements = document.querySelectorAll(`fieldset`);
   const mapFilterElements = document.querySelectorAll(`select`);
   const fieldsetArray = Array.from(blockInputElements);
@@ -90,17 +100,24 @@
   const capacityElement = noticeElement.querySelector(`#capacity`);
   const adressInputElement = noticeElement.querySelector((`#address`));
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
+  const timein = noticeElement.querySelector(`#timein`);
+  const timeout = noticeElement.querySelector(`#timeout`);
 
   window.form = {
     dependenceOfInputs,
     onMouseLeftButtonDown,
     onKeyEnterDown,
     fillAdressInput,
+    getTimeout,
+    getTimein,
     mapPinMainElement,
     capacityElement,
     roomNumberElement,
     noticeElement,
     fieldsetArray,
-    mapFiltersArray
+    mapFiltersArray,
+    timein,
+    timeout
+
   };
 }());
