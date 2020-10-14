@@ -96,8 +96,13 @@
     const sameTypeHousing = data.filter(function (dataOne) {
       return dataOne.offer.type === chosenHousingType;
     });
-    console.log(sameTypeHousing);
     renderPins(sameTypeHousing);
+  };
+
+  const addListToCloseCard = function (array) {
+    for (let i = 0; i < array.length; i++) {
+      array[i].addEventListener(`change`, window.popupCard.closeCard);
+    }
   };
 
   const blockInputElements = document.querySelectorAll(`fieldset`);
@@ -117,6 +122,8 @@
   const mapFilters = document.querySelector(`.map__filters`);
   const housingType = mapFilters.querySelector(`#housing-type`);
   const mapsFilters = mapFilters.querySelectorAll(`.map__filter`);
+  const mapsFeatures = mapFilters.querySelector(`.map__features`);
+  const inputs = mapsFeatures.querySelectorAll(`input`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType = `flat`;
@@ -124,7 +131,6 @@
 
   const onSuccess = function (array) {
     data = array;
-    console.log(data);
     updateHousingType();
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
@@ -139,11 +145,9 @@
       const type = evt.target.value;
       chosenHousingType = type;
       updateHousingType();
-      console.log(chosenHousingType);
     });
-    for (let i = 0; i < mapsFilters.length; i++) {
-      mapsFilters[i].addEventListener(`change`, window.popupCard.closeCard);
-    }
+    addListToCloseCard(mapsFilters);
+    addListToCloseCard(inputs);
   };
 
   window.form = {
@@ -161,6 +165,5 @@
     mapFiltersArray,
     timein,
     timeout
-
   };
 }());

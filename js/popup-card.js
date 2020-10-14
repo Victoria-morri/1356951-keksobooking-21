@@ -1,14 +1,6 @@
 'use strict';
 
 (function () {
-  /* const removeActiveClass = function () {
-    const pinsMapElements = document.querySelector(`.map__pins`);
-    const activePin = pinsMapElements.querySelector(`.map__pin--active`);
-    if (activePin) {
-      activePin.classList.remove(`map__pin--active`);
-    }
-  };*/
-  let activePin;
 
   const closeCard = function () {
     const cardsElements = document.querySelectorAll(`.map__card`);
@@ -66,6 +58,9 @@
       errorMessage.classList.add(`hidden`);
     }
   };
+
+  let activePin;
+
   window.popupCard = {
     getInteractive,
     error,
