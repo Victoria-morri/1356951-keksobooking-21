@@ -114,8 +114,9 @@
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
   const timein = noticeElement.querySelector(`#timein`);
   const timeout = noticeElement.querySelector(`#timeout`);
-  const marFilters = document.querySelector(`.map__filters`);
-  const housingType = marFilters.querySelector(`#housing-type`);
+  const mapFilters = document.querySelector(`.map__filters`);
+  const housingType = mapFilters.querySelector(`#housing-type`);
+  const mapsFilters = mapFilters.querySelectorAll(`.map__filter`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType = `flat`;
@@ -140,6 +141,9 @@
       updateHousingType();
       console.log(chosenHousingType);
     });
+    for (let i = 0; i < mapsFilters.length; i++) {
+      mapsFilters[i].addEventListener(`change`, window.popupCard.closeCard);
+    }
   };
 
   window.form = {

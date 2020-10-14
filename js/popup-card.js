@@ -10,6 +10,16 @@
   };*/
   let activePin;
 
+  const closeCard = function () {
+    const cardsElements = document.querySelectorAll(`.map__card`);
+    for (let i = 0; i < cardsElements.length; i++) {
+      if (!cardsElements[i].getAttribute(`hidden`)) {
+        cardsElements[i].hidden = true;
+      }
+    }
+    activePin.classList.remove(`map__pin--active`);
+  };
+
   const getInteractive = function (pins, cards) {
     for (let i = 1; i < pins.length; i++) {
       let currentPin = pins[i];
@@ -58,7 +68,8 @@
   };
   window.popupCard = {
     getInteractive,
-    error
+    error,
+    closeCard
   };
 
 })();
