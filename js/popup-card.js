@@ -17,11 +17,9 @@
         }
         activePin = currentPin;
         activeCard = currentCard;
-        // removeActiveClass();
         const closePopupCard = function () {
           currentCard.hidden = true;
           activePin.classList.remove(`map__pin--active`);
-          // removeActiveClass();
           document.removeEventListener(`keydown`, onPopupEscPress);
           closeCardButton.removeEventListener(`click`, closePopupCard);
         };

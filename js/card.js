@@ -58,12 +58,12 @@
     return fragment;
   };
 
-  const clearAll = function () {
-    const popupElements = document.querySelectorAll(`.map__card`);
-    for (let i = 0; i < popupElements.length; i++) {
-      popupElements[i].remove();
+  const clearAll = function (popupElements) {
+    if (popupElements) {
+      for (let i = 0; i < popupElements.length; i++) {
+        popupElements[i].hidden = true;
+      }
     }
-
   };
 
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);

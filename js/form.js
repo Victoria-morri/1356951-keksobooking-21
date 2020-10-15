@@ -55,20 +55,15 @@
   const renderPins = function (arrayX) {
     const arrayForUse = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
     window.pin.clearAll();
-    window.card.clearAll();
-    mapElement.appendChild(window.card.renderAll(arrayForUse));
-    mapPinsElement.appendChild(window.pin.renderAll(arrayForUse));
+    window.card.clearAll(currentCards);
+    currentPins = window.pin.renderAll(arrayForUse);
+    currentCards = window.card.renderAll(arrayForUse);
+    mapElement.appendChild(currentCards);
+    mapPinsElement.appendChild(currentPins);
     mapsPinsElements = document.querySelectorAll(`.map__pin`);
     popupElements = document.querySelectorAll(`.map__card`);
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
-
-  /* const updateHousingType = function (dataArray) {
-    const sameTypeHousing = dataArray.filter(function (dataOne) {
-      return dataOne.offer.type === chosenHousingType;
-    });
-    renderPins(sameTypeHousing);
-  };*/
 
   const addListToCloseCard = function (array) {
     for (let i = 0; i < array.length; i++) {
@@ -97,6 +92,8 @@
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType;
   let data = [];
+  let currentCards;
+  let currentPins;
 
   const onSuccess = function (array) {
     data = array;
@@ -109,7 +106,6 @@
     mapElement.appendChild(window.card.renderAll(array));
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
-    window.popupCard.getInteractive(mapsPinsElements, popupElements);
     housingType.addEventListener(`change`, function (evt) {
       const type = evt.target.value;
       chosenHousingType = type !== `any` ? type : ``;
