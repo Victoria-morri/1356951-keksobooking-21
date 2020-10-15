@@ -56,5 +56,5 @@ livesType.addEventListener(`change`, function (evt) {
 
 window.form.fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT / 2);
 
-window.form.timein.addEventListener(`change`, window.form.getTimeout);
-window.form.timeout.addEventListener(`change`, window.form.getTimein);
+window.filter.timein.addEventListener(`change`, window.filter.getTimeout);
+window.filter.timeout.addEventListener(`change`, window.filter.getTimein);

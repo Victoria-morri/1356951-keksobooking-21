@@ -47,7 +47,7 @@
   };
 
   // Функции похожи, (renderMapPinsList) но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
-  const renderMapElementList = function (array) {
+  const renderAll = function (array) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < array.length; i++) {
       let card;
@@ -58,10 +58,19 @@
     return fragment;
   };
 
+  const clearAll = function () {
+    const popupElements = document.querySelectorAll(`.map__card`);
+    for (let i = 0; i < popupElements.length; i++) {
+      popupElements[i].remove();
+    }
+
+  };
+
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
   window.card = {
-    renderMapElementList
+    renderAll,
+    clearAll
   };
 
 }());

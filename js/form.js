@@ -19,15 +19,6 @@
     document.body.insertAdjacentElement(`afterbegin`, error);
   };
 
-  const create = function (card) {
-    const pinMap = window.pin.mapPinElement.cloneNode(true);
-    pinMap.style = `left: ${card.location.x}px; top: ${card.location.y}px`;
-    pinMap.querySelector(`img`).src = card.author.avatar;
-    pinMap.querySelector(`img`).alt = card.offer.title;
-    return pinMap;
-  };
-
-
   const activateMap = function () {
     window.load(onSuccess, onError);
   };
@@ -61,43 +52,23 @@
     }
   };
 
-  const getTimeout = function () {
-    timeout.value = timein.value;
-  };
-
-  const getTimein = function () {
-    timein.value = timeout.value;
-  };
-
   const renderPins = function (arrayX) {
-    const currentPins = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
-    const pinsElements = document.querySelectorAll(`.map__pin`);
-    for (let i = 0; i < pinsElements.length; i++) {
-      if (!pinsElements[i].classList.contains(`map__pin--main`)) {
-        pinsElements[i].remove();
-      }
-    }
-    popupElements = document.querySelectorAll(`.map__card`);
-    for (let i = 0; i < popupElements.length; i++) {
-      popupElements[i].remove();
-    }
-    mapElement.appendChild(window.card.renderMapElementList(currentPins));
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < currentPins.length; i++) {
-      fragment.appendChild(create(currentPins[i]));
-    }
-    mapPinsElement.appendChild(fragment);
+    const arrayForUse = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
+    window.pin.clearAll();
+    window.card.clearAll();
+    mapElement.appendChild(window.card.renderAll(arrayForUse));
+    mapPinsElement.appendChild(window.pin.renderAll(arrayForUse));
     mapsPinsElements = document.querySelectorAll(`.map__pin`);
     popupElements = document.querySelectorAll(`.map__card`);
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
 
-  const updateHousingType = function () {
-    const sameTypeHousing = data.filter(function (dataOne) {
+  /* const updateHousingType = function (dataArray) {
+    const sameTypeHousing = dataArray.filter(function (dataOne) {
       return dataOne.offer.type === chosenHousingType;
     });
     renderPins(sameTypeHousing);
-  };
+  };*/
 
   const addListToCloseCard = function (array) {
     for (let i = 0; i < array.length; i++) {
@@ -117,8 +88,6 @@
   const capacityElement = noticeElement.querySelector(`#capacity`);
   const adressInputElement = noticeElement.querySelector((`#address`));
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
-  const timein = noticeElement.querySelector(`#timein`);
-  const timeout = noticeElement.querySelector(`#timeout`);
   const mapFilters = document.querySelector(`.map__filters`);
   const housingType = mapFilters.querySelector(`#housing-type`);
   const mapsFilters = mapFilters.querySelectorAll(`.map__filter`);
@@ -126,25 +95,25 @@
   const inputs = mapsFeatures.querySelectorAll(`input`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
-  let chosenHousingType = `flat`;
+  let chosenHousingType;
   let data = [];
 
   const onSuccess = function (array) {
     data = array;
-    updateHousingType();
+    renderPins(window.filter.data(array));
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
-    mapElement.appendChild(window.card.renderMapElementList(array));
-    const errorMessage = document.querySelector(`.error-message`);
-    window.popupCard.error(errorMessage);
+    mapElement.appendChild(window.card.renderAll(array));
+    const errorMessageElement = document.querySelector(`.error-message`);
+    window.popupCard.error(errorMessageElement);
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
     housingType.addEventListener(`change`, function (evt) {
       const type = evt.target.value;
-      chosenHousingType = type;
-      updateHousingType();
+      chosenHousingType = type !== `any` ? type : ``;
+      renderPins(window.filter.data(array, chosenHousingType));
     });
     addListToCloseCard(mapsFilters);
     addListToCloseCard(inputs);
@@ -155,15 +124,11 @@
     onMouseLeftButtonDown,
     onKeyEnterDown,
     fillAdressInput,
-    getTimeout,
-    getTimein,
     mapPinMainElement,
     capacityElement,
     roomNumberElement,
     noticeElement,
     fieldsetArray,
-    mapFiltersArray,
-    timein,
-    timeout
+    mapFiltersArray
   };
 }());

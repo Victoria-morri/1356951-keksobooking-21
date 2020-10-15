@@ -3,12 +3,7 @@
 (function () {
 
   const closeCard = function () {
-    const cardsElements = document.querySelectorAll(`.map__card`);
-    for (let i = 0; i < cardsElements.length; i++) {
-      if (!cardsElements[i].getAttribute(`hidden`)) {
-        cardsElements[i].hidden = true;
-      }
-    }
+    activeCard.hidden = true;
     activePin.classList.remove(`map__pin--active`);
   };
 
@@ -21,6 +16,7 @@
           activePin.classList.remove(`map__pin--active`);
         }
         activePin = currentPin;
+        activeCard = currentCard;
         // removeActiveClass();
         const closePopupCard = function () {
           currentCard.hidden = true;
@@ -60,6 +56,7 @@
   };
 
   let activePin;
+  let activeCard;
 
   window.popupCard = {
     getInteractive,
