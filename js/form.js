@@ -65,12 +65,6 @@
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
 
-  const addListToCloseCard = function (array) {
-    for (let i = 0; i < array.length; i++) {
-      array[i].addEventListener(`change`, window.popupCard.closeCard);
-    }
-  };
-
   const blockInputElements = document.querySelectorAll(`fieldset`);
   const mapFilterElements = document.querySelectorAll(`select`);
   const fieldsetArray = Array.from(blockInputElements);
@@ -85,9 +79,6 @@
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
   const mapFilters = document.querySelector(`.map__filters`);
   const housingType = mapFilters.querySelector(`#housing-type`);
-  const mapsFilters = mapFilters.querySelectorAll(`.map__filter`);
-  const mapsFeatures = mapFilters.querySelector(`.map__features`);
-  const inputs = mapsFeatures.querySelectorAll(`input`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType;
@@ -97,22 +88,20 @@
 
   const onSuccess = function (array) {
     data = array;
-    renderPins(window.filter.data(array));
+    renderPins(window.filter.filterData(data));
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
     fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
-    mapElement.appendChild(window.card.renderAll(array));
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
     housingType.addEventListener(`change`, function (evt) {
       const type = evt.target.value;
       chosenHousingType = type !== `any` ? type : ``;
-      renderPins(window.filter.data(array, chosenHousingType));
+      renderPins(window.filter.filterData(array, chosenHousingType));
     });
-    addListToCloseCard(mapsFilters);
-    addListToCloseCard(inputs);
+    mapFilters.addEventListener(`change`, window.popupCard.closeCard);
   };
 
   window.form = {

@@ -5,8 +5,28 @@
   const closeCard = function () {
     activeCard.hidden = true;
     activePin.classList.remove(`map__pin--active`);
+    document.removeEventListener(`keydown`, onPopupEscPress);
+    closeCardButton.removeEventListener(`click`, closeCard);
+    activeCard = ``;
+    activePin = ``;
   };
 
+  const openPopupCard = function (card, pin) {
+    activeCard = card;
+    activePin = pin;
+    card.hidden = false;
+    activePin.classList.add(`map__pin--active`);
+    document.addEventListener(`keydown`, onPopupEscPress);
+    closeCardButton = activeCard.querySelector(`.popup__close`);
+    closeCardButton.addEventListener(`click`, closeCard);
+  };
+
+  const onPopupEscPress = function (evt) {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      closeCard();
+    }
+  };
   const getInteractive = function (pins, cards) {
     for (let i = 1; i < pins.length; i++) {
       let currentPin = pins[i];
@@ -15,34 +35,13 @@
         if (activePin) {
           activePin.classList.remove(`map__pin--active`);
         }
-        activePin = currentPin;
-        activeCard = currentCard;
-        const closePopupCard = function () {
-          currentCard.hidden = true;
-          activePin.classList.remove(`map__pin--active`);
-          document.removeEventListener(`keydown`, onPopupEscPress);
-          closeCardButton.removeEventListener(`click`, closePopupCard);
-        };
-        const openPopupCard = function () {
-          currentCard.hidden = false;
-          currentPin.classList.add(`map__pin--active`);
-          document.addEventListener(`keydown`, onPopupEscPress);
-        };
 
-        const onPopupEscPress = function (evt) {
-          if (evt.key === `Escape`) {
-            evt.preventDefault();
-            closePopupCard();
-          }
-        };
         cards.forEach(function (popupElement) {
           if (!popupElement.hidden) {
             popupElement.hidden = true;
           }
         });
-        openPopupCard();
-        const closeCardButton = currentCard.querySelector(`.popup__close`);
-        closeCardButton.addEventListener(`click`, closePopupCard);
+        openPopupCard(currentCard, currentPin);
       });
     }
   };
@@ -53,6 +52,7 @@
     }
   };
 
+  let closeCardButton;
   let activePin;
   let activeCard;
 

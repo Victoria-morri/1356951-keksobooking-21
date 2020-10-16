@@ -8,18 +8,18 @@
     timein.value = timeout.value;
   };
 
-  const data = function (dataArray, chosenType) {
-    const tyt = chosenType ? dataArray.filter(function (dataOne) {
+  const filterData = function (dataArray, chosenType) {
+    const arrayToUse = chosenType ? dataArray.filter(function (dataOne) {
       return dataOne.offer.type === chosenType;
     }) : dataArray;
-    return tyt;
+    return arrayToUse;
   };
   const timein = window.form.noticeElement.querySelector(`#timein`);
   const timeout = window.form.noticeElement.querySelector(`#timeout`);
   window.filter = {
     getTimeout,
     getTimein,
-    data,
+    filterData,
     timein,
     timeout
   };
