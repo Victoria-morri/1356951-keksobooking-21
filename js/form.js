@@ -19,34 +19,6 @@
     document.body.insertAdjacentElement(`afterbegin`, error);
   };
 
-  const create = function (card) {
-    const pinMap = window.pin.mapPinElement.cloneNode(true);
-    pinMap.style = `left: ${card.location.x}px; top: ${card.location.y}px`;
-    pinMap.querySelector(`img`).src = card.author.avatar;
-    pinMap.querySelector(`img`).alt = card.offer.title;
-    return pinMap;
-  };
-
-  const onSuccess = function (array) {
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < array.length; i++) {
-      fragment.appendChild(create(array[i]));
-    }
-    mapPinsElement.appendChild(fragment);
-    window.disable.unset(fieldsetArray);
-    window.disable.unset(mapFiltersArray);
-    fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
-    mapElement.classList.remove(`map--faded`);
-    adFormElement.classList.remove(`ad-form--disabled`);
-    mapElement.appendChild(window.card.renderMapElementList(array));
-    const errorMessage = document.querySelector(`.error-message`);
-    window.popupCard.error(errorMessage);
-    const mapsPinsElements = document.querySelectorAll(`.map__pin`);
-    const popupElements = document.querySelectorAll(`.map__card`);
-    window.popupCard.getInteractive(mapsPinsElements, popupElements);
-
-  };
-
   const activateMap = function () {
     window.load(onSuccess, onError);
   };
@@ -80,12 +52,17 @@
     }
   };
 
-  const getTimeout = function () {
-    timeout.value = timein.value;
-  };
-
-  const getTimein = function () {
-    timein.value = timeout.value;
+  const renderPins = function (arrayX) {
+    const arrayForUse = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
+    window.pin.clearAll();
+    window.card.clearAll(currentCards);
+    currentPins = window.pin.renderAll(arrayForUse);
+    currentCards = window.card.renderAll(arrayForUse);
+    mapElement.appendChild(currentCards);
+    mapPinsElement.appendChild(currentPins);
+    mapsPinsElements = document.querySelectorAll(`.map__pin`);
+    popupElements = document.querySelectorAll(`.map__card`);
+    window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
 
   const blockInputElements = document.querySelectorAll(`fieldset`);
@@ -100,24 +77,43 @@
   const capacityElement = noticeElement.querySelector(`#capacity`);
   const adressInputElement = noticeElement.querySelector((`#address`));
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
-  const timein = noticeElement.querySelector(`#timein`);
-  const timeout = noticeElement.querySelector(`#timeout`);
+  const mapFilters = document.querySelector(`.map__filters`);
+  const housingType = mapFilters.querySelector(`#housing-type`);
+  let mapsPinsElements = document.querySelectorAll(`.map__pin`);
+  let popupElements = document.querySelectorAll(`.map__card`);
+  let chosenHousingType;
+  let data = [];
+  let currentCards;
+  let currentPins;
+
+  const onSuccess = function (array) {
+    data = array;
+    renderPins(window.filter.filterData(data));
+    window.disable.unset(fieldsetArray);
+    window.disable.unset(mapFiltersArray);
+    fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
+    mapElement.classList.remove(`map--faded`);
+    adFormElement.classList.remove(`ad-form--disabled`);
+    const errorMessageElement = document.querySelector(`.error-message`);
+    window.popupCard.error(errorMessageElement);
+    housingType.addEventListener(`change`, function (evt) {
+      const type = evt.target.value;
+      chosenHousingType = type !== `any` ? type : ``;
+      renderPins(window.filter.filterData(array, chosenHousingType));
+    });
+    mapFilters.addEventListener(`change`, window.popupCard.closeCard);
+  };
 
   window.form = {
     dependenceOfInputs,
     onMouseLeftButtonDown,
     onKeyEnterDown,
     fillAdressInput,
-    getTimeout,
-    getTimein,
     mapPinMainElement,
     capacityElement,
     roomNumberElement,
     noticeElement,
     fieldsetArray,
-    mapFiltersArray,
-    timein,
-    timeout
-
+    mapFiltersArray
   };
 }());
