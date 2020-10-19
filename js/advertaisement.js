@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  const SKY_HEIGHT = 120;
   const MIN_GUEST = 1;
   const MAX_GUEST = 5;
   const MIN_ROOM = 1;
@@ -24,7 +23,7 @@
 
   const get = function () {
     const locationX = window.rndFunction.getRandomInteger(window.position.PIN_WIDTH_HALF, window.position.MAX_WIDTH) - window.position.PIN_WIDTH_HALF;
-    const locationY = window.rndFunction.getRandomInteger(window.position.PIN_HEIGHT + SKY_HEIGHT, window.position.MAX_HEIGHT) - window.position.PIN_HEIGHT;
+    const locationY = window.rndFunction.getRandomInteger(window.position.PIN_HEIGHT + window.position.SKY_HEIGHT, window.position.MAX_HEIGHT) - window.position.PIN_HEIGHT;
 
     const card = {
       author: {

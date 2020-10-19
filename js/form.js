@@ -2,8 +2,10 @@
 
 (function () {
 
-  const fillAdressInput = function (width, height) {
-    adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, 10) + width}px; top: ${parseInt(mapPinMainElement.style.top, 10) + height}px`;
+  const fillAdressInput = function (width1, width2, height1, height2) {
+    const width3 = width1 !== Number ? parseInt(width1, 10) : width1;
+    const height3 = width1 !== Number ? parseInt(height1, 10) : height1;
+    adressInputElement.value = `left: ${width3 + width2}px; top: ${height3 + height2}px`;
   };
 
   const onError = function (message) {
@@ -91,7 +93,6 @@
     renderPins(window.filter.filterData(data));
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
-    fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
     const errorMessageElement = document.querySelector(`.error-message`);
@@ -103,6 +104,62 @@
     });
     mapFilters.addEventListener(`change`, window.popupCard.closeCard);
   };
+
+  mapPinMainElement.addEventListener(`mousedown`, function (evt) {
+    evt.preventDefault();
+    let startCords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    let xPosition = mapPinMainElement.offsetLeft;
+    let yPosition = mapPinMainElement.offsetTop;
+
+    const onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      const shift = {
+        x: startCords.x - moveEvt.clientX,
+        y: startCords.y - moveEvt.clientY
+      };
+
+      startCords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+
+      };
+      if ((mapPinMainElement.offsetTop - shift.y) > 630) {
+        yPosition = 630;
+      } else if ((mapPinMainElement.offsetTop - shift.y) < 130) {
+        yPosition = 130;
+      } else {
+        yPosition = mapPinMainElement.offsetTop - shift.y;
+      }
+
+      if ((mapPinMainElement.offsetLeft - shift.x) > 1160) {
+        xPosition = 1160;
+      } else if ((mapPinMainElement.offsetLeft - shift.x) < -(window.position.PIN_WIDTH_HALF)) {
+        xPosition = -(window.position.PIN_WIDTH_HALF);
+      } else {
+        xPosition = mapPinMainElement.offsetLeft - shift.x;
+      }
+
+      mapPinMainElement.style.top = yPosition + `px`;
+      mapPinMainElement.style.left = xPosition + `px`;
+
+      fillAdressInput(xPosition, window.position.PIN_WIDTH_HALF, yPosition, window.position.PIN_HEIGHT);
+    };
+
+    const onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener(`mouseup`, onMouseUp);
+      fillAdressInput(xPosition, window.position.PIN_WIDTH_HALF, yPosition, window.position.PIN_HEIGHT);
+    };
+
+    document.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener(`mouseup`, onMouseUp);
+  });
 
   window.form = {
     dependenceOfInputs,

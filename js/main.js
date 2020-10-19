@@ -54,7 +54,7 @@ livesType.addEventListener(`change`, function (evt) {
   setPrice();
 });
 
-window.form.fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT / 2);
+window.form.fillAdressInput(window.form.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.form.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
 
 window.filter.timein.addEventListener(`change`, window.filter.getTimeout);
 window.filter.timeout.addEventListener(`change`, window.filter.getTimein);
