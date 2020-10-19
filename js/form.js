@@ -2,12 +2,6 @@
 
 (function () {
 
-  const fillAdressInput = function (width1, width2, height1, height2) {
-    const width3 = width1 !== Number ? parseInt(width1, 10) : width1;
-    const height3 = width1 !== Number ? parseInt(height1, 10) : height1;
-    adressInputElement.value = `left: ${width3 + width2}px; top: ${height3 + height2}px`;
-  };
-
   const onError = function (message) {
     const error = document.createElement(`h2`);
     error.classList.add(`error-message`);
@@ -26,8 +20,8 @@
   };
 
   const removeListeners = function () {
-    mapPinMainElement.removeEventListener(`keydown`, window.form.onKeyEnterDown);
-    mapPinMainElement.removeEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
+    window.position.mapPinMainElement.removeEventListener(`keydown`, window.form.onKeyEnterDown);
+    window.position.mapPinMainElement.removeEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
   };
 
   const dependenceOfInputs = function () {
@@ -77,8 +71,6 @@
   const mapPinsElement = mapElement.querySelector(`.map__pins`);
   const roomNumberElement = noticeElement.querySelector(`#room_number`);
   const capacityElement = noticeElement.querySelector(`#capacity`);
-  const adressInputElement = noticeElement.querySelector((`#address`));
-  const mapPinMainElement = document.querySelector(`.map__pin--main`);
   const mapFilters = document.querySelector(`.map__filters`);
   const housingType = mapFilters.querySelector(`#housing-type`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
@@ -105,68 +97,12 @@
     mapFilters.addEventListener(`change`, window.popupCard.closeCard);
   };
 
-  mapPinMainElement.addEventListener(`mousedown`, function (evt) {
-    evt.preventDefault();
-    let startCords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    let xPosition = mapPinMainElement.offsetLeft;
-    let yPosition = mapPinMainElement.offsetTop;
-
-    const onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      const shift = {
-        x: startCords.x - moveEvt.clientX,
-        y: startCords.y - moveEvt.clientY
-      };
-
-      startCords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-
-      };
-      if ((mapPinMainElement.offsetTop - shift.y) > 630) {
-        yPosition = 630;
-      } else if ((mapPinMainElement.offsetTop - shift.y) < 130) {
-        yPosition = 130;
-      } else {
-        yPosition = mapPinMainElement.offsetTop - shift.y;
-      }
-
-      if ((mapPinMainElement.offsetLeft - shift.x) > 1160) {
-        xPosition = 1160;
-      } else if ((mapPinMainElement.offsetLeft - shift.x) < -(window.position.PIN_WIDTH_HALF)) {
-        xPosition = -(window.position.PIN_WIDTH_HALF);
-      } else {
-        xPosition = mapPinMainElement.offsetLeft - shift.x;
-      }
-
-      mapPinMainElement.style.top = yPosition + `px`;
-      mapPinMainElement.style.left = xPosition + `px`;
-
-      fillAdressInput(xPosition, window.position.PIN_WIDTH_HALF, yPosition, window.position.PIN_HEIGHT);
-    };
-
-    const onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-      document.removeEventListener(`mousemove`, onMouseMove);
-      document.removeEventListener(`mouseup`, onMouseUp);
-      fillAdressInput(xPosition, window.position.PIN_WIDTH_HALF, yPosition, window.position.PIN_HEIGHT);
-    };
-
-    document.addEventListener(`mousemove`, onMouseMove);
-    document.addEventListener(`mouseup`, onMouseUp);
-  });
+  window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
 
   window.form = {
     dependenceOfInputs,
     onMouseLeftButtonDown,
     onKeyEnterDown,
-    fillAdressInput,
-    mapPinMainElement,
     capacityElement,
     roomNumberElement,
     noticeElement,

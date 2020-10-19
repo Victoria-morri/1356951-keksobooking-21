@@ -28,8 +28,8 @@ let minPrice = 1000;
 window.disable.set(window.form.fieldsetArray);
 window.disable.set(window.form.mapFiltersArray);
 
-window.form.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
-window.form.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
+window.position.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
+window.position.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
 
 window.form.capacityElement.addEventListener(`input`, window.form.dependenceOfInputs);
 window.form.roomNumberElement.addEventListener(`input`, window.form.dependenceOfInputs);
@@ -54,7 +54,7 @@ livesType.addEventListener(`change`, function (evt) {
   setPrice();
 });
 
-window.form.fillAdressInput(window.form.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.form.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
+window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
 
 window.filter.timein.addEventListener(`change`, window.filter.getTimeout);
 window.filter.timeout.addEventListener(`change`, window.filter.getTimein);
