@@ -6,9 +6,10 @@
   const MAX_WIDTH = 1200;
   const MAX_HEIGHT = 630;
   const SKY_HEIGHT = 130;
+  const SPACE = 400;
 
   const getNumber = function (some) {
-    const someNumber = some !== Number ? parseInt(some, 10) : some;
+    const someNumber = typeof some !== Number ? parseInt(some, 10) : some;
     return someNumber;
   };
 
@@ -48,8 +49,8 @@
       };
 
       startCords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
+        x: getPosition(SPACE, SPACE + MAX_WIDTH, moveEvt.clientX),
+        y: getPosition(SKY_HEIGHT + (PIN_HEIGHT / 2), MAX_HEIGHT + (PIN_HEIGHT / 2), moveEvt.clientY)
       };
 
       yPosition = getPosition(SKY_HEIGHT, MAX_HEIGHT, (mapPinMainElement.offsetTop - shift.y));
