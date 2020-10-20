@@ -2,10 +2,6 @@
 
 (function () {
 
-  const fillAdressInput = function (width, height) {
-    adressInputElement.value = `left: ${parseInt(mapPinMainElement.style.left, 10) + width}px; top: ${parseInt(mapPinMainElement.style.top, 10) + height}px`;
-  };
-
   const onError = function (message) {
     const error = document.createElement(`h2`);
     error.classList.add(`error-message`);
@@ -24,8 +20,8 @@
   };
 
   const removeListeners = function () {
-    mapPinMainElement.removeEventListener(`keydown`, window.form.onKeyEnterDown);
-    mapPinMainElement.removeEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
+    window.position.mapPinMainElement.removeEventListener(`keydown`, window.form.onKeyEnterDown);
+    window.position.mapPinMainElement.removeEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
   };
 
   const dependenceOfInputs = function () {
@@ -75,8 +71,6 @@
   const mapPinsElement = mapElement.querySelector(`.map__pins`);
   const roomNumberElement = noticeElement.querySelector(`#room_number`);
   const capacityElement = noticeElement.querySelector(`#capacity`);
-  const adressInputElement = noticeElement.querySelector((`#address`));
-  const mapPinMainElement = document.querySelector(`.map__pin--main`);
   const mapFilters = document.querySelector(`.map__filters`);
   const housingType = mapFilters.querySelector(`#housing-type`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
@@ -91,7 +85,6 @@
     renderPins(window.filter.filterData(data));
     window.disable.unset(fieldsetArray);
     window.disable.unset(mapFiltersArray);
-    fillAdressInput(window.position.PIN_WIDTH_HALF, window.position.PIN_HEIGHT);
     mapElement.classList.remove(`map--faded`);
     adFormElement.classList.remove(`ad-form--disabled`);
     const errorMessageElement = document.querySelector(`.error-message`);
@@ -104,12 +97,12 @@
     mapFilters.addEventListener(`change`, window.popupCard.closeCard);
   };
 
+  window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
+
   window.form = {
     dependenceOfInputs,
     onMouseLeftButtonDown,
     onKeyEnterDown,
-    fillAdressInput,
-    mapPinMainElement,
     capacityElement,
     roomNumberElement,
     noticeElement,
