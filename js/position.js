@@ -9,7 +9,7 @@
   const SPACE = 400;
 
   const getNumber = function (some) {
-    const someNumber = typeof some !== Number ? parseInt(some, 10) : some;
+    const someNumber = typeof some !== `number` ? parseInt(some, 10) : some;
     return someNumber;
   };
 
