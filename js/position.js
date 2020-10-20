@@ -6,7 +6,6 @@
   const MAX_WIDTH = 1200;
   const MAX_HEIGHT = 630;
   const SKY_HEIGHT = 130;
-  const SPACE = 400;
 
   const getNumber = function (some) {
     const someNumber = typeof some !== `number` ? parseInt(some, 10) : some;
@@ -48,13 +47,15 @@
         y: startCords.y - moveEvt.clientY
       };
 
-      startCords = {
-        x: getPosition(SPACE, SPACE + MAX_WIDTH, moveEvt.clientX),
-        y: getPosition(SKY_HEIGHT + (PIN_HEIGHT / 2), MAX_HEIGHT + (PIN_HEIGHT / 2), moveEvt.clientY)
-      };
-
       yPosition = getPosition(SKY_HEIGHT, MAX_HEIGHT, (mapPinMainElement.offsetTop - shift.y));
       xPosition = getPosition(-(PIN_WIDTH_HALF), MAX_WIDTH - (PIN_WIDTH_HALF * 2), (mapPinMainElement.offsetLeft - shift.x));
+
+      if (yPosition !== parseInt(mapPinMainElement.style.top, 10)) {
+        startCords.y = moveEvt.clientY;
+      }
+      if (xPosition !== parseInt(mapPinMainElement.style.left, 10)) {
+        startCords.x = moveEvt.clientX;
+      }
 
       mapPinMainElement.style.top = yPosition + `px`;
       mapPinMainElement.style.left = xPosition + `px`;
@@ -64,16 +65,17 @@
 
     const onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener(`mousemove`, onMouseMove);
+      mapPinsMainElement.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);
       fillAdressInput(xPosition, window.position.PIN_WIDTH_HALF, yPosition, window.position.PIN_HEIGHT);
     };
 
-    document.addEventListener(`mousemove`, onMouseMove);
+    mapPinsMainElement.addEventListener(`mousemove`, onMouseMove);
     document.addEventListener(`mouseup`, onMouseUp);
   };
 
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
+  const mapPinsMainElement = document.querySelector(`.map__pins`);
   const adressInputElement = document.querySelector((`#address`));
 
   window.position = {
