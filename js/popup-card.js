@@ -3,7 +3,7 @@
 (function () {
 
   const closeCard = function () {
-    if (activeCard !== ``) {
+    if (activeCard) {
       activeCard.hidden = true;
       activePin.classList.remove(`map__pin--active`);
       document.removeEventListener(`keydown`, onPopupEscPress);
