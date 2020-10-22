@@ -24,7 +24,6 @@ const livesType = window.form.noticeElement.querySelector(`#type`);
 
 let minPrice = 1000;
 
-
 window.disable.set(window.form.fieldsetArray);
 window.disable.set(window.form.mapFiltersArray);
 

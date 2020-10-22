@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  const MAIN_PIN_X = 570;
+  const MAIN_PIN_Y = 375;
 
   const onError = function (message) {
     const error = document.createElement(`h2`);
@@ -61,18 +63,34 @@
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
 
+  const upload = function (dataX, success) {
+    const URL = `https://21.javascript.pages.academy/keksobooking`;
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
+    xhr.addEventListener(`load`, function () {
+      success(xhr.response);
+    });
+    xhr.open(`POST`, URL);
+    // xhr.setRequestHeader(`Content-Type`, `multipart/form-data`);
+    xhr.send(dataX);
+  };
+
+  // const load = function (success, error) {};
+
   const blockInputElements = document.querySelectorAll(`fieldset`);
   const mapFilterElements = document.querySelectorAll(`select`);
   const fieldsetArray = Array.from(blockInputElements);
   const mapFiltersArray = Array.from(mapFilterElements);
   const noticeElement = document.querySelector(`.notice`);
   const adFormElement = noticeElement.querySelector(`.ad-form`);
+  // const submitElement = adFormElement.querySelector(`.ad-form__submit`);
   const mapElement = document.querySelector(`.map`);
   const mapPinsElement = mapElement.querySelector(`.map__pins`);
   const roomNumberElement = noticeElement.querySelector(`#room_number`);
   const capacityElement = noticeElement.querySelector(`#capacity`);
-  const mapFilters = document.querySelector(`.map__filters`);
-  const housingType = mapFilters.querySelector(`#housing-type`);
+  const mapFiltersElement = document.querySelector(`.map__filters`);
+  const housingType = mapFiltersElement.querySelector(`#housing-type`);
+  const successElement = document.querySelector(`#success`).content.querySelector(`.success`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType;
@@ -94,7 +112,40 @@
       chosenHousingType = type !== `any` ? type : ``;
       renderPins(window.filter.filterData(array, chosenHousingType));
     });
-    mapFilters.addEventListener(`change`, window.popupCard.closeCard);
+    mapFiltersElement.addEventListener(`change`, window.popupCard.closeCard);
+    adFormElement.addEventListener(`submit`, function (evt) {
+      evt.preventDefault();
+      upload(new FormData(adFormElement), onSuccessFormSend);
+    });
+  };
+
+  const onSuccessFormSend = function (response) {
+
+    window.position.mapPinMainElement.style.top = MAIN_PIN_Y + `px`;
+    window.position.mapPinMainElement.style.left = MAIN_PIN_X + `px`;
+    mapElement.classList.add(`map--faded`);
+    adFormElement.reset();
+    adFormElement.classList.add(`ad-form--disabled`);
+    window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
+    window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
+    mapFiltersElement.reset();
+    window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
+    window.popupCard.closeCard();
+    window.pin.clearAll();
+    window.card.clearAll(currentCards);
+    window.disable.set(fieldsetArray);
+    window.disable.set(mapFiltersArray);
+    const successMessage = successElement.cloneNode(true);
+    // adFormElement.apendChild(success);
+    // success.hidden = false;
+    let elem = document.createElement(`div`);
+
+    // Клонируем содержимое шаблона для того, чтобы переиспользовать его несколько раз
+    elem.append(successMessage);
+    document.body.append(elem);
+    document.addEventListener(`click`, function () {
+      elem.hidden = true;
+    });
   };
 
   window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
@@ -110,3 +161,39 @@
     mapFiltersArray
   };
 }());
+/* const URL = `https://21.javascript.pages.academy/keksobooking`;
+      const xhr = new XMLHttpRequest();
+      // xhr.responseType = `multipart/form-data`;
+      const formData = new FormData(adFormElement);
+      xhr.addEventListener(`load`, function () {
+        const error = ``;
+
+        switch (xhr.status) {
+          case 200:
+            // console.log(adFormElement.value);
+            // onSuccess(xhr.response);
+            break;
+          case 400:
+            error = `Неверный запрос`;
+            break;
+          case 401:
+            error = `Пользователь не авторизован`;
+            break;
+          case 404:
+            error = `Ничего не найдено`;
+            break;
+
+          default:
+            error = `Cтатус ответа: : ` + xhr.status + ` ` + xhr.statusText;
+        }
+        if (error) {
+          onError(error);
+        }
+      });
+
+      xhr.addEventListener(`error`, function () {
+        onError(`Произошла ошибка соединения`);
+      });
+      xhr.open(`POST `, URL);
+      xhr.setRequestHeader(`Content-Type`, `multipart/form-data`);
+      xhr.send(adFormElement.value);*/

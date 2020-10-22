@@ -3,12 +3,14 @@
 (function () {
 
   const closeCard = function () {
-    activeCard.hidden = true;
-    activePin.classList.remove(`map__pin--active`);
-    document.removeEventListener(`keydown`, onPopupEscPress);
-    closeCardButton.removeEventListener(`click`, closeCard);
-    activeCard = ``;
-    activePin = ``;
+    if (activeCard !== ``) {
+      activeCard.hidden = true;
+      activePin.classList.remove(`map__pin--active`);
+      document.removeEventListener(`keydown`, onPopupEscPress);
+      closeCardButton.removeEventListener(`click`, closeCard);
+      activeCard = ``;
+      activePin = ``;
+    }
   };
 
   const openPopupCard = function (card, pin) {
