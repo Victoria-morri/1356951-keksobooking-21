@@ -3,6 +3,7 @@
 (function () {
   const MAIN_PIN_X = 570;
   const MAIN_PIN_Y = 375;
+  const URL = `https://21.javascript.pages.academy/keksobooking`;
 
   const onError = function (message) {
     const error = document.createElement(`h2`);
@@ -63,8 +64,27 @@
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
 
-  const upload = function (dataX, success) {
-    const URL = `https://21.javascript.pages.academy/keksobooking`;
+  const onPressEsc = function (evt) {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      formSendMessage();
+    }
+  };
+
+  const onFailFormSend = function () {
+    document.body.appendChild(failMessage);
+    document.addEventListener(`click`, formSendMessage);
+    document.addEventListener(`keydown`, onPressEsc);
+  };
+
+  const formSendMessage = function () {
+    document.body.removeChild(successMessage);
+    // нормально что я удаляю обработчик на клик?
+    document.removeEventListener(`click`, formSendMessage);
+    document.removeEventListener(`keydown`, onPressEsc);
+  };
+
+  const upload = function (dataX, success, fail) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
@@ -75,7 +95,15 @@
     xhr.send(dataX);
   };
 
-  // const load = function (success, error) {};
+  /* const load = function (success, error) {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
+    xhr.open(`GET`, URL);
+    xhr.addEventListener(`load`, function () {
+      onSuccess(xhr.response);
+    });
+    xhr.send();
+  };*/
 
   const blockInputElements = document.querySelectorAll(`fieldset`);
   const mapFilterElements = document.querySelectorAll(`select`);
@@ -91,6 +119,9 @@
   const mapFiltersElement = document.querySelector(`.map__filters`);
   const housingType = mapFiltersElement.querySelector(`#housing-type`);
   const successElement = document.querySelector(`#success`).content.querySelector(`.success`);
+  const successMessage = successElement.cloneNode(true);
+  const failElement = document.querySelector(`#error`).content.querySelector(`.error`);
+  const failMessage = failElement.cloneNode(true);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType;
@@ -115,9 +146,10 @@
     mapFiltersElement.addEventListener(`change`, window.popupCard.closeCard);
     adFormElement.addEventListener(`submit`, function (evt) {
       evt.preventDefault();
-      upload(new FormData(adFormElement), onSuccessFormSend);
+      upload(new FormData(adFormElement), onSuccessFormSend, onFailFormSend);
     });
   };
+
 
   const onSuccessFormSend = function (response) {
 
@@ -135,17 +167,10 @@
     window.card.clearAll(currentCards);
     window.disable.set(fieldsetArray);
     window.disable.set(mapFiltersArray);
-    const successMessage = successElement.cloneNode(true);
-    // adFormElement.apendChild(success);
-    // success.hidden = false;
-    let elem = document.createElement(`div`);
-
-    // Клонируем содержимое шаблона для того, чтобы переиспользовать его несколько раз
-    elem.append(successMessage);
-    document.body.append(elem);
-    document.addEventListener(`click`, function () {
-      elem.hidden = true;
-    });
+    document.body.appendChild(successMessage);
+    document.addEventListener(`click`, formSendMessage);
+    document.addEventListener(`keydown`, onPressEsc);
+    // onFailFormSend();
   };
 
   window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
