@@ -41,6 +41,7 @@
     }
     window.position.start();
     mapElement.classList.add(`map--faded`);
+    // window.disable.resetForm();
     adFormElement.reset();
     adFormElement.classList.add(`ad-form--disabled`);
     window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
@@ -105,6 +106,7 @@
   const mapFiltersArray = Array.from(mapFilterElements);
   const noticeElement = document.querySelector(`.notice`);
   const adFormElement = noticeElement.querySelector(`.ad-form`);
+  const resetElement = adFormElement.querySelector(`.ad-form__reset`);
   const mapElement = document.querySelector(`.map`);
   const mapPinsElement = mapElement.querySelector(`.map__pins`);
   const roomNumberElement = noticeElement.querySelector(`#room_number`);
@@ -139,7 +141,7 @@
     });
     mapFiltersElement.addEventListener(`change`, window.popupCard.closeCard);
     adFormElement.addEventListener(`submit`, onSendForm);
-    adFormElement.addEventListener(`reset`, onResetForm);
+    resetElement.addEventListener(`click`, onResetForm);
   };
 
   const onFailFormSend = function () {
@@ -155,7 +157,7 @@
     document.addEventListener(`click`, onFormSendMessage);
     document.addEventListener(`keydown`, onPressEsc);
     adFormElement.removeEventListener(`submit`, onSendForm);
-    adFormElement.removeEventListener(`reset`, onResetForm);
+    resetElement.removeEventListener(`click`, onResetForm);
   };
 
   window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
