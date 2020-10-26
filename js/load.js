@@ -3,8 +3,8 @@
 (function () {
 
 
-  window.load = function (onSuccess, onError) {
-    const URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  window.load = function (onSuccess, onError, url, method, dataX) {
+    // const URL = `https://21.javascript.pages.academy/keksobooking/data`;
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 
@@ -36,8 +36,8 @@
     xhr.addEventListener(`error`, function () {
       onError(`Произошла ошибка соединения`);
     });
-    xhr.open(`GET`, URL);
-    xhr.send();
+    xhr.open(method, url); // `GET`
+    xhr.send(dataX);
   };
 
 })();
