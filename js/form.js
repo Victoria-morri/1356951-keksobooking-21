@@ -4,21 +4,8 @@
   const MAIN_PIN_X = 570;
   const MAIN_PIN_Y = 375;
 
-  const onError = function (message) {
-    const error = document.createElement(`h2`);
-    error.classList.add(`error-message`);
-    error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    error.style.position = `absolute`;
-    error.style.left = 0;
-    error.style.right = 0;
-    error.style.color = `white`;
-    error.style.fontSize = `50px`;
-    error.textContent = message;
-    document.body.insertAdjacentElement(`afterbegin`, error);
-  };
-
   const activateMap = function () {
-    window.load(onSuccess, onError, `https://21.javascript.pages.academy/keksobooking/data`, `GET`);
+    window.load(onSuccess, window.error.on, `https://21.javascript.pages.academy/keksobooking/data`, `GET`);
   };
 
   const removeListeners = function () {
