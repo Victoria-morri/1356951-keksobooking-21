@@ -40,19 +40,20 @@
       evt.preventDefault();
     }
     window.position.start();
-    mapElement.classList.add(`map--faded`);
-    // window.disable.resetForm();
-    adFormElement.reset();
-    adFormElement.classList.add(`ad-form--disabled`);
+    // mapElement.classList.add(`map--faded`);
+    window.disable.resetForm();
+    window.disable.resetMap(currentCards);
+    // adFormElement.reset();
+    // adFormElement.classList.add(`ad-form--disabled`);
     window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
     window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
-    mapFiltersElement.reset();
-    window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
-    window.popupCard.closeCard();
-    window.pin.clearAll();
-    window.card.clearAll(currentCards);
-    window.disable.set(fieldsetArray);
-    window.disable.set(mapFiltersArray);
+    // mapFiltersElement.reset();
+    // window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
+    // window.popupCard.closeCard();
+    // window.pin.clearAll();
+    // window.card.clearAll(currentCards);
+    // window.disable.set(fieldsetArray);
+    // window.disable.set(mapFiltersArray);
 
   };
 
