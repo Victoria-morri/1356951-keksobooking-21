@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  const MAIN_PIN_X = 570;
-  const MAIN_PIN_Y = 375;
 
   const activateMap = function () {
     window.load(onSuccess, window.error.on, `https://21.javascript.pages.academy/keksobooking/data`, `GET`);
@@ -37,9 +35,11 @@
     }
   };
 
-  const onResetForm = function () {
-    window.position.mapPinMainElement.style.top = MAIN_PIN_Y + `px`;
-    window.position.mapPinMainElement.style.left = MAIN_PIN_X + `px`;
+  const onResetForm = function (evt) {
+    if (evt) {
+      evt.preventDefault();
+    }
+    window.position.start();
     mapElement.classList.add(`map--faded`);
     adFormElement.reset();
     adFormElement.classList.add(`ad-form--disabled`);
@@ -52,6 +52,7 @@
     window.card.clearAll(currentCards);
     window.disable.set(fieldsetArray);
     window.disable.set(mapFiltersArray);
+
   };
 
   const renderPins = function (arrayX) {
