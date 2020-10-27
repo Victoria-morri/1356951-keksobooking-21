@@ -14,13 +14,16 @@
     }) : dataArray;
     return arrayToUse;
   };
-  const timein = window.form.noticeElement.querySelector(`#timein`);
-  const timeout = window.form.noticeElement.querySelector(`#timeout`);
+
+  const noticeElement = document.querySelector(`.notice`);
+  const timein = noticeElement.querySelector(`#timein`);
+  const timeout = noticeElement.querySelector(`#timeout`);
   window.filter = {
     getTimeout,
     getTimein,
     filterData,
     timein,
-    timeout
+    timeout,
+    noticeElement
   };
 })();

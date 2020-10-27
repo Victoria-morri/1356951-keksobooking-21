@@ -15,44 +15,50 @@
 
   const reset = function (element1, element2, classNeeded, array1, array2) {
     element1.reset();
-    element2.classList.add(`${classNeeded}`);
+    element2.classList.add(classNeeded);
     set(array1);
     set(array2);
-
   };
 
-  const resetForm = function () {
-    formElement.reset();
-    formElement.classList.add(`ad-form--disabled`);
-    set(formFieldsetElements);
-    set(formSelectElements);
-    window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
-
+  const unreset = function (element1, classNeeded, array1, array2) {
+    element1.classList.remove(classNeeded);
+    unset(array1);
+    unset(array2);
   };
 
-  const resetMap = function (arr) {
-    mapFiltersElement.reset();
-    mapElement.classList.add(`map--faded`);
-    set(mapFieldsetElements);
-    set(mapSelectElements);
+  const clearPinsCards = function (array3) {
     window.popupCard.closeCard();
     window.pin.clearAll();
-    window.card.clearAll(arr);
+    window.card.clearAll(array3);
   };
-
-  const formElement = document.querySelector(`.ad-form`);
-  const formFieldsetElements = formElement.querySelectorAll(`fieldset`);
-  const formSelectElements = formElement.querySelectorAll(`select`);
-  const mapFiltersElement = document.querySelector(`.map__filters`);
-  const mapFieldsetElements = mapFiltersElement.querySelectorAll(`fieldset`);
-  const mapSelectElements = mapFiltersElement.querySelectorAll(`select`);
-  const mapElement = document.querySelector(`.map`);
 
   window.disable = {
     set,
     unset,
-    resetForm,
-    resetMap
+    reset,
+    unreset,
+    clearPinsCards
   };
 
 })();
+/* // formElement, formElement, `ad-form--disabled`, formFieldsetElements, formSelectElements
+  // mapFiltersElement, mapElement, `map--faded`, mapFieldsetElements, mapSelectElements
+  const resetForm = function (element1, element2, classNeeded, array1, array2) {
+    /* formElement.reset();
+    formElement.classList.add(`ad-form--disabled`);
+    set(formFieldsetElements);
+    set(formSelectElements);
+    reset(element1, element2, classNeeded, array1, array2);
+
+  };
+
+  const resetMap = function (element1, element2, classNeeded, array1, array2, array3) {
+    /* mapFiltersElement.reset();
+    mapElement.classList.add(`map--faded`);
+    set(mapFieldsetElements);
+    set(mapSelectElements);
+    reset(element1, element2, classNeeded, array1, array2);
+    window.popupCard.closeCard();
+    window.pin.clearAll();
+    window.card.clearAll(array3);
+  };*/
