@@ -61,32 +61,6 @@
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
 
-  /* const onPressEsc2 = function (evt) {
-    if (evt.key === `Escape`) {
-      evt.preventDefault();
-      onFormUnsendMessage();
-    }
-  };
-
-  const onFormUnsendMessage = function () {
-    document.body.removeChild(failMessage);
-    document.removeEventListener(`click`, onFormUnsendMessage);
-    document.removeEventListener(`keydown`, onPressEsc2);
-  };
-
-  const onPressEsc = function (evt) {
-    if (evt.key === `Escape`) {
-      evt.preventDefault();
-      onFormSendMessage();
-    }
-  };
-
-  const onFormSendMessage = function () {
-    document.body.removeChild(successMessage);
-    document.removeEventListener(`click`, onFormSendMessage);
-    document.removeEventListener(`keydown`, onPressEsc);
-  };*/
-
   const onSendForm = function (evt) {
     evt.preventDefault();
     window.load(onSuccessFormSend, onFailFormSend, `https://21.javascript.pages.academy/keksobooking`, `POST`, new FormData(adFormElement));
@@ -97,12 +71,6 @@
     chosenHousingType = type !== `any` ? type : ``;
     renderPins(window.filter.filterData(data, chosenHousingType));
   };
-
-  // const blockInputElements = document.querySelectorAll(`fieldset`);
-  // const mapFilterElements = document.querySelectorAll(`select`);
-  // const fieldsetArray = Array.from(blockInputElements);
-  // const mapFiltersArray = Array.from(mapFilterElements);
-  // const noticeElement = document.querySelector(`.notice`);
 
   const adFormElement = window.filter.noticeElement.querySelector(`.ad-form`);
   const formFieldsetElements = adFormElement.querySelectorAll(`fieldset`);
@@ -116,11 +84,6 @@
   const mapFieldsetElements = mapFiltersElement.querySelectorAll(`fieldset`);
   const mapSelectElements = mapFiltersElement.querySelectorAll(`select`);
   const housingType = mapFiltersElement.querySelector(`#housing-type`);
-  // const successElement = document.querySelector(`#success`).content.querySelector(`.success`);
-  // const successMessage = successElement.cloneNode(true);
-  // const failElement = document.querySelector(`#error`).content.querySelector(`.error`);
-  // const failMessage = failElement.cloneNode(true);
-  // const errorButton = failMessage.querySelector(`.error__button`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType;
@@ -143,18 +106,11 @@
 
   const onFailFormSend = function () {
     window.message.showError();
-    // document.body.appendChild(failMessage);
-    // document.addEventListener(`click`, onFormUnsendMessage);
-    // document.addEventListener(`keydown`, onPressEsc2);
-    // errorButton.addEventListener(`click`, onFormUnsendMessage);
   };
 
   const onSuccessFormSend = function () {
     onResetForm();
     window.message.showSuccess();
-    // document.body.appendChild(successMessage);
-    // document.addEventListener(`click`, onFormSendMessage);
-    // document.addEventListener(`keydown`, onPressEsc);
     adFormElement.removeEventListener(`submit`, onSendForm);
     resetElement.removeEventListener(`click`, onResetForm);
   };
@@ -167,9 +123,6 @@
     onKeyEnterDown,
     capacityElement,
     roomNumberElement,
-    // noticeElement,
-    // fieldsetArray,
-    // mapFiltersArray,
     formFieldsetElements,
     formSelectElements,
     mapFieldsetElements,
