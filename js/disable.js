@@ -16,15 +16,13 @@
   const resetMap = function () {
     mapFiltersElement.reset();
     mapElement.classList.add(`map--faded`);
-    set(mapFieldsetElements);
-    set(mapSelectElements);
+    set(mapFieldsArray);
   };
 
   const resetForm = function () {
     adFormElement.reset();
     adFormElement.classList.add(`ad-form--disabled`);
-    set(formFieldsetElements);
-    set(formSelectElements);
+    set(formFieldsArray);
   };
 
   const activate = function (element1, classNeeded, array1) {

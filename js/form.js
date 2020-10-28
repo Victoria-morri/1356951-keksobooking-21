@@ -2,8 +2,17 @@
 
 (function () {
 
+  const DATA_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const URL_TO_SEND = `https://21.javascript.pages.academy/keksobooking`;
+
   const activateMap = function () {
-    window.load(onSuccess, window.error.on, `https://21.javascript.pages.academy/keksobooking/data`, `GET`);
+    window.load({
+      onSuccess,
+      onError: window.message.show,
+      url: DATA_URL,
+      method: `GET`,
+      dataX: ``
+    });
   };
 
   const removeListeners = function () {
@@ -64,7 +73,13 @@
 
   const onSendForm = function (evt) {
     evt.preventDefault();
-    window.load(onSuccessFormSend, onFailFormSend, `https://21.javascript.pages.academy/keksobooking`, `POST`, new FormData(window.disable.adFormElement));
+    window.load({
+      onSuccess: onSuccessFormSend,
+      onError: onFailFormSend,
+      url: URL_TO_SEND,
+      method: `POST`,
+      dataX: new FormData(window.disable.adFormElement)
+    });
   };
 
   const onfilterHousingType = function (evt) {

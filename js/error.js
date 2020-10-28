@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  window.error.on = function (message) {
+  const show = function (message) {
     const error = document.createElement(`h2`);
     error.classList.add(`error-message`);
     error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
