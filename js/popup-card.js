@@ -2,12 +2,12 @@
 
 (function () {
 
-  const closeCard = function () {
+  const onCloseCard = function () {
     if (activeCard) {
       activeCard.hidden = true;
       activePin.classList.remove(`map__pin--active`);
       document.removeEventListener(`keydown`, onPopupEscPress);
-      closeCardButton.removeEventListener(`click`, closeCard);
+      closeCardButton.removeEventListener(`click`, onCloseCard);
       activeCard = ``;
       activePin = ``;
     }
@@ -20,13 +20,13 @@
     activePin.classList.add(`map__pin--active`);
     document.addEventListener(`keydown`, onPopupEscPress);
     closeCardButton = activeCard.querySelector(`.popup__close`);
-    closeCardButton.addEventListener(`click`, closeCard);
+    closeCardButton.addEventListener(`click`, onCloseCard);
   };
 
   const onPopupEscPress = function (evt) {
     if (evt.key === `Escape`) {
       evt.preventDefault();
-      closeCard();
+      onCloseCard();
     }
   };
   const getInteractive = function (pins, cards) {
@@ -61,7 +61,7 @@
   window.popupCard = {
     getInteractive,
     error,
-    closeCard
+    onCloseCard
   };
 
 })();

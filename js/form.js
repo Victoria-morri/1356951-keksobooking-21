@@ -40,10 +40,11 @@
       evt.preventDefault();
     }
     window.position.start();
-    window.disable.reset(adFormElement, adFormElement, `ad-form--disabled`, formFieldsetElements, formSelectElements);
+    window.disable.resetForm();
     window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
-    window.disable.reset(mapFiltersElement, mapElement, `map--faded`, mapFieldsetElements, mapSelectElements);
-    window.disable.clearPinsCards(currentCards);
+    window.disable.resetMap();
+    window.popupCard.onCloseCard();
+    window.card.clearPinsCards(currentCards);
     window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
     window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
   };
@@ -54,7 +55,7 @@
     window.card.clearAll(currentCards);
     currentPins = window.pin.renderAll(arrayForUse);
     currentCards = window.card.renderAll(arrayForUse);
-    mapElement.appendChild(currentCards);
+    window.disable.mapElement.appendChild(currentCards);
     mapPinsElement.appendChild(currentPins);
     mapsPinsElements = document.querySelectorAll(`.map__pin`);
     popupElements = document.querySelectorAll(`.map__card`);
@@ -63,7 +64,7 @@
 
   const onSendForm = function (evt) {
     evt.preventDefault();
-    window.load(onSuccessFormSend, onFailFormSend, `https://21.javascript.pages.academy/keksobooking`, `POST`, new FormData(adFormElement));
+    window.load(onSuccessFormSend, onFailFormSend, `https://21.javascript.pages.academy/keksobooking`, `POST`, new FormData(window.disable.adFormElement));
   };
 
   const onfilterHousingType = function (evt) {
@@ -72,18 +73,11 @@
     renderPins(window.filter.filterData(data, chosenHousingType));
   };
 
-  const adFormElement = window.filter.noticeElement.querySelector(`.ad-form`);
-  const formFieldsetElements = adFormElement.querySelectorAll(`fieldset`);
-  const formSelectElements = adFormElement.querySelectorAll(`select`);
-  const resetElement = adFormElement.querySelector(`.ad-form__reset`);
-  const mapElement = document.querySelector(`.map`);
-  const mapPinsElement = mapElement.querySelector(`.map__pins`);
-  const roomNumberElement = window.filter.noticeElement.querySelector(`#room_number`);
-  const capacityElement = window.filter.noticeElement.querySelector(`#capacity`);
-  const mapFiltersElement = document.querySelector(`.map__filters`);
-  const mapFieldsetElements = mapFiltersElement.querySelectorAll(`fieldset`);
-  const mapSelectElements = mapFiltersElement.querySelectorAll(`select`);
-  const housingType = mapFiltersElement.querySelector(`#housing-type`);
+  const resetElement = window.disable.adFormElement.querySelector(`.ad-form__reset`);
+  const mapPinsElement = window.disable.mapElement.querySelector(`.map__pins`);
+  const roomNumberElement = window.disable.noticeElement.querySelector(`#room_number`);
+  const capacityElement = window.disable.noticeElement.querySelector(`#capacity`);
+  const housingType = window.disable.mapFiltersElement.querySelector(`#housing-type`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType;
@@ -94,13 +88,13 @@
   const onSuccess = function (array) {
     data = array;
     renderPins(window.filter.filterData(data));
-    window.disable.unreset(mapElement, `map--faded`, mapFieldsetElements, mapSelectElements);
-    window.disable.unreset(adFormElement, `ad-form--disabled`, formFieldsetElements, formSelectElements);
+    window.disable.activate(window.disable.mapElement, `map--faded`, window.disable. mapFieldsArray);
+    window.disable.activate(window.disable.adFormElement, `ad-form--disabled`, window.disable.formFieldsArray);
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
     housingType.addEventListener(`change`, onfilterHousingType);
-    mapFiltersElement.addEventListener(`change`, window.popupCard.closeCard);
-    adFormElement.addEventListener(`submit`, onSendForm);
+    window.disable.mapFiltersElement.addEventListener(`change`, window.popupCard.onCloseCard);
+    window.disable.adFormElement.addEventListener(`submit`, onSendForm);
     resetElement.addEventListener(`click`, onResetForm);
   };
 
@@ -111,7 +105,7 @@
   const onSuccessFormSend = function () {
     onResetForm();
     window.message.showSuccess();
-    adFormElement.removeEventListener(`submit`, onSendForm);
+    window.disable.adFormElement.removeEventListener(`submit`, onSendForm);
     resetElement.removeEventListener(`click`, onResetForm);
   };
 
@@ -122,10 +116,6 @@
     onMouseLeftButtonDown,
     onKeyEnterDown,
     capacityElement,
-    roomNumberElement,
-    formFieldsetElements,
-    formSelectElements,
-    mapFieldsetElements,
-    mapSelectElements
+    roomNumberElement
   };
 }());

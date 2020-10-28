@@ -15,15 +15,13 @@
     return arrayToUse;
   };
 
-  const noticeElement = document.querySelector(`.notice`);
-  const timein = noticeElement.querySelector(`#timein`);
-  const timeout = noticeElement.querySelector(`#timeout`);
+  const timein = window.disable.noticeElement.querySelector(`#timein`);
+  const timeout = window.disable.noticeElement.querySelector(`#timeout`);
   window.filter = {
     getTimeout,
     getTimein,
     filterData,
     timein,
     timeout,
-    noticeElement
   };
 })();
