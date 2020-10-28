@@ -6,6 +6,13 @@
   const MAX_WIDTH = 1200;
   const MAX_HEIGHT = 630;
   const SKY_HEIGHT = 130;
+  const MAIN_PIN_X = 570;
+  const MAIN_PIN_Y = 375;
+
+  const start = function () {
+    mapPinMainElement.style.top = MAIN_PIN_Y + `px`;
+    mapPinMainElement.style.left = MAIN_PIN_X + `px`;
+  };
 
   const getNumber = function (some) {
     const someNumber = typeof some !== `number` ? parseInt(some, 10) : some;
@@ -79,6 +86,7 @@
   const adressInputElement = document.querySelector((`#address`));
 
   window.position = {
+    start,
     movePin,
     fillAdressInput,
     PIN_WIDTH_HALF,

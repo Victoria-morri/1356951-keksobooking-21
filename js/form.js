@@ -2,21 +2,17 @@
 
 (function () {
 
-  const onError = function (message) {
-    const error = document.createElement(`h2`);
-    error.classList.add(`error-message`);
-    error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    error.style.position = `absolute`;
-    error.style.left = 0;
-    error.style.right = 0;
-    error.style.color = `white`;
-    error.style.fontSize = `50px`;
-    error.textContent = message;
-    document.body.insertAdjacentElement(`afterbegin`, error);
-  };
+  const DATA_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const URL_TO_SEND = `https://21.javascript.pages.academy/keksobooking`;
 
   const activateMap = function () {
-    window.load(onSuccess, onError);
+    window.load({
+      onSuccess,
+      onError: window.message.show,
+      url: DATA_URL,
+      method: `GET`,
+      dataX: ``
+    });
   };
 
   const removeListeners = function () {
@@ -48,31 +44,55 @@
     }
   };
 
+  const onResetForm = function (evt) {
+    if (evt) {
+      evt.preventDefault();
+    }
+    window.position.start();
+    window.disable.resetForm();
+    window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
+    window.disable.resetMap();
+    window.popupCard.onCloseCard();
+    window.card.clearPinsCards(currentCards);
+    window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
+    window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
+  };
+
   const renderPins = function (arrayX) {
     const arrayForUse = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
     window.pin.clearAll();
     window.card.clearAll(currentCards);
     currentPins = window.pin.renderAll(arrayForUse);
     currentCards = window.card.renderAll(arrayForUse);
-    mapElement.appendChild(currentCards);
+    window.disable.mapElement.appendChild(currentCards);
     mapPinsElement.appendChild(currentPins);
     mapsPinsElements = document.querySelectorAll(`.map__pin`);
     popupElements = document.querySelectorAll(`.map__card`);
     window.popupCard.getInteractive(mapsPinsElements, popupElements);
   };
 
-  const blockInputElements = document.querySelectorAll(`fieldset`);
-  const mapFilterElements = document.querySelectorAll(`select`);
-  const fieldsetArray = Array.from(blockInputElements);
-  const mapFiltersArray = Array.from(mapFilterElements);
-  const noticeElement = document.querySelector(`.notice`);
-  const adFormElement = noticeElement.querySelector(`.ad-form`);
-  const mapElement = document.querySelector(`.map`);
-  const mapPinsElement = mapElement.querySelector(`.map__pins`);
-  const roomNumberElement = noticeElement.querySelector(`#room_number`);
-  const capacityElement = noticeElement.querySelector(`#capacity`);
-  const mapFilters = document.querySelector(`.map__filters`);
-  const housingType = mapFilters.querySelector(`#housing-type`);
+  const onSendForm = function (evt) {
+    evt.preventDefault();
+    window.load({
+      onSuccess: onSuccessFormSend,
+      onError: onFailFormSend,
+      url: URL_TO_SEND,
+      method: `POST`,
+      dataX: new FormData(window.disable.adFormElement)
+    });
+  };
+
+  const onfilterHousingType = function (evt) {
+    const type = evt.target.value;
+    chosenHousingType = type !== `any` ? type : ``;
+    renderPins(window.filter.filterData(data, chosenHousingType));
+  };
+
+  const resetElement = window.disable.adFormElement.querySelector(`.ad-form__reset`);
+  const mapPinsElement = window.disable.mapElement.querySelector(`.map__pins`);
+  const roomNumberElement = window.disable.noticeElement.querySelector(`#room_number`);
+  const capacityElement = window.disable.noticeElement.querySelector(`#capacity`);
+  const housingType = window.disable.mapFiltersElement.querySelector(`#housing-type`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let chosenHousingType;
@@ -83,18 +103,25 @@
   const onSuccess = function (array) {
     data = array;
     renderPins(window.filter.filterData(data));
-    window.disable.unset(fieldsetArray);
-    window.disable.unset(mapFiltersArray);
-    mapElement.classList.remove(`map--faded`);
-    adFormElement.classList.remove(`ad-form--disabled`);
+    window.disable.activate(window.disable.mapElement, `map--faded`, window.disable. mapFieldsArray);
+    window.disable.activate(window.disable.adFormElement, `ad-form--disabled`, window.disable.formFieldsArray);
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
-    housingType.addEventListener(`change`, function (evt) {
-      const type = evt.target.value;
-      chosenHousingType = type !== `any` ? type : ``;
-      renderPins(window.filter.filterData(array, chosenHousingType));
-    });
-    mapFilters.addEventListener(`change`, window.popupCard.closeCard);
+    housingType.addEventListener(`change`, onfilterHousingType);
+    window.disable.mapFiltersElement.addEventListener(`change`, window.popupCard.onCloseCard);
+    window.disable.adFormElement.addEventListener(`submit`, onSendForm);
+    resetElement.addEventListener(`click`, onResetForm);
+  };
+
+  const onFailFormSend = function () {
+    window.message.showError();
+  };
+
+  const onSuccessFormSend = function () {
+    onResetForm();
+    window.message.showSuccess();
+    window.disable.adFormElement.removeEventListener(`submit`, onSendForm);
+    resetElement.removeEventListener(`click`, onResetForm);
   };
 
   window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
@@ -104,9 +131,6 @@
     onMouseLeftButtonDown,
     onKeyEnterDown,
     capacityElement,
-    roomNumberElement,
-    noticeElement,
-    fieldsetArray,
-    mapFiltersArray
+    roomNumberElement
   };
 }());

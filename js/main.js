@@ -18,15 +18,14 @@ const setPrice = function () {
   priceElement.reportValidity();
 };
 
-const titleElement = window.form.noticeElement.querySelector(`#title`);
-const priceElement = window.form.noticeElement.querySelector(`#price`);
-const livesType = window.form.noticeElement.querySelector(`#type`);
+const titleElement = window.disable.noticeElement.querySelector(`#title`);
+const priceElement = window.disable.noticeElement.querySelector(`#price`);
+const livesType = window.disable.noticeElement.querySelector(`#type`);
 
 let minPrice = 1000;
 
-
-window.disable.set(window.form.fieldsetArray);
-window.disable.set(window.form.mapFiltersArray);
+window.disable.set(window.disable.mapFieldsArray);
+window.disable.set(window.disable.formFieldsArray);
 
 window.position.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
 window.position.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);

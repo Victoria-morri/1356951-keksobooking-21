@@ -1,19 +1,17 @@
 'use strict';
 
 (function () {
+  const URL = `https://21.javascript.pages.academy/keksobooking`;
 
-
-  window.load = function ({onSuccess, onError, url, method, dataX}) {
-    // const URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  window.upload = function (dataX, success, fail) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
-
     xhr.addEventListener(`load`, function () {
       const error = ``;
 
       switch (xhr.status) {
         case 200:
-          onSuccess(xhr.response);
+          success();
           break;
         case 400:
           error = `Неверный запрос`;
@@ -24,20 +22,17 @@
         case 404:
           error = `Ничего не найдено`;
           break;
-
         default:
           error = `Cтатус ответа: : ` + xhr.status + ` ` + xhr.statusText;
       }
       if (error) {
-        onError(error);
+        fail();
       }
     });
-
     xhr.addEventListener(`error`, function () {
-      onError(`Произошла ошибка соединения`);
+      fail();
     });
-    xhr.open(method, url); // `GET`
+    xhr.open(`POST`, URL);
     xhr.send(dataX);
   };
-
 })();

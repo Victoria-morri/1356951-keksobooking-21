@@ -66,9 +66,15 @@
     }
   };
 
+  const clearPinsCards = function (array) {
+    window.pin.clearAll();
+    window.card.clearAll(array);
+  };
+
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
   window.card = {
+    clearPinsCards,
     renderAll,
     clearAll
   };
