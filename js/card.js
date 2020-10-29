@@ -58,17 +58,18 @@
     return fragment;
   };
 
-  const clearAll = function (popupElements) {
-    if (popupElements) {
-      for (let i = 0; i < popupElements.length; i++) {
-        popupElements[i].hidden = true;
+  const clearAll = function () {
+    const cardsElements = document.querySelectorAll(`.map__card`);
+    if (cardsElements) {
+      for (let i = 0; i < cardsElements.length; i++) {
+        cardsElements[i].remove();
       }
     }
   };
 
-  const clearPinsCards = function (array) {
+  const clearPinsCards = function () {
     window.pin.clearAll();
-    window.card.clearAll(array);
+    clearAll();
   };
 
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);

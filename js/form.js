@@ -53,15 +53,14 @@
     window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
     window.disable.resetMap();
     window.popupCard.onCloseCard();
-    window.card.clearPinsCards(currentCards);
+    window.card.clearPinsCards();
     window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
     window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
   };
 
   const renderPins = function (arrayX) {
     const arrayForUse = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
-    window.pin.clearAll();
-    window.card.clearAll(currentCards);
+    window.card.clearPinsCards();
     currentPins = window.pin.renderAll(arrayForUse);
     currentCards = window.card.renderAll(arrayForUse);
     window.disable.mapElement.appendChild(currentCards);
@@ -83,31 +82,66 @@
   };
 
   const onfilterHousingType = function (evt) {
+    offer.price = evt.target.value;
+    // chosenHousingType = type !== `any` ? type : ``;
+    updatePins();
+  };
+
+  const onfilterHousingType2 = function (evt) {
+    offer.type = evt.target.value;
+    console.log(offer);
+    // chosenHousingType = type !== `any` ? type : ``;
+    // renderPins(window.filter.filterData2(data, offer));
+    updatePins();
+  };
+
+  /* const onFilter = function (evt) {
     const type = evt.target.value;
     chosenHousingType = type !== `any` ? type : ``;
     renderPins(window.filter.filterData(data, chosenHousingType));
+  };*/
+
+  const updatePins = function () {
+    window.card.clearPinsCards();
+    console.log(offer);
+    renderPins(window.filter.filterData2(data, offer));
   };
+
 
   const resetElement = window.disable.adFormElement.querySelector(`.ad-form__reset`);
   const mapPinsElement = window.disable.mapElement.querySelector(`.map__pins`);
   const roomNumberElement = window.disable.noticeElement.querySelector(`#room_number`);
   const capacityElement = window.disable.noticeElement.querySelector(`#capacity`);
   const housingType = window.disable.mapFiltersElement.querySelector(`#housing-type`);
+  const housingPrice = window.disable.mapFiltersElement.querySelector(`#housing-price`);
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
-  let chosenHousingType;
+  // let chosenHousingType;
+  // let chosenHousingPrice;
+  // let chosenHousingRooms;
+  // let chosenHousingGuests;
+  // let chosenHousingFeatures;
   let data = [];
   let currentCards;
   let currentPins;
-
+  let offer = {
+    type: `any`,
+    price: `any`,
+    rooms: `any`,
+    guests: `any`
+  };
+  console.log(offer);
   const onSuccess = function (array) {
     data = array;
-    renderPins(window.filter.filterData(data));
+    updatePins();
     window.disable.activate(window.disable.mapElement, `map--faded`, window.disable. mapFieldsArray);
     window.disable.activate(window.disable.adFormElement, `ad-form--disabled`, window.disable.formFieldsArray);
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
-    housingType.addEventListener(`change`, onfilterHousingType);
+    // window.disable.mapFiltersElement.addEventListener(`change`, onFilter);
+    housingType.addEventListener(`change`, onfilterHousingType2);
+    housingPrice.addEventListener(`change`, onfilterHousingType);
+    console.log(offer);
     window.disable.mapFiltersElement.addEventListener(`change`, window.popupCard.onCloseCard);
     window.disable.adFormElement.addEventListener(`submit`, onSendForm);
     resetElement.addEventListener(`click`, onResetForm);
