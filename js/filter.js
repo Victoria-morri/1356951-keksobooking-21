@@ -101,13 +101,13 @@
   };
 
   const filterData2 = function (dataArray, {type, price, rooms, guests, features}) {
-    console.log(dataArray);
+    // console.log(dataArray);
     let arrayType = getTypeArray(dataArray, type);
     let arrayTypePrice = getPriceArray(arrayType, price);
     let arrayTypePriceRooms = getRoomsArray(arrayTypePrice, rooms);
     let arrayTypePriceRoomsGuests = getGuestsArray(arrayTypePriceRooms, guests);
     let arrayFeatures = getFeaturesArray(arrayTypePriceRoomsGuests, features);
-    console.log(arrayFeatures);
+    // console.log(arrayFeatures);
     return arrayFeatures;
   };
 
