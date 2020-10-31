@@ -1,5 +1,10 @@
 'use strict';
 (function () {
+  const PRICE = {
+    low: 10000,
+    high: 50000
+  };
+
   const getTimeout = function () {
     timeout.value = timein.value;
   };
@@ -15,38 +20,95 @@
     return arrayToUse;
   };
 
-  const tyt = function (dataArray, parameter) {
-    let arrayToUse = parameter !== `any` ? dataArray.filter(function (dataOne) {
-      return dataOne.offer.type === parameter;
+  const getTypeArray = function (dataArray, type) {
+    let arrayToUse = type !== `any` ? dataArray.filter(function (dataOne) {
+      return dataOne.offer.type === type;
     }) : dataArray;
     return arrayToUse;
-    console.log(arrayToUse);
   };
 
-  const filterData2 = function (dataArray, {type, price/*  , rooms, guests*/}) {
-    let arrayToUse = tyt(dataArray, type);
+  const getPriceArray = function (dataArray, price) {
+    let arrayToUse = dataArray;
     if (price !== `any`) {
       if (price === `middle`) {
-        arrayToUse = price ? arrayToUse.filter(function (dataOne) {
-          return dataOne.offer.price <= 50000 && dataOne.offer.price >= 10000;
-        }) : arrayToUse;
+        arrayToUse = arrayToUse.filter(function (dataOne) {
+          return dataOne.offer.price <= PRICE.high && dataOne.offer.price >= PRICE.low;
+        });
       } else if (price === `low`) {
-        arrayToUse = price ? arrayToUse.filter(function (dataOne) {
-          return dataOne.offer.price < 10000;
-        }) : arrayToUse;
+        arrayToUse = arrayToUse.filter(function (dataOne) {
+          return dataOne.offer.price < PRICE.low;
+        });
       } else if (price === `high`) {
-        arrayToUse = price ? arrayToUse.filter(function (dataOne) {
-          return dataOne.offer.price > 50000;
-        }) : arrayToUse;
-      } else {
-        return arrayToUse;
+        arrayToUse = arrayToUse.filter(function (dataOne) {
+          return dataOne.offer.price > PRICE.high;
+        });
       }
+    } else {
+      return arrayToUse;
     }
-    /* arrayToUse = price ? dataArray.filter(function (dataOne) {
-      return dataOne.offer.price === price;
-    }) : arrayToUse;*/
-    console.log(arrayToUse);
     return arrayToUse;
+  };
+
+  const getRoomsArray = function (dataArray, rooms) {
+    let arrayToUse = rooms !== `any` ? dataArray.filter(function (dataOne) {
+      return dataOne.offer.rooms === parseInt(rooms, 10);
+    }) : dataArray;
+    return arrayToUse;
+  };
+
+  const getGuestsArray = function (dataArray, rooms) {
+    let arrayToUse;
+    if (rooms !== `any`) {
+      arrayToUse = rooms !== `0` ? dataArray.filter(function (dataOne) {
+        return dataOne.offer.guests === parseInt(rooms, 10) || dataOne.offer.guests > parseInt(rooms, 10);
+      }) : dataArray.filter(function (dataOne) {
+        return dataOne.offer.guests === parseInt(rooms, 10);
+      });
+    } else {
+      arrayToUse = dataArray;
+    }
+    return arrayToUse;
+  };
+
+  const getFeaturesArray = function (dataArray/* , features*/) {
+    /* let copy = [];
+    let wow = [];
+    for (let i = 0; i < dataArray.length; i++) {
+      //  let wow = Object.assign({}, dataArray[i]);
+      wow.push(i);
+    }
+    console.log(wow);
+    if (features.length !== 0) {
+      for (let i = 0; i < dataArray.length; i++) {
+        for (let j = 0; j < features.length; j++) {
+          if ((dataArray[i].offer.features.includes(features[j])) === false) {
+            copy.push(i);
+            // console.log(arrayToUse);
+          }
+          console.log(copy);
+          const unique = copy.filter(function (copy1, index) {
+            return copy.indexOf(copy1) === index;
+          });
+          console.log(unique);
+          delete wow[unique];
+          console.log(wow);
+        }
+      }
+    } else {
+      return dataArray;
+    }*/
+    return dataArray;
+  };
+
+  const filterData2 = function (dataArray, {type, price, rooms, guests, features}) {
+    console.log(dataArray);
+    let arrayType = getTypeArray(dataArray, type);
+    let arrayTypePrice = getPriceArray(arrayType, price);
+    let arrayTypePriceRooms = getRoomsArray(arrayTypePrice, rooms);
+    let arrayTypePriceRoomsGuests = getGuestsArray(arrayTypePriceRooms, guests);
+    let arrayFeatures = getFeaturesArray(arrayTypePriceRoomsGuests, features);
+    console.log(arrayFeatures);
+    return arrayFeatures;
   };
 
   const timein = window.disable.noticeElement.querySelector(`#timein`);
@@ -60,8 +122,4 @@
     timeout,
   };
 })();
-/*
-     type: `any`,
-    price: `any`,
-    rooms: `any`,
-    guests: `any`*/
+
