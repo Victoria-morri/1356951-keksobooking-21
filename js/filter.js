@@ -13,13 +13,6 @@
     timein.value = timeout.value;
   };
 
-  const filterData = function (dataArray, chosenType) {
-    const arrayToUse = chosenType ? dataArray.filter(function (dataOne) {
-      return dataOne.offer.type === chosenType;
-    }) : dataArray;
-    return arrayToUse;
-  };
-
   const getTypeArray = function (dataArray, type) {
     let arrayToUse = type !== `any` ? dataArray.filter(function (dataOne) {
       return dataOne.offer.type === type;
@@ -70,7 +63,7 @@
     return arrayToUse;
   };
 
-  const getFeaturesArray2 = function (dataArray, features) {
+  const getFeaturesArray = function (dataArray, features) {
     const arrayToUse = dataArray.filter(function (item) {
       for (let j = 0; j < features.length; j++) {
         if ((item.offer.features.includes(features[j])) === false) {
@@ -82,13 +75,14 @@
     return arrayToUse;
   };
 
-  const filterData2 = function (dataArray, {type, price, rooms, guests, features}) {
-    let arrayType = getTypeArray(dataArray, type);
-    let arrayTypePrice = getPriceArray(arrayType, price);
-    let arrayTypePriceRooms = getRoomsArray(arrayTypePrice, rooms);
-    let arrayTypePriceRoomsGuests = getGuestsArray(arrayTypePriceRooms, guests);
-    let arrayFeatures = getFeaturesArray2(arrayTypePriceRoomsGuests, features);
-    return arrayFeatures;
+  const filterData = function (dataArray, {type, price, rooms, guests, features}) {
+    let arrayToUse;
+    arrayToUse = getTypeArray(dataArray, type);
+    arrayToUse = getPriceArray(arrayToUse, price);
+    arrayToUse = getRoomsArray(arrayToUse, rooms);
+    arrayToUse = getGuestsArray(arrayToUse, guests);
+    arrayToUse = getFeaturesArray(arrayToUse, features);
+    return arrayToUse;
   };
 
   const timein = window.disable.noticeElement.querySelector(`#timein`);
@@ -97,7 +91,6 @@
     getTimeout,
     getTimein,
     filterData,
-    filterData2,
     timein,
     timeout,
   };

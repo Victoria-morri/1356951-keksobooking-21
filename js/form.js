@@ -119,7 +119,7 @@
 
   const updatePins = function () {
     window.card.clearPinsCards();
-    renderPins(window.filter.filterData2(data, offer));
+    renderPins(window.filter.filterData(data, offer));
   };
 
   const resetElement = window.disable.adFormElement.querySelector(`.ad-form__reset`);
