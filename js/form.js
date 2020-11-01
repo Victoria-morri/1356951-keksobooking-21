@@ -125,38 +125,17 @@
   const mapPinsElement = window.disable.mapElement.querySelector(`.map__pins`);
   const roomNumberElement = window.disable.noticeElement.querySelector(`#room_number`);
   const capacityElement = window.disable.noticeElement.querySelector(`#capacity`);
-  const housingType = window.disable.mapFiltersElement.querySelector(`#housing-type`);
-  const housingPrice = window.disable.mapFiltersElement.querySelector(`#housing-price`);
-  const housingRooms = window.disable.mapFiltersElement.querySelector(`#housing-rooms`);
-  const housingGuests = window.disable.mapFiltersElement.querySelector(`#housing-guests`);
   const mapFeatures = window.disable.mapFiltersElement.querySelector(`.map__features`);
-  /* const wifiFeature = mapFeatures.querySelector(`#filter-wifi`);
-  const dishwasherFeature = mapFeatures.querySelector(`#filter-dishwasher`);
-  const parkingFeature = mapFeatures.querySelector(`#filter-parking`);
-  const washerFeature = mapFeatures.querySelector(`#filter-washer`);
-  const elevatorFeature = mapFeatures.querySelector(`#filter-elevator`);
-  const conditionerFeature = mapFeatures.querySelector(`#filter-conditioner`);*/
   const inputsmapFeatures = mapFeatures.querySelectorAll(`input`);
   const objectHandler = {
     'housing-type': changeHousingOffer,
     'housing-price': changePriceOffer,
     'housing-rooms': changeRoomsOffer,
     'housing-guests': changeGuestsOffer,
-    'filter-wifi': changeMapFeatures,
-    'filter-dishwasher': changeMapFeatures,
-    'filter-parking': changeMapFeatures,
-    'filter-washer': changeMapFeatures,
-    'filter-elevator': changeMapFeatures,
-    'filter-conditioner': changeMapFeatures
+    'features': changeMapFeatures
   };
-
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
-  // let chosenHousingType;
-  // let chosenHousingPrice;
-  // let chosenHousingRooms;
-  // let chosenHousingGuests;
-  // let chosenHousingFeatures;
   let data = [];
   let currentCards;
   let currentPins;
@@ -167,6 +146,7 @@
     guests: `any`,
     features: []
   };
+
   const onSuccess = function (array) {
     data = array;
     updatePins();
@@ -174,14 +154,7 @@
     window.disable.activate(window.disable.adFormElement, `ad-form--disabled`, window.disable.formFieldsArray);
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
-    // window.disable.mapFiltersElement.addEventListener(`change`, onFilter);
     window.disable.mapFiltersElement.addEventListener(`change`, onChange);
-    housingType.addEventListener(`change`, changeHousingOffer);
-    housingPrice.addEventListener(`change`, changePriceOffer);
-    housingRooms.addEventListener(`change`, changeRoomsOffer);
-    housingGuests.addEventListener(`change`, changeGuestsOffer);
-    mapFeatures.addEventListener(`change`, changeMapFeatures);
-    // console.log(offer);
     window.disable.mapFiltersElement.addEventListener(`change`, window.popupCard.onCloseCard);
     window.disable.adFormElement.addEventListener(`submit`, onSendForm);
     resetElement.addEventListener(`click`, onResetForm);

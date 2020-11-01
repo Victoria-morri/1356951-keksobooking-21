@@ -1,12 +1,6 @@
 'use strict';
 
 const MAX_PRICE = 1000000;
-const LIVES_TYPES_MIN_PRICE = {
-  bungalow: 0,
-  flat: 1000,
-  house: 5000,
-  palace: 10000
-};
 
 const setPrice = function () {
   const priceValue = parseInt(priceElement.value, 10);
@@ -21,6 +15,12 @@ const setPrice = function () {
 const titleElement = window.disable.noticeElement.querySelector(`#title`);
 const priceElement = window.disable.noticeElement.querySelector(`#price`);
 const livesType = window.disable.noticeElement.querySelector(`#type`);
+const housingTypesMinPrice = {
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+};
 
 let minPrice = 1000;
 
@@ -48,7 +48,7 @@ priceElement.addEventListener(`input`, setPrice);
 
 livesType.addEventListener(`change`, function (evt) {
   const typeValue = evt.target.value;
-  minPrice = LIVES_TYPES_MIN_PRICE[typeValue];
+  minPrice = housingTypesMinPrice[typeValue];
   priceElement.placeholder = minPrice;
   setPrice();
 });
