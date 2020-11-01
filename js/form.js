@@ -112,6 +112,7 @@
   });
 
   const onChange = function (evt) {
+    window.popupCard.onCloseCard();
     const getFunction = objectHandler[evt.target.getAttribute(`name`)];
     getFunction(evt);
   };
@@ -155,7 +156,6 @@
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
     window.disable.mapFiltersElement.addEventListener(`change`, onChange);
-    window.disable.mapFiltersElement.addEventListener(`change`, window.popupCard.onCloseCard);
     window.disable.adFormElement.addEventListener(`submit`, onSendForm);
     resetElement.addEventListener(`click`, onResetForm);
   };
