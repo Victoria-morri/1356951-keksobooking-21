@@ -81,45 +81,45 @@
     });
   };
 
-  const onfilterHousingType = window.debounce(function (evt) {
+  const changePriceOffer = window.debounce(function (evt) {
     offer.price = evt.target.value;
     updatePins();
   });
 
-  const onfilterHousingType3 = window.debounce(function (evt) {
+  const changeRoomsOffer = window.debounce(function (evt) {
     offer.rooms = evt.target.value;
     updatePins();
   });
 
-  const onfilterHousingType2 = window.debounce(function (evt) {
+  const changeHousingOffer = window.debounce(function (evt) {
     offer.type = evt.target.value;
     updatePins();
   });
 
-  const onfilterHousingType4 = window.debounce(function (evt) {
+  const changeGuestsOffer = window.debounce(function (evt) {
     offer.guests = evt.target.value;
     updatePins();
   });
 
-  const onfilterHousingType5 = function () {
+  const changeMapFeatures = window.debounce(function () {
     offer.features = [];
     for (let i = 0; i < inputsmapFeatures.length; i++) {
       if (inputsmapFeatures[i].checked) {
         offer.features.push(inputsmapFeatures[i].value);
       }
     }
-
-    // console.log(inputsmapFeatures);
-
     updatePins();
+  });
+
+  const onChange = function (evt) {
+    const getFunction = objectHandler[evt.target.getAttribute(`name`)];
+    getFunction(evt);
   };
 
   const updatePins = function () {
     window.card.clearPinsCards();
-    // console.log(offer);
     renderPins(window.filter.filterData2(data, offer));
   };
-
 
   const resetElement = window.disable.adFormElement.querySelector(`.ad-form__reset`);
   const mapPinsElement = window.disable.mapElement.querySelector(`.map__pins`);
@@ -130,8 +130,26 @@
   const housingRooms = window.disable.mapFiltersElement.querySelector(`#housing-rooms`);
   const housingGuests = window.disable.mapFiltersElement.querySelector(`#housing-guests`);
   const mapFeatures = window.disable.mapFiltersElement.querySelector(`.map__features`);
+  /* const wifiFeature = mapFeatures.querySelector(`#filter-wifi`);
+  const dishwasherFeature = mapFeatures.querySelector(`#filter-dishwasher`);
+  const parkingFeature = mapFeatures.querySelector(`#filter-parking`);
+  const washerFeature = mapFeatures.querySelector(`#filter-washer`);
+  const elevatorFeature = mapFeatures.querySelector(`#filter-elevator`);
+  const conditionerFeature = mapFeatures.querySelector(`#filter-conditioner`);*/
   const inputsmapFeatures = mapFeatures.querySelectorAll(`input`);
-  // const filterWifi = window.disable.mapFiltersElement.querySelector(`#filter-wifi`);
+  const objectHandler = {
+    'housing-type': changeHousingOffer,
+    'housing-price': changePriceOffer,
+    'housing-rooms': changeRoomsOffer,
+    'housing-guests': changeGuestsOffer,
+    'filter-wifi': changeMapFeatures,
+    'filter-dishwasher': changeMapFeatures,
+    'filter-parking': changeMapFeatures,
+    'filter-washer': changeMapFeatures,
+    'filter-elevator': changeMapFeatures,
+    'filter-conditioner': changeMapFeatures
+  };
+
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   // let chosenHousingType;
@@ -157,11 +175,12 @@
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
     // window.disable.mapFiltersElement.addEventListener(`change`, onFilter);
-    housingType.addEventListener(`change`, onfilterHousingType2);
-    housingPrice.addEventListener(`change`, onfilterHousingType);
-    housingRooms.addEventListener(`change`, onfilterHousingType3);
-    housingGuests.addEventListener(`change`, onfilterHousingType4);
-    mapFeatures.addEventListener(`change`, onfilterHousingType5);
+    window.disable.mapFiltersElement.addEventListener(`change`, onChange);
+    housingType.addEventListener(`change`, changeHousingOffer);
+    housingPrice.addEventListener(`change`, changePriceOffer);
+    housingRooms.addEventListener(`change`, changeRoomsOffer);
+    housingGuests.addEventListener(`change`, changeGuestsOffer);
+    mapFeatures.addEventListener(`change`, changeMapFeatures);
     // console.log(offer);
     window.disable.mapFiltersElement.addEventListener(`change`, window.popupCard.onCloseCard);
     window.disable.adFormElement.addEventListener(`submit`, onSendForm);

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  const HOUSING_TYPE = {
+  const housingType = {
     palace: `Дворец`,
     flat: `Квартира`,
     house: `Дом`,
@@ -16,7 +16,7 @@
     mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
 
     const chousenHousing = option.offer.type;
-    mapCard.querySelector(`.popup__type`).textContent = HOUSING_TYPE[chousenHousing];
+    mapCard.querySelector(`.popup__type`).textContent = housingType[chousenHousing];
     mapCard.querySelector(`.popup__text--capacity`).textContent = `${option.offer.rooms} комнаты для ${option.offer.guests} гостей`;
     mapCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}`;
 

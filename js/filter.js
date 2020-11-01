@@ -70,44 +70,24 @@
     return arrayToUse;
   };
 
-  const getFeaturesArray = function (dataArray/* , features*/) {
-    /* let copy = [];
-    let wow = [];
-    for (let i = 0; i < dataArray.length; i++) {
-      //  let wow = Object.assign({}, dataArray[i]);
-      wow.push(i);
-    }
-    console.log(wow);
-    if (features.length !== 0) {
-      for (let i = 0; i < dataArray.length; i++) {
-        for (let j = 0; j < features.length; j++) {
-          if ((dataArray[i].offer.features.includes(features[j])) === false) {
-            copy.push(i);
-            // console.log(arrayToUse);
-          }
-          console.log(copy);
-          const unique = copy.filter(function (copy1, index) {
-            return copy.indexOf(copy1) === index;
-          });
-          console.log(unique);
-          delete wow[unique];
-          console.log(wow);
+  const getFeaturesArray2 = function (dataArray, features) {
+    const arrayToUse = dataArray.filter(function (item) {
+      for (let j = 0; j < features.length; j++) {
+        if ((item.offer.features.includes(features[j])) === false) {
+          return false;
         }
       }
-    } else {
-      return dataArray;
-    }*/
-    return dataArray;
+      return true;
+    });
+    return arrayToUse;
   };
 
   const filterData2 = function (dataArray, {type, price, rooms, guests, features}) {
-    // console.log(dataArray);
     let arrayType = getTypeArray(dataArray, type);
     let arrayTypePrice = getPriceArray(arrayType, price);
     let arrayTypePriceRooms = getRoomsArray(arrayTypePrice, rooms);
     let arrayTypePriceRoomsGuests = getGuestsArray(arrayTypePriceRooms, guests);
-    let arrayFeatures = getFeaturesArray(arrayTypePriceRoomsGuests, features);
-    // console.log(arrayFeatures);
+    let arrayFeatures = getFeaturesArray2(arrayTypePriceRoomsGuests, features);
     return arrayFeatures;
   };
 
