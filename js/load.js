@@ -4,7 +4,6 @@
 
 
   window.load = function ({onSuccess, onError, url, method, dataX}) {
-    // const URL = `https://21.javascript.pages.academy/keksobooking/data`;
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 

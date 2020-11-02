@@ -53,15 +53,14 @@
     window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
     window.disable.resetMap();
     window.popupCard.onCloseCard();
-    window.card.clearPinsCards(currentCards);
+    window.card.clearPinsCards();
     window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
     window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
   };
 
   const renderPins = function (arrayX) {
     const arrayForUse = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
-    window.pin.clearAll();
-    window.card.clearAll(currentCards);
+    window.card.clearPinsCards();
     currentPins = window.pin.renderAll(arrayForUse);
     currentCards = window.card.renderAll(arrayForUse);
     window.disable.mapElement.appendChild(currentCards);
@@ -82,33 +81,81 @@
     });
   };
 
-  const onfilterHousingType = function (evt) {
-    const type = evt.target.value;
-    chosenHousingType = type !== `any` ? type : ``;
-    renderPins(window.filter.filterData(data, chosenHousingType));
+  const changePriceOffer = function (evt) {
+    offer.price = evt.target.value;
+    updatePins();
+  };
+
+  const changeRoomsOffer = function (evt) {
+    offer.rooms = evt.target.value;
+    updatePins();
+  };
+
+  const changeHousingOffer = function (evt) {
+    offer.type = evt.target.value;
+    updatePins();
+  };
+
+  const changeGuestsOffer = function (evt) {
+    offer.guests = evt.target.value;
+    updatePins();
+  };
+
+  const changeMapFeatures = function () {
+    offer.features = [];
+    inputsmapFeatures.forEach(function (item) {
+      if (item.checked) {
+        offer.features.push(item.value);
+      }
+    });
+    updatePins();
+  };
+
+  const onChange = window.debounce(function (evt) {
+    window.popupCard.onCloseCard();
+    const filterChangeHandler = filterChangeHandlerMap[evt.target.getAttribute(`name`)];
+    filterChangeHandler(evt);
+  });
+
+  const updatePins = function () {
+    window.card.clearPinsCards();
+    renderPins(window.filter.filterData(data, offer));
   };
 
   const resetElement = window.disable.adFormElement.querySelector(`.ad-form__reset`);
   const mapPinsElement = window.disable.mapElement.querySelector(`.map__pins`);
   const roomNumberElement = window.disable.noticeElement.querySelector(`#room_number`);
   const capacityElement = window.disable.noticeElement.querySelector(`#capacity`);
-  const housingType = window.disable.mapFiltersElement.querySelector(`#housing-type`);
+  const mapFeatures = window.disable.mapFiltersElement.querySelector(`.map__features`);
+  const inputsmapFeatures = mapFeatures.querySelectorAll(`input`);
+  const filterChangeHandlerMap = {
+    'housing-type': changeHousingOffer,
+    'housing-price': changePriceOffer,
+    'housing-rooms': changeRoomsOffer,
+    'housing-guests': changeGuestsOffer,
+    'features': changeMapFeatures
+  };
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
-  let chosenHousingType;
   let data = [];
   let currentCards;
   let currentPins;
+  let offer = {
+    type: `any`,
+    price: `any`,
+    rooms: `any`,
+    guests: `any`,
+    features: []
+  };
 
   const onSuccess = function (array) {
     data = array;
-    renderPins(window.filter.filterData(data));
+    updatePins();
     window.disable.activate(window.disable.mapElement, `map--faded`, window.disable. mapFieldsArray);
     window.disable.activate(window.disable.adFormElement, `ad-form--disabled`, window.disable.formFieldsArray);
     const errorMessageElement = document.querySelector(`.error-message`);
     window.popupCard.error(errorMessageElement);
-    housingType.addEventListener(`change`, onfilterHousingType);
-    window.disable.mapFiltersElement.addEventListener(`change`, window.popupCard.onCloseCard);
+    window.disable.mapFiltersElement.addEventListener(`change`, onChange);
     window.disable.adFormElement.addEventListener(`submit`, onSendForm);
     resetElement.addEventListener(`click`, onResetForm);
   };

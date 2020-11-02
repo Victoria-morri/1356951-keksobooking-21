@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  const HOUSING_TYPE = {
+  const housingType = {
     palace: `Дворец`,
     flat: `Квартира`,
     house: `Дом`,
@@ -16,7 +16,7 @@
     mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
 
     const chousenHousing = option.offer.type;
-    mapCard.querySelector(`.popup__type`).textContent = HOUSING_TYPE[chousenHousing];
+    mapCard.querySelector(`.popup__type`).textContent = housingType[chousenHousing];
     mapCard.querySelector(`.popup__text--capacity`).textContent = `${option.offer.rooms} комнаты для ${option.offer.guests} гостей`;
     mapCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}`;
 
@@ -46,7 +46,6 @@
     return mapCard;
   };
 
-  // Функции похожи, (renderMapPinsList) но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
   const renderAll = function (array) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < array.length; i++) {
@@ -58,17 +57,16 @@
     return fragment;
   };
 
-  const clearAll = function (popupElements) {
-    if (popupElements) {
-      for (let i = 0; i < popupElements.length; i++) {
-        popupElements[i].hidden = true;
-      }
+  const clearAll = function () {
+    const cardsElements = document.querySelectorAll(`.map__card`);
+    for (let i = 0; i < cardsElements.length; i++) {
+      cardsElements[i].remove();
     }
   };
 
-  const clearPinsCards = function (array) {
+  const clearPinsCards = function () {
     window.pin.clearAll();
-    window.card.clearAll(array);
+    clearAll();
   };
 
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
