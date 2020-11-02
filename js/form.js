@@ -103,11 +103,11 @@
 
   const changeMapFeatures = window.debounce(function () {
     offer.features = [];
-    for (let i = 0; i < inputsmapFeatures.length; i++) {
-      if (inputsmapFeatures[i].checked) {
-        offer.features.push(inputsmapFeatures[i].value);
+    inputsmapFeatures.forEach(function (item) {
+      if (item.checked) {
+        offer.features.push(item.value);
       }
-    }
+    });
     updatePins();
   });
 
