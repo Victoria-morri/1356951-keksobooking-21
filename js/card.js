@@ -46,7 +46,6 @@
     return mapCard;
   };
 
-  // Функции похожи, (renderMapPinsList) но одна пока без перебора, поэтому я совмещу их когда нужно будет и во второй функции их перебрать
   const renderAll = function (array) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < array.length; i++) {
