@@ -60,10 +60,8 @@
 
   const clearAll = function () {
     const cardsElements = document.querySelectorAll(`.map__card`);
-    if (cardsElements) {
-      for (let i = 0; i < cardsElements.length; i++) {
-        cardsElements[i].remove();
-      }
+    for (let i = 0; i < cardsElements.length; i++) {
+      cardsElements[i].remove();
     }
   };
 

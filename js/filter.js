@@ -36,26 +36,26 @@
           return dataOne.offer.price > PRICE.high;
         });
       }
-    } else {
-      return arrayToUse;
     }
     return arrayToUse;
   };
 
   const getRoomsArray = function (dataArray, rooms) {
+    const roomsNumber = parseInt(rooms, 10);
     let arrayToUse = rooms !== `any` ? dataArray.filter(function (dataOne) {
-      return dataOne.offer.rooms === parseInt(rooms, 10);
+      return dataOne.offer.rooms === roomsNumber;
     }) : dataArray;
     return arrayToUse;
   };
 
-  const getGuestsArray = function (dataArray, rooms) {
+  const getGuestsArray = function (dataArray, guests) {
     let arrayToUse;
-    if (rooms !== `any`) {
-      arrayToUse = rooms !== `0` ? dataArray.filter(function (dataOne) {
-        return dataOne.offer.guests === parseInt(rooms, 10) || dataOne.offer.guests > parseInt(rooms, 10);
+    const guestsNumber = parseInt(guests, 10);
+    if (guests !== `any`) {
+      arrayToUse = guests !== `0` ? dataArray.filter(function (dataOne) {
+        return dataOne.offer.guests >= guestsNumber;
       }) : dataArray.filter(function (dataOne) {
-        return dataOne.offer.guests === parseInt(rooms, 10);
+        return dataOne.offer.guests === guestsNumber;
       });
     } else {
       arrayToUse = dataArray;

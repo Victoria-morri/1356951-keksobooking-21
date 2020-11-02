@@ -81,27 +81,27 @@
     });
   };
 
-  const changePriceOffer = window.debounce(function (evt) {
+  const changePriceOffer = function (evt) {
     offer.price = evt.target.value;
     updatePins();
-  });
+  };
 
-  const changeRoomsOffer = window.debounce(function (evt) {
+  const changeRoomsOffer = function (evt) {
     offer.rooms = evt.target.value;
     updatePins();
-  });
+  };
 
-  const changeHousingOffer = window.debounce(function (evt) {
+  const changeHousingOffer = function (evt) {
     offer.type = evt.target.value;
     updatePins();
-  });
+  };
 
-  const changeGuestsOffer = window.debounce(function (evt) {
+  const changeGuestsOffer = function (evt) {
     offer.guests = evt.target.value;
     updatePins();
-  });
+  };
 
-  const changeMapFeatures = window.debounce(function () {
+  const changeMapFeatures = function () {
     offer.features = [];
     inputsmapFeatures.forEach(function (item) {
       if (item.checked) {
@@ -109,13 +109,13 @@
       }
     });
     updatePins();
-  });
-
-  const onChange = function (evt) {
-    window.popupCard.onCloseCard();
-    const getFunction = objectHandler[evt.target.getAttribute(`name`)];
-    getFunction(evt);
   };
+
+  const onChange = window.debounce(function (evt) {
+    window.popupCard.onCloseCard();
+    const filterChangeHandler = filterChangeHandlerMap[evt.target.getAttribute(`name`)];
+    filterChangeHandler(evt);
+  });
 
   const updatePins = function () {
     window.card.clearPinsCards();
@@ -128,7 +128,7 @@
   const capacityElement = window.disable.noticeElement.querySelector(`#capacity`);
   const mapFeatures = window.disable.mapFiltersElement.querySelector(`.map__features`);
   const inputsmapFeatures = mapFeatures.querySelectorAll(`input`);
-  const objectHandler = {
+  const filterChangeHandlerMap = {
     'housing-type': changeHousingOffer,
     'housing-price': changePriceOffer,
     'housing-rooms': changeRoomsOffer,
