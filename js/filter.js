@@ -4,13 +4,39 @@
     low: 10000,
     high: 50000
   };
-
-  const getTimeout = function () {
-    timeout.value = timein.value;
+  const mapFeatures = window.utils.mapFiltersElement.querySelector(`.map__features`);
+  const inputsmapFeatures = mapFeatures.querySelectorAll(`input`);
+  let offer = {
+    type: `any`,
+    price: `any`,
+    rooms: `any`,
+    guests: `any`,
+    features: []
   };
 
-  const getTimein = function () {
-    timein.value = timeout.value;
+  const changePriceOffer = function (evt) {
+    offer.price = evt.target.value;
+  };
+
+  const changeRoomsOffer = function (evt) {
+    offer.rooms = evt.target.value;
+  };
+
+  const changeHousingOffer = function (evt) {
+    offer.type = evt.target.value;
+  };
+
+  const changeGuestsOffer = function (evt) {
+    offer.guests = evt.target.value;
+  };
+
+  const changeMapFeatures = function () {
+    offer.features = [];
+    inputsmapFeatures.forEach(function (item) {
+      if (item.checked) {
+        offer.features.push(item.value);
+      }
+    });
   };
 
   const getTypeArray = function (dataArray, type) {
@@ -75,24 +101,23 @@
     return arrayToUse;
   };
 
-  const filterData = function (dataArray, {type, price, rooms, guests, features}) {
-    let arrayToUse;
-    arrayToUse = getTypeArray(dataArray, type);
+  const filterData = function (dataArray) {
+    /* arrayToUse = getTypeArray(dataArray, type);
     arrayToUse = getPriceArray(arrayToUse, price);
     arrayToUse = getRoomsArray(arrayToUse, rooms);
-    arrayToUse = getGuestsArray(arrayToUse, guests);
-    arrayToUse = getFeaturesArray(arrayToUse, features);
+    arrayToUse = getGuestsArray(arrayToUse, guests);*/
+    let arrayToUse = getFeaturesArray(getGuestsArray(getRoomsArray(getPriceArray(getTypeArray(dataArray, offer.type), offer.price), offer.rooms), offer.guests), offer.features);
+    arrayToUse = arrayToUse.length > 5 ? arrayToUse.slice(0, 5) : arrayToUse;
     return arrayToUse;
   };
 
-  const timein = window.utils.noticeElement.querySelector(`#timein`);
-  const timeout = window.utils.noticeElement.querySelector(`#timeout`);
   window.filter = {
-    getTimeout,
-    getTimein,
+    changePriceOffer,
+    changeRoomsOffer,
+    changeHousingOffer,
+    changeGuestsOffer,
+    changeMapFeatures,
     filterData,
-    timein,
-    timeout,
   };
 })();
 

@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  const OK = 200;
+  const BAD_REQUEST = 400;
+  const UNAUTHORIZED = 401;
+  const NOT_FOUND = 404;
 
 
   window.load = function ({onSuccess, onError, url, method, dataX}) {
@@ -11,16 +15,16 @@
       const error = ``;
 
       switch (xhr.status) {
-        case 200:
+        case OK:
           onSuccess(xhr.response);
           break;
-        case 400:
+        case BAD_REQUEST:
           error = `Неверный запрос`;
           break;
-        case 401:
+        case UNAUTHORIZED:
           error = `Пользователь не авторизован`;
           break;
-        case 404:
+        case NOT_FOUND:
           error = `Ничего не найдено`;
           break;
 

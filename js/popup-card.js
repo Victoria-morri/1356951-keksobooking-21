@@ -29,7 +29,7 @@
       onCloseCard();
     }
   };
-  const getInteractive = function (pins, cards) {
+  const initInteractive = function (pins, cards) {
     for (let i = 1; i < pins.length; i++) {
       let currentPin = pins[i];
       let currentCard = cards[i - 1];
@@ -48,19 +48,20 @@
     }
   };
 
-  const error = function (errorMessage) {
-    if (errorMessage) {
-      errorMessage.classList.add(`hidden`);
+  const hideErrorMessage = function () {
+    if (errorMessageElement) {
+      errorMessageElement.classList.add(`hidden`);
     }
   };
 
+  const errorMessageElement = document.querySelector(`.error-message`);
   let closeCardButton;
   let activePin;
   let activeCard;
 
   window.popupCard = {
-    getInteractive,
-    error,
+    initInteractive,
+    hideErrorMessage,
     onCloseCard
   };
 

@@ -13,6 +13,15 @@
     mapPinMainElement.style.top = MAIN_PIN_Y + `px`;
     mapPinMainElement.style.left = MAIN_PIN_X + `px`;
   };
+  // window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
+
+  // window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
+
+  const startAdressInput = function () {
+    const width3 = getNumber(window.position.mapPinMainElement.style.left);
+    const height3 = getNumber(window.position.mapPinMainElement.style.top);
+    adressInputElement.value = `left: ${width3 + window.position.PIN_WIDTH_HALF}px; top: ${height3 + window.position.PIN_HEIGHT / 2}px`;
+  };
 
   const getNumber = function (some) {
     const someNumber = typeof some !== `number` ? parseInt(some, 10) : some;
@@ -24,6 +33,7 @@
     const height3 = getNumber(height1);
     adressInputElement.value = `left: ${width3 + width2}px; top: ${height3 + height2}px`;
   };
+
   const getPosition = function (min, max, position) {
     let actualPosition;
     if (position > max) {
@@ -86,6 +96,7 @@
   const adressInputElement = document.querySelector((`#address`));
 
   window.position = {
+    startAdressInput,
     start,
     movePin,
     fillAdressInput,

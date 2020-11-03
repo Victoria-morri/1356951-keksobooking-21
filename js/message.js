@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  const show = function (message) {
+  const showServerMessage = function (message) {
     const error = document.createElement(`h2`);
     error.classList.add(`error-message`);
     error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
@@ -62,7 +62,7 @@
   window.message = {
     showSuccess,
     showError,
-    show
+    showServerMessage
   };
 })();
 
