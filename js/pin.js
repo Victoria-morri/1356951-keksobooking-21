@@ -1,13 +1,6 @@
 'use strict';
 
 (function () {
-  const createMapCardList = function () {
-    const mapCardList = [];
-    for (let i = 0; i < window.advertaisement.QUANTITY_ADVERTAISEMENTS; i++) {
-      mapCardList.push(window.advertaisement.get());
-    }
-    return mapCardList;
-  };
 
   const create = function (card) {
     const pinMap = mapPinElement.cloneNode(true);
@@ -40,14 +33,12 @@
     return fragment;
   };
 
-  const cardList = createMapCardList();
   const mapPinElement = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   window.pin = {
     renderMapPinsList,
     clearAll,
     renderAll,
-    cardList,
     mapPinElement
   };
 

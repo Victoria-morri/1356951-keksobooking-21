@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  const FEATURES_LIST = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
   const housingType = {
     palace: `Дворец`,
     flat: `Квартира`,
@@ -22,7 +23,7 @@
 
     const festurePopup = mapCard.querySelector(`.popup__features`);
     const featureAr = option.offer.features;
-    window.advertaisement.FEATURES_LIST.forEach(function (optionFeature) {
+    FEATURES_LIST.forEach(function (optionFeature) {
       if (!featureAr.includes(optionFeature)) {
         festurePopup.querySelector(`.popup__feature--${optionFeature}`).classList.add(`hidden`);
       }

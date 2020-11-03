@@ -49,6 +49,7 @@ priceElement.addEventListener(`input`, setPrice);
 livesType.addEventListener(`change`, function (evt) {
   const typeValue = evt.target.value;
   minPrice = housingTypesMinPrice[typeValue];
+  priceElement.min = minPrice;
   priceElement.placeholder = minPrice;
   setPrice();
 });
