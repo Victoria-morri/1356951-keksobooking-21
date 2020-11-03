@@ -1,13 +1,13 @@
 'use strict';
 (function () {
 
-  const set = function (arrayName) {
+  const disable = function (arrayName) {
     for (let i = 0; i < arrayName.length; i++) {
       arrayName[i].setAttribute(`disabled`, `disabled`);
     }
   };
 
-  const unset = function (arrayName) {
+  const undisable = function (arrayName) {
     for (let i = 0; i < arrayName.length; i++) {
       arrayName[i].removeAttribute(`disabled`);
     }
@@ -16,18 +16,18 @@
   const resetMap = function () {
     mapFiltersElement.reset();
     mapElement.classList.add(`map--faded`);
-    set(mapFieldsArray);
+    disable(mapFieldsArray);
   };
 
   const resetForm = function () {
     adFormElement.reset();
     adFormElement.classList.add(`ad-form--disabled`);
-    set(formFieldsArray);
+    disable(formFieldsArray);
   };
 
   const activate = function (element1, classNeeded, array1) {
     element1.classList.remove(classNeeded);
-    unset(array1);
+    undisable(array1);
   };
 
   const noticeElement = document.querySelector(`.notice`);
@@ -41,9 +41,9 @@
   const mapFieldsArray = Array.from(mapFieldsetElements).concat(Array.from(mapSelectElements));
   const formFieldsArray = Array.from(formFieldsetElements).concat(Array.from(formSelectElements));
 
-  window.disable = {
-    set,
-    unset,
+  window.utils = {
+    disable,
+    undisable,
     activate,
     resetMap,
     resetForm,
