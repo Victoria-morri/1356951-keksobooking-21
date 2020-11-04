@@ -6,9 +6,12 @@
   const URL_TO_SEND = `https://21.javascript.pages.academy/keksobooking`;
 
   const activateMap = function () {
+    removeListeners();
+    window.utils.activate(window.utils.mapElement, `map--faded`, window.utils. mapFieldsArray);
+    window.utils.activate(window.utils.adFormElement, `ad-form--disabled`, window.utils.formFieldsArray);
     window.load({
       onSuccess,
-      onError: window.message.show,
+      onError: window.message.showServerMessage,
       url: DATA_URL,
       method: `GET`,
       dataX: ``
@@ -20,54 +23,45 @@
     window.position.mapPinMainElement.removeEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
   };
 
-  const dependenceOfInputs = function () {
-    const actualRoomNumber = parseInt(roomNumberElement.value, 10);
-    const actualCapacity = parseInt(capacityElement.value, 10);
-    if (actualRoomNumber < actualCapacity) {
-      capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
-    } else {
-      capacityElement.setCustomValidity(``);
-    }
-  };
-
   const onMouseLeftButtonDown = function (evt) {
     if (evt.button === 0) {
       activateMap();
-      removeListeners();
     }
   };
 
   const onKeyEnterDown = function (evt) {
     if (evt.key === `Enter`) {
       activateMap();
-      removeListeners();
     }
   };
 
-  const onResetForm = function (evt) {
-    if (evt) {
-      evt.preventDefault();
-    }
-    window.position.start();
-    window.disable.resetForm();
-    window.position.fillAdressInput(window.position.mapPinMainElement.style.left, window.position.PIN_WIDTH_HALF, window.position.mapPinMainElement.style.top, window.position.PIN_HEIGHT / 2);
-    window.disable.resetMap();
+  const reset = function () {
+    window.position.resetMainPin();
+    window.utils.resetForm();
+    window.position.startAdressInput();
+    window.utils.resetMap();
     window.popupCard.onCloseCard();
     window.card.clearPinsCards();
     window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
     window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
   };
 
-  const renderPins = function (arrayX) {
-    const arrayForUse = arrayX.length > 5 ? arrayX.slice(0, 5) : arrayX;
+  const onResetForm = function (evt) {
+    if (evt) {
+      evt.preventDefault();
+    }
+    reset();
+  };
+
+  const renderPins = function (arrayForUse) {
     window.card.clearPinsCards();
     currentPins = window.pin.renderAll(arrayForUse);
     currentCards = window.card.renderAll(arrayForUse);
-    window.disable.mapElement.appendChild(currentCards);
+    window.utils.mapElement.appendChild(currentCards);
     mapPinsElement.appendChild(currentPins);
     mapsPinsElements = document.querySelectorAll(`.map__pin`);
     popupElements = document.querySelectorAll(`.map__card`);
-    window.popupCard.getInteractive(mapsPinsElements, popupElements);
+    window.popupCard.initInteractive(mapsPinsElements, popupElements);
   };
 
   const onSendForm = function (evt) {
@@ -77,86 +71,44 @@
       onError: onFailFormSend,
       url: URL_TO_SEND,
       method: `POST`,
-      dataX: new FormData(window.disable.adFormElement)
+      dataX: new FormData(window.utils.adFormElement)
     });
-  };
-
-  const changePriceOffer = function (evt) {
-    offer.price = evt.target.value;
-    updatePins();
-  };
-
-  const changeRoomsOffer = function (evt) {
-    offer.rooms = evt.target.value;
-    updatePins();
-  };
-
-  const changeHousingOffer = function (evt) {
-    offer.type = evt.target.value;
-    updatePins();
-  };
-
-  const changeGuestsOffer = function (evt) {
-    offer.guests = evt.target.value;
-    updatePins();
-  };
-
-  const changeMapFeatures = function () {
-    offer.features = [];
-    inputsmapFeatures.forEach(function (item) {
-      if (item.checked) {
-        offer.features.push(item.value);
-      }
-    });
-    updatePins();
   };
 
   const onChange = window.debounce(function (evt) {
     window.popupCard.onCloseCard();
     const filterChangeHandler = filterChangeHandlerMap[evt.target.getAttribute(`name`)];
     filterChangeHandler(evt);
+    updatePins();
   });
 
   const updatePins = function () {
     window.card.clearPinsCards();
-    renderPins(window.filter.filterData(data, offer));
+    renderPins(window.filter.filterData(data));
   };
 
-  const resetElement = window.disable.adFormElement.querySelector(`.ad-form__reset`);
-  const mapPinsElement = window.disable.mapElement.querySelector(`.map__pins`);
-  const roomNumberElement = window.disable.noticeElement.querySelector(`#room_number`);
-  const capacityElement = window.disable.noticeElement.querySelector(`#capacity`);
-  const mapFeatures = window.disable.mapFiltersElement.querySelector(`.map__features`);
-  const inputsmapFeatures = mapFeatures.querySelectorAll(`input`);
+  const resetElement = window.utils.adFormElement.querySelector(`.ad-form__reset`);
+  const mapPinsElement = window.utils.mapElement.querySelector(`.map__pins`);
   const filterChangeHandlerMap = {
-    'housing-type': changeHousingOffer,
-    'housing-price': changePriceOffer,
-    'housing-rooms': changeRoomsOffer,
-    'housing-guests': changeGuestsOffer,
-    'features': changeMapFeatures
+    'housing-type': window.filter.changeHousingOffer,
+    'housing-price': window.filter.changePriceOffer,
+    'housing-rooms': window.filter.changeRoomsOffer,
+    'housing-guests': window.filter.changeGuestsOffer,
+    'features': window.filter.changeMapFeatures
   };
   let mapsPinsElements = document.querySelectorAll(`.map__pin`);
   let popupElements = document.querySelectorAll(`.map__card`);
   let data = [];
   let currentCards;
   let currentPins;
-  let offer = {
-    type: `any`,
-    price: `any`,
-    rooms: `any`,
-    guests: `any`,
-    features: []
-  };
 
   const onSuccess = function (array) {
     data = array;
+    console.log(data);
     updatePins();
-    window.disable.activate(window.disable.mapElement, `map--faded`, window.disable. mapFieldsArray);
-    window.disable.activate(window.disable.adFormElement, `ad-form--disabled`, window.disable.formFieldsArray);
-    const errorMessageElement = document.querySelector(`.error-message`);
-    window.popupCard.error(errorMessageElement);
-    window.disable.mapFiltersElement.addEventListener(`change`, onChange);
-    window.disable.adFormElement.addEventListener(`submit`, onSendForm);
+    window.message.hideErrorMessage();
+    window.utils.mapFiltersElement.addEventListener(`change`, onChange);
+    window.utils.adFormElement.addEventListener(`submit`, onSendForm);
     resetElement.addEventListener(`click`, onResetForm);
   };
 
@@ -167,17 +119,13 @@
   const onSuccessFormSend = function () {
     onResetForm();
     window.message.showSuccess();
-    window.disable.adFormElement.removeEventListener(`submit`, onSendForm);
+    window.utils.adFormElement.removeEventListener(`submit`, onSendForm);
     resetElement.removeEventListener(`click`, onResetForm);
   };
 
-  window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
 
   window.form = {
-    dependenceOfInputs,
     onMouseLeftButtonDown,
-    onKeyEnterDown,
-    capacityElement,
-    roomNumberElement
+    onKeyEnterDown
   };
 }());

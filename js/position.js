@@ -9,9 +9,15 @@
   const MAIN_PIN_X = 570;
   const MAIN_PIN_Y = 375;
 
-  const start = function () {
+  const resetMainPin = function () {
     mapPinMainElement.style.top = MAIN_PIN_Y + `px`;
     mapPinMainElement.style.left = MAIN_PIN_X + `px`;
+  };
+
+  const startAdressInput = function () {
+    const width3 = getNumber(window.position.mapPinMainElement.style.left);
+    const height3 = getNumber(window.position.mapPinMainElement.style.top);
+    adressInputElement.value = `left: ${width3 + window.position.PIN_WIDTH_HALF}px; top: ${height3 + window.position.PIN_HEIGHT / 2}px`;
   };
 
   const getNumber = function (some) {
@@ -24,6 +30,7 @@
     const height3 = getNumber(height1);
     adressInputElement.value = `left: ${width3 + width2}px; top: ${height3 + height2}px`;
   };
+
   const getPosition = function (min, max, position) {
     let actualPosition;
     if (position > max) {
@@ -54,8 +61,11 @@
         y: startCords.y - moveEvt.clientY
       };
 
-      yPosition = getPosition(SKY_HEIGHT, MAX_HEIGHT, (mapPinMainElement.offsetTop - shift.y));
-      xPosition = getPosition(-(PIN_WIDTH_HALF), MAX_WIDTH - (PIN_WIDTH_HALF * 2), (mapPinMainElement.offsetLeft - shift.x));
+      yPosition = getPosition(SKY_HEIGHT - PIN_HEIGHT, MAX_HEIGHT - PIN_HEIGHT, (mapPinMainElement.offsetTop - shift.y));
+      xPosition = getPosition(-(PIN_WIDTH_HALF), MAX_WIDTH - PIN_WIDTH_HALF, (mapPinMainElement.offsetLeft - shift.x));
+
+      /* yPosition = getPosition(SKY_HEIGHT, MAX_HEIGHT, (mapPinMainElement.offsetTop - shift.y));
+      xPosition = getPosition(-(PIN_WIDTH_HALF), MAX_WIDTH - (PIN_WIDTH_HALF * 2), (mapPinMainElement.offsetLeft - shift.x));*/
 
       if (yPosition !== parseInt(mapPinMainElement.style.top, 10)) {
         startCords.y = moveEvt.clientY;
@@ -83,10 +93,11 @@
 
   const mapPinMainElement = document.querySelector(`.map__pin--main`);
   const mapPinsMainElement = document.querySelector(`.map__pins`);
-  const adressInputElement = document.querySelector((`#address`));
+  const adressInputElement = document.querySelector(`#address`);
 
   window.position = {
-    start,
+    startAdressInput,
+    resetMainPin,
     movePin,
     fillAdressInput,
     PIN_WIDTH_HALF,
