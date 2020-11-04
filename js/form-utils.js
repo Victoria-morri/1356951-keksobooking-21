@@ -14,6 +14,10 @@
   };
 
   const onSetPrice = function () {
+    setPrice();
+  };
+
+  const setPrice = function () {
     const priceValue = parseInt(priceElement.value, 10);
     if (priceValue > MAX_PRICE || priceValue < minPrice) {
       priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до ${MAX_PRICE}руб. Скорректируйте цену.`);
@@ -28,7 +32,7 @@
     minPrice = housingTypesMinPrice[typeValue];
     priceElement.min = minPrice;
     priceElement.placeholder = minPrice;
-    window.formUtils.onSetPrice();
+    window.formUtils.setPrice();
   };
 
   const getTimeout = function () {
@@ -39,7 +43,7 @@
     timein.value = timeout.value;
   };
 
-  const dependenceOfInputs = function () {
+  const onDependenceOfInputs = function () {
     const actualRoomNumber = parseInt(roomNumberElement.value, 10);
     const actualCapacity = parseInt(capacityElement.value, 10);
     if (actualRoomNumber < actualCapacity) {
@@ -68,7 +72,7 @@
     onSetMinPrice,
     getTimeout,
     getTimein,
-    dependenceOfInputs,
+    onDependenceOfInputs,
     priceElement,
     timein,
     timeout,

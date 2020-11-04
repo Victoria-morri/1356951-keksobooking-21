@@ -9,8 +9,8 @@ window.position.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyE
 window.position.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
 window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
 
-window.formUtils.capacityElement.addEventListener(`input`, window.formUtils.dependenceOfInputs);
-window.formUtils.roomNumberElement.addEventListener(`input`, window.formUtils.dependenceOfInputs);
+window.formUtils.capacityElement.addEventListener(`input`, window.formUtils.onDependenceOfInputs);
+window.formUtils.roomNumberElement.addEventListener(`input`, window.formUtils.onDependenceOfInputs);
 
 window.formUtils.titleElement.addEventListener(`input`, window.formUtils.onCheckTitle);
 

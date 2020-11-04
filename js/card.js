@@ -2,6 +2,32 @@
 
 (function () {
   const FEATURES_LIST = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+  const wordEndRooms = {
+    1: `а`,
+    2: `ы`,
+    3: `ы`,
+    4: `ы`,
+    5: ``,
+    6: ``,
+    7: ``,
+    8: ``,
+    9: ``,
+    0: ``
+  };
+
+  const wordEndGuests = {
+    1: `я`,
+    2: `ей`,
+    3: `ей`,
+    4: `ей`,
+    5: `ей`,
+    6: `ей`,
+    7: `ей`,
+    8: `ей`,
+    9: `ей`,
+    0: `ей`
+  };
+
   const housingType = {
     palace: `Дворец`,
     flat: `Квартира`,
@@ -22,8 +48,15 @@
     } else {
       mapCard.querySelector(`.popup__type`).hidden = true;
     }
+    const getWordEnd = function (element) {
+      let endOfWord = (element % 100) < 10 ? element % 100 : (element % 100) % 10;
+      return endOfWord;
+    };
+    // let endOfRoomsWord = (option.offer.rooms % 100) < 10 ? option.offer.rooms % 100 : (option.offer.rooms % 100) % 10;
+    // let endOfGuestsWord = (option.offer.guests % 100) < 10 ? option.offer.guests % 100 : (option.offer.guests % 100) % 10;
 
-    mapCard.querySelector(`.popup__text--capacity`).textContent = option.offer.rooms && option.offer.guests ? `${option.offer.rooms} комнаты для ${option.offer.guests} гостей` : mapCard.querySelector(`.popup__text--capacity`).hidden = true;
+    mapCard.querySelector(`.popup__text--capacity`).textContent = option.offer.rooms && option.offer.guests ? `${option.offer.rooms} комнат${wordEndRooms[getWordEnd(option.offer.rooms)]} для ${option.offer.guests} гост${wordEndGuests[getWordEnd(option.offer.guests)]}` : mapCard.querySelector(`.popup__text--capacity`).hidden = true;
+
     mapCard.querySelector(`.popup__text--time`).textContent = option.offer.checkin !== `0:00` && option.offer.checkout !== `0:00` ? `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}` : mapCard.querySelector(`.popup__text--time`).hidden = true;
     if (option.offer.features) {
       const festurePopup = mapCard.querySelector(`.popup__features`);

@@ -38,8 +38,7 @@
   window.pin = {
     renderMapPinsList,
     clearAll,
-    renderAll,
-    mapPinElement
+    renderAll
   };
 
 

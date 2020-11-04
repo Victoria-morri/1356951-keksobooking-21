@@ -36,7 +36,7 @@
   };
 
   const reset = function () {
-    window.position.start();
+    window.position.resetMainPin();
     window.utils.resetForm();
     window.position.startAdressInput();
     window.utils.resetMap();
@@ -104,8 +104,9 @@
 
   const onSuccess = function (array) {
     data = array;
+    console.log(data);
     updatePins();
-    window.popupCard.hideErrorMessage();
+    window.message.hideErrorMessage();
     window.utils.mapFiltersElement.addEventListener(`change`, onChange);
     window.utils.adFormElement.addEventListener(`submit`, onSendForm);
     resetElement.addEventListener(`click`, onResetForm);
