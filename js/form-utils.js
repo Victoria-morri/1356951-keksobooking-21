@@ -1,12 +1,14 @@
 'use strict';
 (function () {
   const MAX_PRICE = 1000000;
+  const MIN_LETTER = 30;
+  const MAX_LETTER = 100;
 
   const onCheckTitle = function () {
     const titleValueLength = titleElement.value.length;
-    if (titleValueLength < 30) {
+    if (titleValueLength < MIN_LETTER) {
       titleElement.setCustomValidity(`Минамальное количество символов 30. Дополните заголовок.`);
-    } else if (titleValueLength > 100) {
+    } else if (titleValueLength > MAX_LETTER) {
       titleElement.setCustomValidity(`Максимальное количество символов 100. Сократите заголовок.`);
     } else {
       titleElement.setCustomValidity(``);
@@ -18,7 +20,7 @@
   };
 
   const setPrice = function () {
-    const priceValue = parseInt(priceElement.value, 10);
+    const priceValue = window.utils.getNumber(priceElement.value);
     if (priceValue > MAX_PRICE || priceValue < minPrice) {
       priceElement.setCustomValidity(`Цена может варьироваться от ${minPrice} до ${MAX_PRICE}руб. Скорректируйте цену.`);
     } else {
@@ -44,8 +46,8 @@
   };
 
   const onDependenceOfInputs = function () {
-    const actualRoomNumber = parseInt(roomNumberElement.value, 10);
-    const actualCapacity = parseInt(capacityElement.value, 10);
+    const actualRoomNumber = window.utils.getNumber(roomNumberElement.value);
+    const actualCapacity = window.utils.getNumber(capacityElement.value);
     if (actualRoomNumber < actualCapacity) {
       capacityElement.setCustomValidity(`Количество гостей должно соответствовать колличеству комнат. Уменьшите количество гостей.`);
     } else {
@@ -58,13 +60,15 @@
   const priceElement = window.utils.noticeElement.querySelector(`#price`);
   const timein = window.utils.noticeElement.querySelector(`#timein`);
   const timeout = window.utils.noticeElement.querySelector(`#timeout`);
+  const livesType = window.utils.noticeElement.querySelector(`#type`);
+
   const housingTypesMinPrice = {
     bungalow: 0,
     flat: 1000,
     house: 5000,
     palace: 10000
   };
-  let minPrice = 1000;
+  let minPrice = housingTypesMinPrice.flat;
 
   window.formUtils = {
     onCheckTitle,
@@ -78,6 +82,7 @@
     timeout,
     titleElement,
     roomNumberElement,
-    capacityElement
+    capacityElement,
+    livesType
   };
 })();

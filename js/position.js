@@ -1,8 +1,9 @@
 'use strict';
 
 (function () {
-  const PIN_WIDTH_HALF = 25;
-  const PIN_HEIGHT = 70;
+  const PIN_WIDTH = 62;
+  const PIN_WIDTH_HALF = PIN_WIDTH / 2;
+  const PIN_HEIGHT = PIN_WIDTH + 22;
   const MAX_WIDTH = 1200;
   const MAX_HEIGHT = 630;
   const SKY_HEIGHT = 130;
@@ -15,23 +16,18 @@
   };
 
   const startAdressInput = function () {
-    const width3 = getNumber(window.position.mapPinMainElement.style.left);
-    const height3 = getNumber(window.position.mapPinMainElement.style.top);
-    adressInputElement.value = `left: ${width3 + window.position.PIN_WIDTH_HALF}px; top: ${height3 + window.position.PIN_HEIGHT / 2}px`;
-  };
-
-  const getNumber = function (some) {
-    const someNumber = typeof some !== `number` ? parseInt(some, 10) : some;
-    return someNumber;
+    const width3 = window.utils.getNumber(mapPinMainElement.style.left);
+    const height3 = window.utils.getNumber(mapPinMainElement.style.top);
+    adressInputElement.value = `left: ${width3 + PIN_WIDTH_HALF}px; top: ${height3 + PIN_WIDTH_HALF}px`;
   };
 
   const fillAdressInput = function (width1, width2, height1, height2) {
-    const width3 = getNumber(width1);
-    const height3 = getNumber(height1);
+    const width3 = window.utils.getNumber(width1);
+    const height3 = window.utils.getNumber(height1);
     adressInputElement.value = `left: ${width3 + width2}px; top: ${height3 + height2}px`;
   };
 
-  const getPosition = function (min, max, position) {
+  const getPosition = function ({min, max, position}) {
     let actualPosition;
     if (position > max) {
       actualPosition = max;
@@ -61,30 +57,36 @@
         y: startCords.y - moveEvt.clientY
       };
 
-      yPosition = getPosition(SKY_HEIGHT - PIN_HEIGHT, MAX_HEIGHT - PIN_HEIGHT, (mapPinMainElement.offsetTop - shift.y));
-      xPosition = getPosition(-(PIN_WIDTH_HALF), MAX_WIDTH - PIN_WIDTH_HALF, (mapPinMainElement.offsetLeft - shift.x));
+      yPosition = getPosition({
+        min: SKY_HEIGHT - PIN_HEIGHT,
+        max: MAX_HEIGHT - PIN_HEIGHT,
+        position: mapPinMainElement.offsetTop - shift.y
+      });
 
-      /* yPosition = getPosition(SKY_HEIGHT, MAX_HEIGHT, (mapPinMainElement.offsetTop - shift.y));
-      xPosition = getPosition(-(PIN_WIDTH_HALF), MAX_WIDTH - (PIN_WIDTH_HALF * 2), (mapPinMainElement.offsetLeft - shift.x));*/
+      xPosition = getPosition({
+        min: -PIN_WIDTH_HALF,
+        max: MAX_WIDTH - PIN_WIDTH_HALF,
+        position: mapPinMainElement.offsetLeft - shift.x
+      });
 
-      if (yPosition !== parseInt(mapPinMainElement.style.top, 10)) {
+      if (yPosition !== window.utils.getNumber(mapPinMainElement.style.top)) {
         startCords.y = moveEvt.clientY;
       }
-      if (xPosition !== parseInt(mapPinMainElement.style.left, 10)) {
+      if (xPosition !== window.utils.getNumber(mapPinMainElement.style.left)) {
         startCords.x = moveEvt.clientX;
       }
 
       mapPinMainElement.style.top = yPosition + `px`;
       mapPinMainElement.style.left = xPosition + `px`;
 
-      fillAdressInput(xPosition, window.position.PIN_WIDTH_HALF, yPosition, window.position.PIN_HEIGHT);
+      fillAdressInput(xPosition, PIN_WIDTH_HALF, yPosition, PIN_HEIGHT);
     };
 
     const onMouseUp = function (upEvt) {
       upEvt.preventDefault();
       mapPinsMainElement.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);
-      fillAdressInput(xPosition, window.position.PIN_WIDTH_HALF, yPosition, window.position.PIN_HEIGHT);
+      fillAdressInput(xPosition, PIN_WIDTH_HALF, yPosition, PIN_HEIGHT);
     };
 
     mapPinsMainElement.addEventListener(`mousemove`, onMouseMove);
@@ -99,12 +101,6 @@
     startAdressInput,
     resetMainPin,
     movePin,
-    fillAdressInput,
-    PIN_WIDTH_HALF,
-    PIN_HEIGHT,
-    MAX_WIDTH,
-    MAX_HEIGHT,
-    SKY_HEIGHT,
     mapPinMainElement
   };
 

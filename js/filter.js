@@ -14,6 +14,15 @@
     features: []
   };
 
+  const resetOffer = function () {
+    offer = {
+      type: `any`,
+      price: `any`,
+      rooms: `any`,
+      guests: `any`,
+      features: []
+    };
+  };
   const changePriceOffer = function (evt) {
     offer.price = evt.target.value;
   };
@@ -40,40 +49,39 @@
   };
 
   const filterData = function (dataArray) {
-    let resalt;
+    let result;
     let arrayToUse = dataArray.filter(function (item) {
-      resalt = offer.type !== `any` ? item.offer.type === offer.type : true;
-      if (resalt !== false) {
+      result = offer.type !== `any` ? item.offer.type === offer.type : true;
+      if (result !== false) {
         if (offer.price !== `any`) {
           if (offer.price === `middle`) {
-            resalt = item.offer.price <= PRICE.high && item.offer.price >= PRICE.low;
+            result = item.offer.price <= PRICE.high && item.offer.price >= PRICE.low;
           } else if (offer.price === `low`) {
-            resalt = item.offer.price < PRICE.low;
+            result = item.offer.price < PRICE.low;
           } else if (offer.price === `high`) {
-            resalt = item.offer.price > PRICE.high;
+            result = item.offer.price > PRICE.high;
           }
         } else {
-          resalt = true;
+          result = true;
         }
       }
-      if (resalt !== false) {
-        resalt = offer.rooms !== `any` ? item.offer.rooms === offer.rooms : true;
+      if (result !== false) {
+        result = offer.rooms !== `any` ? item.offer.rooms === offer.rooms : true;
       }
-      if (resalt !== false) {
-        const guestsNumber = parseInt(offer.guests, 10);
+      if (result !== false) {
+        const guestsNumber = window.utils.getNumber(offer.guests);
         if (offer.guests !== `any`) {
-          resalt = offer.guests !== `0` ? item.offer.guests >= guestsNumber : item.offer.guests === guestsNumber;
+          result = offer.guests !== `0` ? item.offer.guests >= guestsNumber : item.offer.guests === guestsNumber;
         }
       }
-      if (resalt !== false) {
+      if (result !== false) {
         for (let j = 0; j < offer.features.length; j++) {
           if ((item.offer.features.includes(offer.features[j])) === false) {
             return false;
           }
         }
-        return true;
       }
-      return resalt;
+      return result;
     });
     arrayToUse = arrayToUse.length > 5 ? arrayToUse.slice(0, 5) : arrayToUse;
     return arrayToUse;
@@ -86,6 +94,7 @@
     changeGuestsOffer,
     changeMapFeatures,
     filterData,
+    resetOffer
   };
 })();
 
