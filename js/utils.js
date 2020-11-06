@@ -1,6 +1,10 @@
 'use strict';
 (function () {
 
+  const getNumber = function (some) {
+    return typeof some !== `number` ? parseInt(some, 10) : some;
+  };
+
   const disable = function (arrayName) {
     for (let i = 0; i < arrayName.length; i++) {
       arrayName[i].setAttribute(`disabled`, `disabled`);
@@ -42,6 +46,7 @@
   const formFieldsArray = Array.from(formFieldsetElements).concat(Array.from(formSelectElements));
 
   window.utils = {
+    getNumber,
     disable,
     undisable,
     activate,

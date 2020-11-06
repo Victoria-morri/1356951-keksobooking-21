@@ -42,6 +42,7 @@
     window.utils.resetMap();
     window.popupCard.onCloseCard();
     window.card.clearPinsCards();
+    window.filter.resetOffer();
     window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
     window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
   };

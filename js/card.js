@@ -35,29 +35,50 @@
     bungalow: `Бунгало`};
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
+  const getWordEnd = function (element) {
+    let endOfWord = (element % 100) < 10 ? element % 100 : (element % 100) % 10;
+    return endOfWord;
+  };
+
   const create = function (option) {
 
     const mapCard = mapCardTemplate.cloneNode(true);
-    mapCard.querySelector(`.popup__avatar`).src = option.author.avatar ? option.author.avatar : mapCard.querySelector(`.popup__avatar`).hidden = true;
-    mapCard.querySelector(`.popup__title`).textContent = option.offer.title ? option.offer.title : mapCard.querySelector(`.popup__title`).hidden = true;
-    mapCard.querySelector(`.popup__text--address`).textContent = option.offer.address ? option.offer.address : mapCard.querySelector(`.popup__text--address`).hidden = true;
-    mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price ? option.offer.price : mapCard.querySelector(`.popup__text--price`).hidden = true;
+    if (option.author.avatar) {
+      mapCard.querySelector(`.popup__avatar`).src = option.author.avatar;
+    } else {
+      mapCard.querySelector(`.popup__avatar`).hidden = true;
+    }
+    if (option.offer.title) {
+      mapCard.querySelector(`.popup__title`).textContent = option.offer.title;
+    } else {
+      mapCard.querySelector(`.popup__title`).hidden = true;
+    }
+    if (option.offer.address) {
+      mapCard.querySelector(`.popup__text--address`).textContent = option.offer.address;
+    } else {
+      mapCard.querySelector(`.popup__text--address`).hidden = true;
+    }
+    if (option.offer.price) {
+      mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
+    } else {
+      mapCard.querySelector(`.popup__text--price`).textContent = option.offer.price;
+    }
     if (option.offer.type) {
       const chousenHousing = option.offer.type;
       mapCard.querySelector(`.popup__type`).textContent = housingType[chousenHousing];
     } else {
       mapCard.querySelector(`.popup__type`).hidden = true;
     }
-    const getWordEnd = function (element) {
-      let endOfWord = (element % 100) < 10 ? element % 100 : (element % 100) % 10;
-      return endOfWord;
-    };
-    // let endOfRoomsWord = (option.offer.rooms % 100) < 10 ? option.offer.rooms % 100 : (option.offer.rooms % 100) % 10;
-    // let endOfGuestsWord = (option.offer.guests % 100) < 10 ? option.offer.guests % 100 : (option.offer.guests % 100) % 10;
-
-    mapCard.querySelector(`.popup__text--capacity`).textContent = option.offer.rooms && option.offer.guests ? `${option.offer.rooms} комнат${wordEndRooms[getWordEnd(option.offer.rooms)]} для ${option.offer.guests} гост${wordEndGuests[getWordEnd(option.offer.guests)]}` : mapCard.querySelector(`.popup__text--capacity`).hidden = true;
-
-    mapCard.querySelector(`.popup__text--time`).textContent = option.offer.checkin !== `0:00` && option.offer.checkout !== `0:00` ? `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}` : mapCard.querySelector(`.popup__text--time`).hidden = true;
+    if (option.offer.rooms && option.offer.guests) {
+      mapCard.querySelector(`.popup__text--capacity`).textContent = `${option.offer.rooms} комнат${wordEndRooms[getWordEnd(option.offer.rooms)]} для ${option.offer.guests} гост${wordEndGuests[getWordEnd(option.offer.guests)]}`;
+    } else {
+      mapCard.querySelector(`.popup__text--capacity`).hidden = true;
+    }
+    if (option.offer.checkin !== `` && option.offer.checkout !== ``) {
+      mapCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${option.offer.checkin}, выезд до ${option.offer.checkout}`;
+    } else {
+      mapCard.querySelector(`.popup__text--time`).hidden = true;
+    }
     if (option.offer.features) {
       const festurePopup = mapCard.querySelector(`.popup__features`);
       const featureAr = option.offer.features;
@@ -69,8 +90,11 @@
     } else {
       mapCard.querySelector(`.popup__features`).hidden = true;
     }
-
-    mapCard.querySelector(`.popup__description`).textContent = option.offer.description ? option.offer.description : mapCard.querySelector(`.popup__description`).hidden = true;
+    if (option.offer.description) {
+      mapCard.querySelector(`.popup__description`).textContent = option.offer.description;
+    } else {
+      mapCard.querySelector(`.popup__description`).hidden = true;
+    }
     const imgCardMap = mapCard.querySelector(`.popup__photos`);
     if (option.offer.photos.length === 0) {
       imgCardMap.remove();
