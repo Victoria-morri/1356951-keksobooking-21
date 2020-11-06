@@ -7,6 +7,8 @@
 
   const activateMap = function () {
     removeListeners();
+    window.utils.adFormElement.addEventListener(`submit`, onSendForm);
+    resetElement.addEventListener(`click`, onResetForm);
     window.utils.activate(window.utils.mapElement, `map--faded`, window.utils. mapFieldsArray);
     window.utils.activate(window.utils.adFormElement, `ad-form--disabled`, window.utils.formFieldsArray);
     window.load({
@@ -48,9 +50,7 @@
   };
 
   const onResetForm = function (evt) {
-    if (evt) {
-      evt.preventDefault();
-    }
+    evt.preventDefault();
     reset();
   };
 
@@ -108,8 +108,6 @@
     updatePins();
     window.message.hideErrorMessage();
     window.utils.mapFiltersElement.addEventListener(`change`, onChange);
-    window.utils.adFormElement.addEventListener(`submit`, onSendForm);
-    resetElement.addEventListener(`click`, onResetForm);
   };
 
   const onFailFormSend = function () {

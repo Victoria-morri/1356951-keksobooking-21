@@ -4,6 +4,7 @@
     low: 10000,
     high: 50000
   };
+  const OFFER_QUANTITY = 5;
   const mapFeatures = window.utils.mapFiltersElement.querySelector(`.map__features`);
   const inputsmapFeatures = mapFeatures.querySelectorAll(`input`);
   let offer = {
@@ -83,7 +84,7 @@
       }
       return result;
     });
-    arrayToUse = arrayToUse.length > 5 ? arrayToUse.slice(0, 5) : arrayToUse;
+    arrayToUse = arrayToUse.length > OFFER_QUANTITY ? arrayToUse.slice(0, OFFER_QUANTITY) : arrayToUse;
     return arrayToUse;
   };
 
