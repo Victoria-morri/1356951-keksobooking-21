@@ -84,7 +84,7 @@
       }
       return result;
     });
-    arrayToUse = arrayToUse.length > OFFER_QUANTITY ? arrayToUse.slice(0, 5) : arrayToUse;
+    arrayToUse = arrayToUse.length > OFFER_QUANTITY ? arrayToUse.slice(0, OFFER_QUANTITY) : arrayToUse;
     return arrayToUse;
   };
 
