@@ -1,6 +1,5 @@
 'use strict';
 
-
 window.utils.disable(window.utils.mapFieldsArray);
 window.utils.disable(window.utils.formFieldsArray);
 window.position.startAdressInput();
