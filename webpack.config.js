@@ -11,6 +11,7 @@ module.exports = {
     "./js/debounce.js",
     "./js/filter.js",
     "./js/message.js",
+    "./js/load-picture.js",
     "./js/form.js",
     "./js/form-utils.js",
     "./js/main.js"
