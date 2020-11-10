@@ -65,8 +65,9 @@ const filterData = function (dataArray) {
         result = true;
       }
     }
+
     if (result !== false) {
-      result = offer.rooms !== `any` ? item.offer.rooms === offer.rooms : true;
+      result = offer.rooms !== `any` ? item.offer.rooms === window.utils.getNumber(offer.rooms) : true;
     }
     if (result !== false) {
       const guestsNumber = window.utils.getNumber(offer.guests);

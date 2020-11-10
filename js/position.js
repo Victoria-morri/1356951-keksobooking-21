@@ -16,13 +16,13 @@ const resetMainPin = function () {
 const startAdressInput = function () {
   const width3 = window.utils.getNumber(mapPinMainElement.style.left);
   const height3 = window.utils.getNumber(mapPinMainElement.style.top);
-  adressInputElement.value = `left: ${width3 + PIN_WIDTH_HALF}px; top: ${height3 + PIN_WIDTH_HALF}px`;
+  adressInputElement.value = `${width3 + PIN_WIDTH_HALF}, ${height3 + PIN_WIDTH_HALF}`;
 };
 
 const fillAdressInput = function (width1, width2, height1, height2) {
   const width3 = window.utils.getNumber(width1);
   const height3 = window.utils.getNumber(height1);
-  adressInputElement.value = `left: ${width3 + width2}px; top: ${height3 + height2}px`;
+  adressInputElement.value = `${width3 + width2}, ${height3 + height2}`;
 };
 
 const getPosition = function ({min, max, position}) {

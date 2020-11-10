@@ -102,6 +102,7 @@ let currentPins;
 
 const onSuccess = function (array) {
   data = array;
+  console.log(array);
   updatePins();
   window.message.hideErrorMessage();
   window.utils.mapFiltersElement.addEventListener(`change`, onChange);
