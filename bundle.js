@@ -750,6 +750,15 @@ const onPhotoAd = function () {
   }
 };
 
+const removePhotos = function () {
+  const photos = window.loadPicture.formPhotoPreview.querySelectorAll(`img`);
+  if (photos) {
+    photos.forEach(function (it) {
+      it.remove();
+    });
+  }
+};
+
 const formPhotoField = document.querySelector(`.ad-form__upload input[type=file]`);
 const formPhotoPreview = document.querySelector(`.ad-form__photo`);
 const formFileField = document.querySelector(`.ad-form__field input[type=file]`);
@@ -759,6 +768,7 @@ formPhotoField.addEventListener(`change`, onPhotoAd);
 window.loadPicture = {
   onPhotoAd,
   onAvatarAd,
+  removePhotos,
   formPhotoField,
   formFileField,
   formPhotoPreview,
@@ -817,14 +827,8 @@ const reset = function () {
   window.popupCard.onCloseCard();
   window.card.clearPinsCards();
   window.filter.resetOffer();
-  const tyt = window.loadPicture.formPhotoPreview.querySelectorAll(`img`);
-  if (tyt) {
-    tyt.forEach(function (it) {
-      it.remove();
-    });
-  }
+  window.loadPicture.removePhotos();
   window.loadPicture.formFilePreview.src = `img/muffin-grey.svg`;
-  // console.log(window.loadPicture.formPhotoPreview.img);
   window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
   window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
 };

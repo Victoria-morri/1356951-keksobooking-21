@@ -42,14 +42,8 @@ const reset = function () {
   window.popupCard.onCloseCard();
   window.card.clearPinsCards();
   window.filter.resetOffer();
-  const tyt = window.loadPicture.formPhotoPreview.querySelectorAll(`img`);
-  if (tyt) {
-    tyt.forEach(function (it) {
-      it.remove();
-    });
-  }
+  window.loadPicture.removePhotos();
   window.loadPicture.formFilePreview.src = `img/muffin-grey.svg`;
-  // console.log(window.loadPicture.formPhotoPreview.img);
   window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
   window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
 };
