@@ -1,5 +1,9 @@
 'use strict';
 const FILE_TYPE = `image/`;
+const PX = `px`;
+const AVATAR_PATH = `img/muffin-grey.svg`;
+const IMG_WIDTH = 70;
+const IMG_HEIGHT = 70;
 
 const onAvatarAd = function () {
   adImage(formFileField, formFilePreview);
@@ -8,8 +12,8 @@ const onAvatarAd = function () {
 const onPhotoAd = function () {
   removePhoto();
   const img = document.createElement(`img`);
-  img.style.width = 70 + `px`;
-  img.style.height = 70 + `px`;
+  img.style.width = IMG_WIDTH + PX;
+  img.style.height = IMG_HEIGHT + PX;
   img.alt = `Фотография помещения`;
   formPhotoPreview.appendChild(img);
   adImage(formPhotoField, img);
@@ -36,7 +40,7 @@ const removePhoto = function () {
 };
 
 const resetAvatar = function () {
-  formFilePreview.src = `img/muffin-grey.svg`;
+  formFilePreview.src = AVATAR_PATH;
 };
 
 const formPhotoField = document.querySelector(`.ad-form__upload input[type=file]`);
