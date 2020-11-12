@@ -1,47 +1,36 @@
 'use strict';
 
-const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
-
 const onAvatarAd = function () {
-  let file = formFileField.files[0];
-  let fileName = file.name.toLowerCase();
-
-  let matches = FILE_TYPES.some(function (it) {
-    return fileName.endsWith(it);
-  });
-  if (matches) {
-    const reader = new FileReader();
-    reader.addEventListener(`load`, function () {
-      formFilePreview.src = reader.result;
-    });
-    reader.readAsDataURL(file);
-  }
+  adImage(formFileField, formFilePreview);
 };
 
 const onPhotoAd = function () {
+  removePhoto();
   const img = document.createElement(`img`);
-  let photo = formPhotoField.files[0];
-  let photoName = photo.name.toLowerCase();
-  let matches = FILE_TYPES.some(function (it) {
-    return photoName.endsWith(it);
-  }
-  );
+  img.style.width = 70 + `px`;
+  img.style.height = 70 + `px`;
+  img.alt = `Фотография помещения`;
+  formPhotoPreview.appendChild(img);
+  adImage(formPhotoField, img);
+};
+
+const adImage = function (picture, image) {
+  let photo = picture.files[0];
+  let photoType = photo.type.toLowerCase();
+  let matches = photoType.startsWith(`image/`);
   if (matches) {
     const reader = new FileReader();
     reader.addEventListener(`load`, function () {
-      img.src = reader.result;
-      formPhotoPreview.appendChild(img);
+      image.src = reader.result;
     });
     reader.readAsDataURL(photo);
   }
 };
 
-const removePhotos = function () {
-  const photos = window.loadPicture.formPhotoPreview.querySelectorAll(`img`);
-  if (photos) {
-    photos.forEach(function (it) {
-      it.remove();
-    });
+const removePhoto = function () {
+  let image = formPhotoPreview.querySelector(`img`);
+  if (image) {
+    image.remove();
   }
 };
 
@@ -50,11 +39,10 @@ const formPhotoPreview = document.querySelector(`.ad-form__photo`);
 const formFileField = document.querySelector(`.ad-form__field input[type=file]`);
 const formFilePreview = document.querySelector(`.ad-form-header__preview img`);
 
-formPhotoField.addEventListener(`change`, onPhotoAd);
 window.loadPicture = {
   onPhotoAd,
   onAvatarAd,
-  removePhotos,
+  removePhoto,
   formPhotoField,
   formFileField,
   formPhotoPreview,

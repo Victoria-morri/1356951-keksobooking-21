@@ -6,6 +6,8 @@ window.position.startAdressInput();
 window.position.mapPinMainElement.addEventListener(`keydown`, window.form.onKeyEnterDown);
 window.position.mapPinMainElement.addEventListener(`mousedown`, window.form.onMouseLeftButtonDown);
 window.position.mapPinMainElement.addEventListener(`mousedown`, window.position.movePin);
+window.loadPicture.formFileField.addEventListener(`change`, window.loadPicture.onAvatarAd);
+window.loadPicture.formPhotoField.addEventListener(`change`, window.loadPicture.onPhotoAd);
 window.formUtils.capacityElement.addEventListener(`input`, window.formUtils.onDependenceOfInputs);
 window.formUtils.roomNumberElement.addEventListener(`input`, window.formUtils.onDependenceOfInputs);
 window.formUtils.titleElement.addEventListener(`input`, window.formUtils.onCheckTitle);

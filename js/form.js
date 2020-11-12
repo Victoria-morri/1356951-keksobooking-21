@@ -42,14 +42,14 @@ const reset = function () {
   window.popupCard.onCloseCard();
   window.card.clearPinsCards();
   window.filter.resetOffer();
-  window.loadPicture.removePhotos();
+  window.loadPicture.removePhoto();
   window.loadPicture.formFilePreview.src = `img/muffin-grey.svg`;
   window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
   window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
 };
 
-const onResetForm = function (/* evt*/) {
-  // evt.preventDefault();
+const onResetForm = function (evt) {
+  evt.preventDefault();
   reset();
 };
 
@@ -102,9 +102,6 @@ let data = [];
 let currentCards;
 let currentPins;
 
-window.loadPicture.formFileField.addEventListener(`change`, window.loadPicture.onAvatarAd);
-window.loadPicture.formPhotoField.addEventListener(`change`, window.loadPicture.onPhotoAd);
-
 const onSuccess = function (array) {
   data = array;
   updatePins();
@@ -117,7 +114,7 @@ const onFailFormSend = function () {
 };
 
 const onSuccessFormSend = function () {
-  onResetForm();
+  reset();
   window.message.showSuccess();
   window.utils.adFormElement.removeEventListener(`submit`, onSendForm);
   resetElement.removeEventListener(`click`, onResetForm);
