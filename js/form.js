@@ -43,7 +43,7 @@ const reset = function () {
   window.card.clearPinsCards();
   window.filter.resetOffer();
   window.loadPicture.removePhoto();
-  window.loadPicture.formFilePreview.src = `img/muffin-grey.svg`;
+  window.loadPicture.resetAvatar();
   window.position.mapPinMainElement.addEventListener(`keydown`, onKeyEnterDown);
   window.position.mapPinMainElement.addEventListener(`mousedown`, onMouseLeftButtonDown);
 };
