@@ -33,7 +33,7 @@ const onSetMinPrice = function (evt) {
   minPrice = housingTypesMinPrice[typeValue];
   priceElement.min = minPrice;
   priceElement.placeholder = minPrice;
-  window.formUtils.setPrice();
+  setPrice();
 };
 
 const getTimeout = function () {
